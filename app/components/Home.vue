@@ -5,9 +5,9 @@
         </ActionBar>
 
         <GridLayout>
-            <Label class="info" horizontalAlignment="center" verticalAlignment="center">
+            <Label class="info" horizontalAlignment="center" verticalAlignment="center" textWrap="true">
                 <FormattedString>
-                    <Span class="fa" text.decode="&#xf135; "/>
+                    <Span class="fa" text.decode="&#xf135; Welcome "/>
                     <Span :text="message"/>
                 </FormattedString>
             </Label>
@@ -17,9 +17,10 @@
 
 <script>
     export default {
+        props: ['email','token'],
         computed: {
             message() {
-                return "Blank {N}-Vue app";
+                return this.email;
             }
         }
     };
