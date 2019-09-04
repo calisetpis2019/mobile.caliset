@@ -1,41 +1,176 @@
 <template>
-    <Page class="page">
-        <ActionBar class="action-bar">
-            <Label class="action-bar-title" text="Home"></Label>
-        </ActionBar>
+    <Page class="page" backgroundColor="#1F1B24">
+        <!--<ActionBar title="YOUR APP"></ActionBar>-->
+        <ActionBar title="Operaciones" class="action-bar">
+            <GridLayout rows="auto" columns="*" >
+                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
+                <Label text="usuario" horizontalAlignment="right" color="white" style="margin:10px" />
+            </GridLayout>
+        </ActionBar>>    
+        
+        <!--<ScrollView backgroundColor="#1F1B24"> -->
+            <!--Add your page content here-->
 
-        <GridLayout>
-            <Label class="info" horizontalAlignment="center" verticalAlignment="center">
-                <FormattedString>
-                    <Span class="fa" text.decode="&#xf135; "/>
-                    <Span :text="message"/>
-                </FormattedString>
-            </Label>
-        </GridLayout>
+            <!--<StackLayout orientation="vertical" class="sub-panel">-->
+            <StackLayout orientation="vertical">
+
+                <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
+
+                <ListView class="list-group list-new" for="nueva in nuevas" @itemTap="$goto('newOp')" style="height:20%">
+                    <v-template>
+                        <GridLayout flexDirection="row" class="list-group-item">
+                            <Label :text="nueva.name" class="list-group-item-heading" style="width: 60%" />
+                        </GridLayout>
+                    </v-template>
+                </ListView>
+
+            <!--</StackLayout>-->
+<!--<CardView v-if="showCardView" v-for="item in items" class="card" elevation="40" radius="10" ios:shadowRadius="3">-->
+<!--
+                <CardView for="nueva in nuevas" class="card" elevation="40" radius="10" android:shadowRadius="3">
+                    <StackLayout class="card-layout">
+                        <Label class="h2" :text="nueva.name" />
+                        <Label class="body" textWrap="true" text="tipo | lugar" />
+                    </StackLayout>
+                </CardView>
+-->
+                <Label text="Operaciones Asignadas" class="subtitile" />
+
+            <!--<StackLayout orientation="vertical" class="sub-panel">-->
+                <ListView class="list-group" for="activa in activas" @itemTap="$goto('Op')" style="height:40%">
+                    <v-template>
+                        <GridLayout flexDirection="row" class="list-group-item">
+                            <Label :text="activa.name" class="list-group-item-heading" style="width: 60%" />
+                        </GridLayout>
+                    </v-template>
+                </ListView>
+
+                <Button text="REGISTRO DE HORAS?" class="btn btn-primary m-t-20" style="width:25%"></Button>
+            </StackLayout>
+            <!--</StackLayout>-->
+       <!-- </ScrollView> -->
     </Page>
 </template>
 
 <script>
     export default {
-        computed: {
-            message() {
-                return "Blank {N}-Vue app";
-            }
+
+        data() {
+            return {
+                activas: [{
+                        name: "Operación 1"
+                    },
+                    {
+                        name: "Operación 2"
+                    },
+                    {
+                        name: "Operación 3"
+                    },
+                    {
+                        name: "Operación 4"
+                    },
+                    {
+                        name: "Operacion 24"
+                    },
+                    {
+                        name: "Operacion 42"
+                    },
+                    {
+                        name: "Operacion 69"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 420"
+                    },
+                    {
+                        name: "Operacion 345"
+                    }
+                ],
+                nuevas: [{
+                        name: "Operación 5"
+                    },
+                    {
+                        name: "Operación 6"
+                    }
+                ]
+            };
         }
     };
 </script>
 
-<style scoped lang="scss">
-    // Start custom common variables
-    @import '../app-variables';
-    // End custom common variables
 
-    // Custom styles
-    .fa {
-        color: $accent-dark;
+<!--
+<script>
+    import Login from "./Login";
+
+    export default {
+        data() {
+            return {
+                message: "You have successfully authenticated. This is where you build your core application functionality."
+            };
+        },
+        methods: {
+
+        }
+    };
+</script>
+
+-->
+<style scoped>
+
+    .description-label {
+        margin-bottom: 15;
     }
 
-    .info {
-        font-size: 20;
+    .newOps {
+        font-size: 10px;
     }
+
+    .Ops {
+        font-size: 10px;
+    }
+    .subtitile {
+        text-align: center;
+        font-size: 30px;
+        background-color: #1F1B24;
+        color: white;
+    }
+
+    .action-bar {
+        margin-bottom: 10;
+    }
+
+    .list-group-item-heading {
+        color: white;
+    }
+/*
+    .list-group-item {
+        background : gray;
+    }
+*/
+    .list-group {
+        margin: 15;
+        margin-bottom: 50;
+        background-color:#1F1B24;
+    }
+
+    .list-new {
+        height: 200px;
+        
+    }
+
 </style>

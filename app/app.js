@@ -1,7 +1,20 @@
 import Vue from "nativescript-vue";
+import router from './router';
 
-import Home from "./components/Home";
+Vue.prototype.$router = router
+Vue.registerElement('CardView', () => require('nativescript-cardview').CardView);
 
+Vue.prototype.$goto = function (to, options) {
+    this.$navigateTo(this.$router[to], options)
+}
+
+Vue.config.silent = false;
+
+
+new Vue({
+    render: h => h('frame', [h(router['login'])])
+}).$start()
+/*
 new Vue({
 
     template: `
@@ -13,3 +26,4 @@ new Vue({
         Home
     }
 }).$start();
+*/
