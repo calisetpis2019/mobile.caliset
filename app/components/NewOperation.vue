@@ -1,6 +1,14 @@
 <template>
-    <Page actionBarHidden="true" color="black">
-        <h1> HOLAAAA </h1>
+    <Page class="page" backgroundColor="#1F1B24">
+
+        <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
+            <GridLayout rows="auto" columns="*" >
+                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
+                <Label text="usuario" horizontalAlignment="right" color="white" style="margin:10px" />
+            </GridLayout>
+        </ActionBar>
+        
+        <Label text="NUEVA OPERACION" />
     </Page>
 </template>
 

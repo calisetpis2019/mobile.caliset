@@ -2,7 +2,8 @@
     <Page actionBarHidden="true">
         <FlexboxLayout class="page" backgroundColor="#1F1B24">
             <StackLayout class="form">
-                <Image class="logo" src="~/images/logo.png"></Image>
+                <!--<Image src='https://caliset.com/wp-content/uploads/2019/04/logo-web.png' stretch="aspectFit" />-->
+                <Image class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
 
                 <GridLayout rows="auto, auto, auto" class="grid">
 
@@ -28,23 +29,73 @@
 
                     </StackLayout>
 
-                    <ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>
+                    <!--<ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>-->
                 </GridLayout>
 
-                <Button text="Log In" @tap="$goto('home')" class="btn btn-primary m-t-20"></Button>
+                <Button text="Log In" @tap="$goto('home')" class="btn btn-primary m-t-20"></Button> <!-- @tap="$goto('home')" -->
             </StackLayout>
         </FlexboxLayout>
     </Page>
 </template>
 
 <script>
+/*
+    import * as http from "http";
+
     export default {
-        computed: {
-            message() {
-                return "Blank {N}-Vue app";
-            }
-        }
+
+        data() {
+
+            return {
+                user: {
+                    email: "",
+                    password: "",
+                    token: ""
+                },
+                hasError: false,
+            };            
+
+        },
+
+        methods: {
+
+            login(){
+                // Si alguno de los dos campos esta vacio se marca un error
+                if (!this.user.email || !this.user.password) {
+                    this.hasError = true;
+                    return;
+                }
+                http.request({
+                // Hay que sustituir la ip, obviamente
+                url: "http://10.0.0.12:21021/api/TokenAuth/Authenticate",
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                content: JSON.stringify({
+                    "userNameOrEmailAddress": this.user.email,
+                    "password": this.user.password,
+                    "rememberClient": true
+                })
+            }).then(response => {
+                var result = response.content.toJSON().result;
+                if (result == null) {
+                    this.hasError = true;
+                    console.log(result);
+                }
+                else {
+                    this.user.token = result.accessToken;
+                    var userId = result.userId;
+                    console.log("Token:" + this.user.token);
+                    console.log("userId:" + userId);
+                    this.$goto('home');
+                }
+            }, error => {
+                console.error(error);
+                });
+            },
+        },            
+
     };
+*/
 </script>
 
 <style scoped lang="scss">

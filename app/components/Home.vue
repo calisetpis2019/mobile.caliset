@@ -1,12 +1,12 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
         <!--<ActionBar title="YOUR APP"></ActionBar>-->
-        <ActionBar title="Operaciones" class="action-bar">
+        <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Label text="usuario" horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
-        </ActionBar>>    
+        </ActionBar>
         
         <!--<ScrollView backgroundColor="#1F1B24"> -->
             <!--Add your page content here-->
@@ -45,7 +45,7 @@
                     </v-template>
                 </ListView>
 
-                <Button text="REGISTRO DE HORAS?" class="btn btn-primary m-t-20" style="width:25%"></Button>
+                <Button text="REGISTRO DE HORAS?" @tap="$goto('timeReg')" class="btn btn-primary m-t-20" style="width:25%"></Button>
             </StackLayout>
             <!--</StackLayout>-->
        <!-- </ScrollView> -->
@@ -64,7 +64,7 @@
                         name: "Operación 2"
                     },
                     {
-                        name: "Operación 3"
+                        name: "Operación 36"
                     },
                     {
                         name: "Operación 4"
