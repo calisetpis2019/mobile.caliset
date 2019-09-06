@@ -1,28 +1,28 @@
 <template>
-    <Page actionBarHidden="true">
-        <FlexboxLayout class="page" backgroundColor="#1F1B24">
+    <Page class="page" actionBarHidden="true">
+        <FlexboxLayout class="page" flexDirection="column" backgroundColor="#1F1B24">
             <StackLayout class="form">
                 <!--<Image src='https://caliset.com/wp-content/uploads/2019/04/logo-web.png' stretch="aspectFit" />-->
                 <Image class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
 
-                <GridLayout rows="auto, auto, auto" class="grid">
+                <!-- <GridLayout rows="auto, auto, auto" class="grid"> -->
 
-                    <StackLayout row="0" class="input-field">
+                    <StackLayout class="input-field">
 
                         <TextField class="input" hint="Email"
                             keyboardType="email" autocorrect="false"
                             autocapitalizationType="none"
-                            returnKeyType="next">
+                            returnKeyType="next" v-model="user.email" v-bind:class="{'text-danger': hasError}" @tap="hasError = false">
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
 
                     </StackLayout>
 
-                    <StackLayout row="1" class="input-field">
+                    <StackLayout  class="input-field">
 
-                        <TextField class="input" ref="password"
-                            hint="Password" secure="true">
+                        <TextField class="input" ref="password" returnKeyType="done"
+                            hint="Password" secure="true" v-model="user.password" v-bind:class="{'text-danger': hasError}" @tap="hasError = false">
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
@@ -30,16 +30,15 @@
                     </StackLayout>
 
                     <!--<ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>-->
-                </GridLayout>
+                <!-- </GridLayout> -->
 
-                <Button text="Log In" @tap="$goto('home')" class="btn btn-primary m-t-20"></Button> <!-- @tap="$goto('home')" -->
+                <Button text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button> <!-- @tap="$goto('home')" -->
             </StackLayout>
         </FlexboxLayout>
     </Page>
 </template>
 
 <script>
-/*
     import * as http from "http";
 
     export default {
@@ -67,7 +66,7 @@
                 }
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://10.0.0.12:21021/api/TokenAuth/Authenticate",
+                url: "http://192.168.1.49:21021/api/TokenAuth/Authenticate",
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 content: JSON.stringify({
@@ -75,27 +74,32 @@
                     "password": this.user.password,
                     "rememberClient": true
                 })
-            }).then(response => {
-                var result = response.content.toJSON().result;
-                if (result == null) {
-                    this.hasError = true;
-                    console.log(result);
-                }
-                else {
-                    this.user.token = result.accessToken;
-                    var userId = result.userId;
-                    console.log("Token:" + this.user.token);
-                    console.log("userId:" + userId);
-                    this.$goto('home');
-                }
-            }, error => {
-                console.error(error);
-                });
-            },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.hasError = true;
+                        console.log(result);
+                    }
+                    else {
+                        this.user.token = result.accessToken;
+                        var userId = result.userId;
+                        console.log("Token:" + this.user.token);
+                        console.log("userId:" + userId);
+                        this.$goto('home',{
+                            clearHistory: true,
+                            props: {
+                                email: this.user.email,
+                                token: this.user.token,
+                            }
+                        });
+                    }
+                }, error => {
+                    console.error(error);
+                    });
+                },
         },            
 
     };
-*/
 </script>
 
 <style scoped lang="scss">

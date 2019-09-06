@@ -4,7 +4,7 @@
         <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label text="usuario" horizontalAlignment="right" color="white" style="margin:10px" />
+                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
         <StackLayout class="form">
@@ -46,6 +46,8 @@
 
 <script>
     export default {
+
+        props: ['email','token'],
 
         data() {
 

@@ -4,19 +4,25 @@
         <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label text="usuario" horizontalAlignment="right" color="white" style="margin:10px" />
+                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
         
-        <!--<ScrollView backgroundColor="#1F1B24"> -->
+        <!-- <ScrollView backgroundColor="#1F1B24"> -->
             <!--Add your page content here-->
+        <FlexboxLayout class="page" flexDirection="column" backgroundColor="#1F1B24">
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
             <StackLayout orientation="vertical">
 
                 <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group list-new" for="nueva in nuevas" @itemTap="$goto('newOp')" style="height:20%">
+                <ListView class="list-group list-new" for="nueva in nuevas" @itemTap="$goto('newOperation',{
+                    clearHistory: false,
+                    props: {
+                        email: email,
+                        token: token,
+                    }})" style="height:20%">
                     <v-template>
                         <GridLayout flexDirection="row" class="list-group-item">
                             <Label :text="nueva.name" class="list-group-item-heading" style="width: 60%" />
@@ -37,23 +43,37 @@
                 <Label text="Operaciones Asignadas" class="subtitile" />
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-                <ListView class="list-group" for="activa in activas" @itemTap="$goto('Op')" style="height:40%">
+                <ListView class="list-group" for="activa in activas" @itemTap="$goto('operation',{
+                    clearHistory: false,
+                    props: {
+                        email: email,
+                        token: token,
+                    }})" style="height:40%">
                     <v-template>
-                        <GridLayout flexDirection="row" class="list-group-item">
+                        <!-- <GridLayout flexDirection="row" class="list-group-item"> -->
                             <Label :text="activa.name" class="list-group-item-heading" style="width: 60%" />
-                        </GridLayout>
+                        <!-- </GridLayout> -->
                     </v-template>
                 </ListView>
 
-                <Button text="REGISTRO DE HORAS?" @tap="$goto('timeReg')" class="btn btn-primary m-t-20" style="width:25%"></Button>
             </StackLayout>
+                <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
+                    clearHistory: false,
+                    props: {
+                        email: email,
+                        token: token,
+                    }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
             <!--</StackLayout>-->
+        </FlexboxLayout>
+
        <!-- </ScrollView> -->
     </Page>
 </template>
 
 <script>
     export default {
+
+        props: ['email','token'],
 
         data() {
             return {

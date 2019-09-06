@@ -7,8 +7,8 @@ import TimeSheet from '../components/TimeSheet'
 const router = {
     home: Home,
     login: Login,
-    Op: Operation,
-    newOp: NewOperation,
-    timeReg : TimeSheet
+    operation: Operation,
+    newOperation: NewOperation,
+    timeSheet: TimeSheet
 }
 export default router
