@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "229842680005",
+    "firebase_url": "https://mobile-caliset-pushtest.firebaseio.com",
+    "project_id": "mobile-caliset-pushtest",
+    "storage_bucket": "mobile-caliset-pushtest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229842680005:android:b8a3c50cf894e088",
+        "android_client_info": {
+          "package_name": "org.nativescript.mobilecaliset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229842680005-tngrna8p1r9jah295f66h0stlrsg6mho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6nKDSvXCS5hUYOZm1DcNEtarrTgT3gIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229842680005-tngrna8p1r9jah295f66h0stlrsg6mho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
