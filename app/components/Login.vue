@@ -96,9 +96,8 @@
                 }, error => {
                     console.error(error);
                     });
-                },
-        },            
-
+            },
+        },
     };
 </script>
 
