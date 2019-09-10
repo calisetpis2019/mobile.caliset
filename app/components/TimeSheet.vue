@@ -9,25 +9,37 @@
         </ActionBar>
         <StackLayout class="form">
 
-            <GridLayout rows="auto,auto">
+            <Label text="Registro de Horas" class="subtitile" color="white"/>
 
-                <StackLayout row="0" class="input-field">
-                    <Label text="Registro de Horas" class="subtitile" color="white"/>
+            <GridLayout rows="auto,auto,auto">
+
+                <StackLayout row="0" >
+                    
+                    <Label text= "Operación:" color="white"/>
+                    <TextFIeld color="white" :text="selectedOperation" class="input" android:editable="false" @focus="showOperations()" 
+                    @blur="hideOperations()"  />
+
+                    <ListPicker :items="$props.actives.name" :v-model="selectedOperation" backgroundColor="#B0C4DE" color="white" v-show="opVisible" />
+
+                </StackLayout>
+
+                <StackLayout row="1" class="input-field">
+                    
                     <Label text="Día:" color="white"/>
                     <TextFIeld color="white" :text="date" class="input" android:editable="false" @focus="showDate()" @blur="hideDate()"  /> 
 
                     <DatePicker :year="currentYear" :month="currentMonth" :day="currentDay" v-model="date"
-                        minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="white" v-show="dateVisible"/>
+                        minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="#B0C4DE" v-show="dateVisible"/>
                 </StackLayout>  
 
-                <StackLayout row="1" class="input-field">
+                <StackLayout row="2" class="input-field">
 
                     <Label text="Inicio:" color="white"/>
 
                     <TextField color="white" :text="start" android:editable="false" class="input" @focus="showTime()" @blur="hideTime()"  />
 
                     <TimePicker :hour="currentHour" :minute="currentMinute" v-model="start"
-                        backgroundColor="white" v-show="timeVisible" />
+                        backgroundColor="#B0C4DE" v-show="timeVisible" />
                 </StackLayout>
 
             </GridLayout>
@@ -47,7 +59,7 @@
 <script>
     export default {
 
-        props: ['email','token'],
+        props: ['email','token','actives','selectedOperation'],
 
         data() {
 
@@ -66,6 +78,7 @@
 
                 dateVisible : false,
                 timeVisible : false,
+                opVisible : false,
                 date : "",
                 start : ""
             };
@@ -95,6 +108,15 @@
 
             hideTime(){
                 this.timeVisible = false;
+                return;
+            },
+            showOperations() {
+                this.opVisible = true;
+                return;
+            },
+
+            hideOperations(){
+                this.opVisible = false;
                 return;
             },
 

@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        props: ['email','token'],
+        props: ['email','token','actives'],
 
         computed: {
             message() {

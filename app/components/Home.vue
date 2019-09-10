@@ -17,7 +17,7 @@
 
                 <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group list-new" for="nueva in nuevas" @itemTap="$goto('newOperation',{
+                <ListView class="list-group list-new" for="n in added" @itemTap="$goto('newOperation',{
                     clearHistory: false,
                     props: {
                         email: email,
@@ -25,7 +25,7 @@
                     }})" style="height:20%">
                     <v-template>
                         <GridLayout flexDirection="row" class="list-group-item">
-                            <Label :text="nueva.name" class="list-group-item-heading" style="width: 60%" />
+                            <Label :text="n.name" class="list-group-item-heading" style="width: 60%" />
                         </GridLayout>
                     </v-template>
                 </ListView>
@@ -33,9 +33,9 @@
             <!--</StackLayout>-->
 <!--<CardView v-if="showCardView" v-for="item in items" class="card" elevation="40" radius="10" ios:shadowRadius="3">-->
 <!--
-                <CardView for="nueva in nuevas" class="card" elevation="40" radius="10" android:shadowRadius="3">
+                <CardView for="n in added" class="card" elevation="40" radius="10" android:shadowRadius="3">
                     <StackLayout class="card-layout">
-                        <Label class="h2" :text="nueva.name" />
+                        <Label class="h2" :text="n.name" />
                         <Label class="body" textWrap="true" text="tipo | lugar" />
                     </StackLayout>
                 </CardView>
@@ -43,11 +43,13 @@
                 <Label text="Operaciones Asignadas" class="subtitile" />
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-                <ListView class="list-group" for="activa in activas" @itemTap="$goto('operation',{
+                <ListView class="list-group" for="activa in actives" @itemTap="$goto('operation',{
                     clearHistory: false,
                     props: {
                         email: email,
                         token: token,
+                        actives: actives,
+                        selectedOperation : selectedOperation,
                     }})" style="height:40%">
                     <v-template>
                         <!-- <GridLayout flexDirection="row" class="list-group-item"> -->
@@ -62,6 +64,7 @@
                     props: {
                         email: email,
                         token: token,
+                        actives: actives,
                     }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
             <!--</StackLayout>-->
         </FlexboxLayout>
@@ -77,7 +80,7 @@
 
         data() {
             return {
-                activas: [{
+                actives: [{
                         name: "Operación 1"
                     },
                     {
@@ -120,7 +123,9 @@
                         name: "Operacion 345"
                     }
                 ],
-                nuevas: [{
+                selectedOperation: 0,
+
+                added: [{
                         name: "Operación 5"
                     },
                     {

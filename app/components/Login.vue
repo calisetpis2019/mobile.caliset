@@ -32,7 +32,7 @@
                     <!--<ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>-->
                 <!-- </GridLayout> -->
 
-                <Button text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button> <!-- @tap="$goto('home')" -->
+                <Button text="Log In" class="btn btn-primary m-t-20" @tap="$goto('home')"></Button> <!-- @tap="$goto('home')" --> <!--@tap="login()"-->
             </StackLayout>
         </FlexboxLayout>
     </Page>
@@ -66,7 +66,7 @@
                 }
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://192.168.1.49:21021/api/TokenAuth/Authenticate",
+                url: "http://10.0.0.12:21021/api/TokenAuth/Authenticate",
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 content: JSON.stringify({
