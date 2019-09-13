@@ -8,71 +8,75 @@
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="*,*,60">
+        <GridLayout rows="30,3*,100" >
 
-            <StackLayout row="0">
-                <Label text="operacion tal" color="white" />
-                <Label :text="'fa-facebook-f' | fonticon" class="fa-brands" color="white"/>
-                <Label :text="'fa-eye' | fonticon" class="far" color="white"/>
-                <Label :text="'fa-eye' | fonticon" class="fas" color="white"/>
+            <StackLayout row="0"  horizontalAlign="center">
+                <Label text="operacion tal" color="white" horizontalAlign="center" />
             </StackLayout>
 
-            <ScrollView row="1">
+            <ScrollView row="1" class="chat">
                 <!-- aca van los comentarios-->
-                <WrapLayout orientation="horizontal">
-                    <GridLayout for="c in comments" width="50%" height="150" backgroundColor="#B0C4DE"> <!--for="for c in comments" -->
-                        <v-template>
+                <!--<WrapLayout orientation="horizontal">-->
+                <ListView class="list-group" for="c in comments" backgroundColor="#B0C4DE" separatorColor="white"> <!--for="for c in comments" -->
+                    <v-template>
+                        <StackLayout class="card">
                             <Label
                                 row="1"
                                 :text="c.name"
                                 horizontalAlignment="center"
-                                verticalAlignment="bottom"
+                                verticalAlignment="top"
                                 backgroundColor="rgb(81,197,247, 0.8)"
                                 width="100%"
                                 padding="10"
                                 fontSize="13"
                                 color="black"
                             ></Label>
-                        </v-template>
-                        <!--<Label text="aca van los comentarios" color="white"/>-->
-                    </GridLayout>
-                </WrapLayout>
+
+                            <TextView  editable="false">
+                                <Span :text="c.text" color="black" />
+                            </TextView>
+                        
+                        </StackLayout>
+                    </v-template>
+                    <!--<Label text="aca van los comentarios" color="white"/>-->
+                </ListView>
+                <!--</WrapLayout>-->
             </ScrollView>            
 
-            <StackLayout row="2" orientation="horizontal">
+            <StackLayout row="2" orientation="horizontal" horizontalAlign="center" >
             <!--<Label dock="bottom" text="OPERACION" color="white"/>-->
-                <Button textWrap="true" width="20%" text="Notas">
+                <Button textWrap="true" width="30%" text="Notas">
                     <FormattedString>
                         <!--
                             <Span text="f249;\n" fontFamily="FontAwesome"></Span>
                             <Span text="Notas"></Span> 
                         -->
                         <Span :text="'fa-sticky-note' | fonticon" class="fas" ></Span>
-                        <Span text="Notas"></Span>
+
                     </FormattedString>
                 </Button>
 
-                <Button  textWrap="true" width="30%" height="60"  @tap="$goto('camera',{
+                <Button  textWrap="true" width="40%" @tap="$goto('camera',{
                             clearHistory: false,
                             props: {
                                 email: email,
                                 token: token,
                             }})">
-                    <FormattedString>
-                        <!--<Label :text="'fa-camera' | fonticon" class="fas" color="black"/>-->
-                        <Span :text="'fa-camera' | fonticon" class="fas" ></Span>
-                        <Span text="Camara"></Span>
+                    <FormattedString textWrap="true">
+                        
+                        <Span :text="'fa-camera' | fonticon" class="fas"></Span>
+
                     </FormattedString>
                             
                 </Button> <!-- @tap="$goto('home')" -->
 
-                <Button textWrap="true" width="20%" text="Muestra">
+                <Button textWrap="true" width="30%" text="Muestra">
                     <FormattedString>
                         <!--
                             <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
                         -->
                         <Span :text="'fa-barcode' | fonticon" class="fas" ></Span>
-                        <Span text="Muestra"></Span>
+
                     </FormattedString>
                 </Button>
 
@@ -90,29 +94,26 @@
         data() {
             return {
                 comments: [{
-                        name: "Comentario 1",
-                        text: "blab lablabkjalksdjfaslkj ballblablablab lab la bla bla bla lbakjslkfjawlekjfas"
+                        name: "Juan Carlos",
+                        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
                     },
                     {
-                        name: "Comentario 2",
-                        text: "hola!"
+                        name: "Comentario 2"
                     },
                     {
-                        name: "Comentario 3",
-                        text: "Chau!"
+                        name: "Comentario 3"
                     },
                     {
-                        name: "Comentario 4",
-                        text: "comentario comentario comentario"
+                        name: "Comentario 4"
                     },
                     {
-                        name: "Comentario 5",
-                        text: "Comentario generico"
+                        name: "Comentario 5"
+
                     },
                     {
-                        name: "Comentario 6",
-                        text: "Comentario generico"
+                        name: "Comentario 6"
+
                     }
                 ],
             };
@@ -133,13 +134,19 @@
 
     // Custom styles
     .fa {
-        color: $accent-dark;
-        font-family: FontAwesome, fontawesome-webfont;
+        color: $accent-dark;   
     }
 
     .info {
         font-size: 20;
     }
 
+    .fas {
+        font-size : 40px;
+    }
 
+    .chat {
+        margin : 20px;
+
+    }
 </style>
