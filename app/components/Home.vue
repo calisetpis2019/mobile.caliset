@@ -43,17 +43,15 @@
                 <Label text="Operaciones Asignadas" class="subtitile" />
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-                <ListView class="list-group" for="activa in actives" @itemTap="$goto('operation',{
+                <ListView class="list-group" for="active in actives" @itemTap="$goto('operation',{
                     clearHistory: false,
                     props: {
                         email: email,
-                        token: token,
-                        actives: actives,
-                        selectedOperation : selectedOperation,
+                        token: token
                     }})" style="height:40%">
                     <v-template>
                         <!-- <GridLayout flexDirection="row" class="list-group-item"> -->
-                            <Label :text="activa.name" class="list-group-item-heading" style="width: 60%" />
+                            <Label :text="active.name" class="list-group-item-heading" style="width: 60%" />
                         <!-- </GridLayout> -->
                     </v-template>
                 </ListView>
