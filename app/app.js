@@ -1,8 +1,18 @@
 import Vue from "nativescript-vue";
 import router from './router';
+import { TNSFontIcon, fonticon } from 'nativescript-fonticon'
 
 Vue.prototype.$router = router
 Vue.registerElement('CardView', () => require('nativescript-cardview').CardView);
+
+TNSFontIcon.debug = true
+TNSFontIcon.paths = {
+  'fa': './assets/fontawesome.css',
+}
+TNSFontIcon.loadCss()
+Vue.filter('fonticon', fonticon)
+
+
 
 Vue.prototype.$goto = function (to, options) {
     this.$navigateTo(this.$router[to], options)

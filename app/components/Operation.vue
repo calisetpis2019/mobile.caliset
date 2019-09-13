@@ -12,6 +12,9 @@
 
             <StackLayout row="0">
                 <Label text="operacion tal" color="white" />
+                <Label :text="'fa-facebook-f' | fonticon" class="fa-brands" color="white"/>
+                <Label :text="'fa-eye' | fonticon" class="far" color="white"/>
+                <Label :text="'fa-eye' | fonticon" class="fas" color="white"/>
             </StackLayout>
 
             <ScrollView row="1">
@@ -40,7 +43,11 @@
             <!--<Label dock="bottom" text="OPERACION" color="white"/>-->
                 <Button textWrap="true" width="20%" text="Notas">
                     <FormattedString>
-                        <Span text="f249;\n" fontFamily="FontAwesome"></Span>
+                        <!--
+                            <Span text="f249;\n" fontFamily="FontAwesome"></Span>
+                            <Span text="Notas"></Span> 
+                        -->
+                        <Span :text="'fa-sticky-note' | fonticon" class="fas" ></Span>
                         <Span text="Notas"></Span>
                     </FormattedString>
                 </Button>
@@ -51,17 +58,20 @@
                                 email: email,
                                 token: token,
                             }})">
-
                     <FormattedString>
-                        <Span class="fa-camera"  ></Span>
-                        <!--<Span text="Camara"></Span>-->
+                        <!--<Label :text="'fa-camera' | fonticon" class="fas" color="black"/>-->
+                        <Span :text="'fa-camera' | fonticon" class="fas" ></Span>
+                        <Span text="Camara"></Span>
                     </FormattedString>
                             
                 </Button> <!-- @tap="$goto('home')" -->
 
                 <Button textWrap="true" width="20%" text="Muestra">
                     <FormattedString>
-                        <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
+                        <!--
+                            <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
+                        -->
+                        <Span :text="'fa-barcode' | fonticon" class="fas" ></Span>
                         <Span text="Muestra"></Span>
                     </FormattedString>
                 </Button>
