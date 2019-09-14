@@ -12,57 +12,54 @@
             <!--Add your page content here-->
         <FlexboxLayout class="page" flexDirection="column" backgroundColor="#1F1B24">
 
+            <GridLayout rows="*,*,auto" >
+              
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-            <StackLayout orientation="vertical">
+                <StackLayout row="0" orientation="vertical">
 
-                <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
+                    <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group list-new" for="nueva in nuevas" @itemTap="$goto('newOperation',{
-                    clearHistory: false,
-                    props: {
-                        email: email,
-                        token: token,
-                    }})" style="height:20%">
-                    <v-template>
-                        <GridLayout flexDirection="row" class="list-group-item">
-                            <Label :text="nueva.name" class="list-group-item-heading" style="width: 60%" />
-                        </GridLayout>
-                    </v-template>
-                </ListView>
+                    <ListView class="list-group" for="nueva in nuevas" @itemTap="$goto('newOperation',{
+                        clearHistory: false,
+                        props: {
+                            email: email,
+                            token: token,
+                        }})" >
+                        <v-template>
+                            <GridLayout flexDirection="row" class="list-group-item">
+                                <Label :text="nueva.name" class="list-group-item-heading" />
+                            </GridLayout>
+                        </v-template>
+                    </ListView>
+                </StackLayout>
+                
+                <StackLayout row="1" orientation="vertical">
 
-            <!--</StackLayout>-->
-<!--<CardView v-if="showCardView" v-for="item in items" class="card" elevation="40" radius="10" ios:shadowRadius="3">-->
-<!--
-                <CardView for="nueva in nuevas" class="card" elevation="40" radius="10" android:shadowRadius="3">
-                    <StackLayout class="card-layout">
-                        <Label class="h2" :text="nueva.name" />
-                        <Label class="body" textWrap="true" text="tipo | lugar" />
-                    </StackLayout>
-                </CardView>
--->
                 <Label text="Operaciones Asignadas" class="subtitile" />
 
-            <!--<StackLayout orientation="vertical" class="sub-panel">-->
-                <ListView class="list-group" for="activa in activas" @itemTap="$goto('operation',{
-                    clearHistory: false,
-                    props: {
-                        email: email,
-                        token: token,
-                    }})" style="height:40%">
-                    <v-template>
-                        <!-- <GridLayout flexDirection="row" class="list-group-item"> -->
-                            <Label :text="activa.name" class="list-group-item-heading" style="width: 60%" />
-                        <!-- </GridLayout> -->
-                    </v-template>
-                </ListView>
+                <!--<StackLayout orientation="vertical" class="sub-panel">-->
+                    <ListView class="list-group" for="activa in activas" @itemTap="$goto('operation',{
+                        clearHistory: false,
+                        props: {
+                            email: email,
+                            token: token,
+                        }})" >
+                        <v-template>
+                            <GridLayout flexDirection="row" class="list-group-item">
+                                <Label :text="activa.name" class="list-group-item-heading" />
+                            </GridLayout>
+                        </v-template>
+                    </ListView>
+                </StackLayout>
 
-            </StackLayout>
-                <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
-                    clearHistory: false,
-                    props: {
-                        email: email,
-                        token: token,
-                    }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
+                    <Button row="2" text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
+                        clearHistory: false,
+                        props: {
+                            email: email,
+                            token: token,
+                        }})" class="btn btn-primary m-t-20" ></Button>
+            </GridLayout>
+
             <!--</StackLayout>-->
         </FlexboxLayout>
 
@@ -125,6 +122,15 @@
                     },
                     {
                         name: "Operación 6"
+                    },
+                    {
+                        name: "Operación 7"
+                    },
+                    {
+                        name: "Operación 8"
+                    },
+                    {
+                        name: "Operación 9"
                     }
                 ]
             };

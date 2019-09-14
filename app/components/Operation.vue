@@ -8,13 +8,16 @@
             </GridLayout>
         </ActionBar>
 
+        <StackLayout>
+          
         <Label text="OPERACION" color="white"/>
-        <Button text="Add photo" class="btn btn-primary m-t-20" @tap="$goto('camera',{
+        <Button text="Add photos" class="btn btn-primary m-t-20" @tap="$goto('camera',{
                     clearHistory: false,
                     props: {
                         email: email,
                         token: token,
-                    }})"></Button> <!-- @tap="$goto('home')" -->
+                    }})"></Button> 
+        </StackLayout>
     </Page>
 </template>
 
