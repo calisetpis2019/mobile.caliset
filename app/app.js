@@ -3,7 +3,7 @@ import router from './router';
 import { TNSFontIcon, fonticon } from 'nativescript-fonticon'
 
 Vue.prototype.$router = router
-Vue.registerElement('CardView', () => require('nativescript-cardview').CardView);
+Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);
 
 TNSFontIcon.debug = true
 TNSFontIcon.paths = {

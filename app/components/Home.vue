@@ -1,7 +1,7 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
         <!--<ActionBar title="YOUR APP"></ActionBar>-->
-        <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
@@ -10,53 +10,65 @@
         
         <!-- <ScrollView backgroundColor="#1F1B24"> -->
             <!--Add your page content here-->
-        <FlexboxLayout class="page" flexDirection="column" backgroundColor="#1F1B24">
+        <GridLayout rows="2*,3*,auto">
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-            <StackLayout orientation="vertical">
+            <StackLayout row="0">
 
-                <Label text="Nuevas Asignaciones" class="subtitile" flexWrapBefore="true"/>
+                <Label text="Nuevas Operaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group list-new" for="n in added" @itemTap="$goto('newOperation',{
+                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
                     clearHistory: false,
                     props: {
                         email: email,
                         token: token,
-                    }})" style="height:20%">
+                        added: added,
+                    }})" backgroundColor="#1F1B24">
                     <v-template>
-                        <GridLayout flexDirection="row" class="list-group-item">
-                            <Label :text="n.name" class="list-group-item-heading" style="width: 60%" />
-                        </GridLayout>
+                        <CardView  margin="10" elevation="40" radius="1" class="card">
+                            <StackLayout class="card">
+                                <Label :text="n.name" class="list-group-item-heading"/>
+                                <StackLayout class="container">
+                                    <Label :text="n.type" color="white"/>
+                                    <Label :text="n.load"   color="white"  />
+                                    <Label :text="n.client" color="white"  />
+                                    <Label :text="n.date"   color="white"  />
+                                </StackLayout>
+                            </StackLayout>
+                        </CardView>
                     </v-template>
                 </ListView>
+            </StackLayout>
 
-            <!--</StackLayout>-->
-<!--<CardView v-if="showCardView" v-for="item in items" class="card" elevation="40" radius="10" ios:shadowRadius="3">-->
-<!--
-                <CardView for="n in added" class="card" elevation="40" radius="10" android:shadowRadius="3">
-                    <StackLayout class="card-layout">
-                        <Label class="h2" :text="n.name" />
-                        <Label class="body" textWrap="true" text="tipo | lugar" />
-                    </StackLayout>
-                </CardView>
--->
-                <Label text="Operaciones Asignadas" class="subtitile" />
+            <StackLayout row="1">
+
+                <Label text="Operaciones Activas" class="subtitile" />
 
             <!--<StackLayout orientation="vertical" class="sub-panel">-->
-                <ListView class="list-group" for="active in actives" @itemTap="$goto('operation',{
+                <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation',{
                     clearHistory: false,
                     props: {
                         email: email,
-                        token: token
-                    }})" style="height:40%">
+                        token: token,
+                    }})">
                     <v-template>
-                        <!-- <GridLayout flexDirection="row" class="list-group-item"> -->
-                            <Label :text="active.name" class="list-group-item-heading" style="width: 60%" />
-                        <!-- </GridLayout> -->
+                        <CardView  margin="10" elevation="40" radius="1" class="card">
+                            <StackLayout class="card">
+                                <Label :text="'Operacion'+' '+active.id" class="list-group-item-heading"/>
+                                <StackLayout class="container">
+                                    <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/>
+                                    <!--<Label :text="active.destiny" color="white"/>
+                                    <Label :text="active.date"   color="white" />-->
+                                </StackLayout>
+                            </StackLayout>
+                        </CardView>
                     </v-template>
                 </ListView>
 
             </StackLayout>
+
+            <StackLayout row="2">
+
                 <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
                     clearHistory: false,
                     props: {
@@ -64,74 +76,84 @@
                         token: token,
                         actives: actives,
                     }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
-            <!--</StackLayout>-->
-        </FlexboxLayout>
+                <!--</StackLayout>-->
+
+                <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
+
+            </StackLayout>
+
+        </GridLayout>
 
        <!-- </ScrollView> -->
     </Page>
 </template>
 
 <script>
+    import * as http from "http";
     export default {
 
         props: ['email','token'],
 
         data() {
             return {
-                actives: [{
-                        name: "Operación 1"
-                    },
-                    {
-                        name: "Operación 2"
-                    },
-                    {
-                        name: "Operación 36"
-                    },
-                    {
-                        name: "Operación 4"
-                    },
-                    {
-                        name: "Operacion 24"
-                    },
-                    {
-                        name: "Operacion 42"
-                    },
-                    {
-                        name: "Operacion 69"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 420"
-                    },
-                    {
-                        name: "Operacion 345"
-                    }
-                ],
-                selectedOperation: 0,
+                operations: [],
 
                 added: [{
-                        name: "Operación 5"
+                        name: "Operación 5",
+                        type: "Carga",
+                        load: "Arroz",
+                        client: "SAMAN",
+                        date: "11/10/2019"
                     },
                     {
                         name: "Operación 6"
                     }
                 ]
             };
-        }
+        },
+
+        computed: {
+            logging(){
+
+                console.log("Holaaaaaa");
+            },
+        },
+
+        methods:{
+            loadOperations(){
+                this.operations = [];
+                http.request({
+                // Hay que sustituir la ip, obviamente
+                url: "http://10.0.0.12:21021/api/services/app/Operation/GetAll",
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.hasError = true;
+                        console.log(result);
+                    }
+                    else {
+                        console.log("Largo del resultado:");
+                        console.log(result.length);
+                        console.log("Resultado json:");
+                        console.log(result);
+                        
+                        for(var i = 0; i < result.length; i++){
+                            this.operations.push(result[i]);
+                        }
+                        
+                        console.log("carga en el arreglo local:");
+                        console.log(operations);
+                        
+                    }
+                }, error => {
+                    console.error(error);
+                    });
+            }
+        },
+
+
     };
 </script>
 
@@ -165,35 +187,6 @@
 
     .Ops {
         font-size: 10px;
-    }
-    .subtitile {
-        text-align: center;
-        font-size: 30px;
-        background-color: #1F1B24;
-        color: white;
-    }
-
-    .action-bar {
-        margin-bottom: 10;
-    }
-
-    .list-group-item-heading {
-        color: white;
-    }
-/*
-    .list-group-item {
-        background : gray;
-    }
-*/
-    .list-group {
-        margin: 15;
-        margin-bottom: 50;
-        background-color:#1F1B24;
-    }
-
-    .list-new {
-        height: 200px;
-        
     }
 
 </style>

@@ -8,44 +8,51 @@
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="30,3*,100" >
+        <GridLayout rows="auto,*,auto" >
 
-            <StackLayout row="0"  horizontalAlign="center">
-                <Label text="operacion tal" color="white" horizontalAlign="center" />
+            <StackLayout row="0" >
+                <Label text="Operacion tal" class="title"/>
             </StackLayout>
 
-            <ScrollView row="1" class="chat">
+            <ScrollView row="1" class="chat" backgroundColor="#1F1B24">
                 <!-- aca van los comentarios-->
                 <!--<WrapLayout orientation="horizontal">-->
-                <ListView class="list-group" for="c in comments" backgroundColor="#B0C4DE" separatorColor="white"> <!--for="for c in comments" -->
+                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24"> <!--for="for c in comments" -->
                     <v-template>
-                        <StackLayout class="card">
-                            <Label
-                                row="1"
-                                :text="c.name"
-                                horizontalAlignment="center"
-                                verticalAlignment="top"
-                                backgroundColor="rgb(81,197,247, 0.8)"
-                                width="100%"
-                                padding="10"
-                                fontSize="13"
-                                color="black"
-                            ></Label>
+                        <CardView margin="10" elevation="40" radius="1" class="card">
+                            <StackLayout class="card">
+                                <Label
+                                    row="1"
+                                    :text="c.name"
+                                    horizontalAlignment="center"
+                                    verticalAlignment="top"
+                                    backgroundColor="black"
+                                    width="100%"
+                                    padding="10"
+                                    fontSize="15"
+                                    color="white"
+                                ></Label>
 
-                            <TextView  editable="false">
-                                <Span :text="c.text" color="black" />
-                            </TextView>
-                        
-                        </StackLayout>
+                                <TextView  editable="false" backgroundColor="#565656">
+                                    <Span :text="c.text" color="white" />
+                                </TextView>
+                            
+                            </StackLayout>
+                        </CardView>
                     </v-template>
                     <!--<Label text="aca van los comentarios" color="white"/>-->
                 </ListView>
                 <!--</WrapLayout>-->
             </ScrollView>            
 
-            <StackLayout row="2" orientation="horizontal" horizontalAlign="center" >
+            <StackLayout row="2" orientation="horizontal" height="10%" horizontalAlign="center" >
             <!--<Label dock="bottom" text="OPERACION" color="white"/>-->
-                <Button textWrap="true" width="30%" text="Notas">
+                <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes',{
+                            clearHistory: false,
+                            props: {
+                                email: email,
+                                token: token,
+                            }})">
                     <FormattedString>
                         <!--
                             <Span text="f249;\n" fontFamily="FontAwesome"></Span>
@@ -56,7 +63,7 @@
                     </FormattedString>
                 </Button>
 
-                <Button  textWrap="true" width="40%" @tap="$goto('camera',{
+                <Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera',{
                             clearHistory: false,
                             props: {
                                 email: email,
@@ -70,7 +77,12 @@
                             
                 </Button> <!-- @tap="$goto('home')" -->
 
-                <Button textWrap="true" width="30%" text="Muestra">
+                <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample',{
+                            clearHistory: false,
+                            props: {
+                                email: email,
+                                token: token,
+                            }})">
                     <FormattedString>
                         <!--
                             <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
@@ -112,6 +124,20 @@
 
                     },
                     {
+                        name: "Comentario 4"
+                    },
+                    {
+                        name: "Comentario 5"
+
+                    },
+                    {
+                        name: "Comentario 4"
+                    },
+                    {
+                        name: "Comentario 5"
+
+                    },
+                    {
                         name: "Comentario 6"
 
                     }
@@ -124,6 +150,7 @@
                 return "Blank {N}-Vue app";
             }
         }
+
     };
 </script>
 
@@ -147,6 +174,15 @@
 
     .chat {
         margin : 20px;
+        background-color: #1F1B24;
 
+    }
+
+    .title  {
+        color: white;
+        text-align:center;
+        font-size: 25;
+        border-color : white;
+        
     }
 </style>
