@@ -74,7 +74,7 @@
                     props: {
                         email: email,
                         token: token,
-                        actives: actives,
+                        operations: operations,
                     }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
                 <!--</StackLayout>-->
 

@@ -16,17 +16,17 @@
                 <StackLayout row="0" >
                     
                     <Label text= "Operación:" color="white"/>
-                    <TextFIeld color="white" :text="selectedOperation" class="input" android:editable="false" @focus="showOperations()" 
+                    <TextFIeld color="white" :text="selectedOperation" class="input"  @focus="showOperations()" 
                     @blur="hideOperations()"  />
 
-                    <ListPicker :items="$props.actives.name" :v-model="selectedOperation" backgroundColor="#B0C4DE" color="white" v-show="opVisible" />
+                    <ListPicker :items="$props.operations" :v-model="selectedOperation" backgroundColor="#B0C4DE" color="white" v-show="opVisible" />
 
                 </StackLayout>
 
                 <StackLayout row="1" class="input-field">
                     
                     <Label text="Día:" color="white"/>
-                    <TextFIeld color="white" :text="date" class="input" android:editable="false" @focus="showDate()" @blur="hideDate()"  /> 
+                    <TextFIeld color="white" :text="date" class="input"  @focus="showDate()" @blur="hideDate()"  /> 
 
                     <DatePicker :year="currentYear" :month="currentMonth" :day="currentDay" v-model="date"
                         minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="#B0C4DE" v-show="dateVisible"/>
@@ -59,7 +59,7 @@
 <script>
     export default {
 
-        props: ['email','token','actives','selectedOperation'],
+        props: ['email','token','operations'],
 
         data() {
 
