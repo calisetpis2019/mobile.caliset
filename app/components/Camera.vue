@@ -28,6 +28,9 @@
                     <Label text="height"></Label>
                     <TextField hint="Enter height" keyboardType="number" v-model="height" class="input"></TextField>
                 </StackLayout>
+                <StackLayout>
+                    <TextField hint="Enter nameofpicture" keyboardType="number" v-model="nameOfPicture" class="input"></TextField> 
+                </StackLayout>
             </StackLayout>
             <Image row="1" :src="cameraImage" id="image" stretch="aspectFit" margin="10"/>
             <TextView row="2" :text="labelText" editable="false"></TextView>>
@@ -50,7 +53,8 @@
                 width: 320,
                 height: 240,
                 cameraImage: null,
-                labelText: ""
+                labelText: "",
+                nameOfPicture: ""
             }
         },
         methods: {
@@ -59,7 +63,7 @@
                 let that = this;
                 requestPermissions().then(
                     () => {
-                        takePicture({ width: that.width, height: that.height, keepAspectRatio: that.keepAspectRatio, saveToGallery: that.saveToGallery, allowsEditing: that.allowsEditing }).
+                        takePicture({ width: that.width, height: that.height, keepAspectRatio: that.keepAspectRatio, saveToGallery: that.saveToGallery, allowsEditing: that.allowsEditing , nameOfPicture: that.nameOfPicture}).
                             then((imageAsset) => {
                                 that.cameraImage = imageAsset;
                                 imageAsset.getImageAsync(function (nativeImage) {

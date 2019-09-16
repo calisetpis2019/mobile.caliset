@@ -17,7 +17,7 @@
 
                 <Label text="Nuevas Operaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
+                <ListView class="list-group" for="n in added" @itemTap="$goto('operation',{
                     clearHistory: false,
                     props: {
                         email: email,
