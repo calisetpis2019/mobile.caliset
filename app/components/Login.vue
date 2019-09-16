@@ -1,7 +1,7 @@
 <template>
     <Page class="page" actionBarHidden="true">
         <FlexboxLayout class="page" backgroundColor="#1F1B24">
-                <GridLayout rows="*,auto,auto,auto" class="grid">
+                <GridLayout rows="*,auto,auto,auto,auto" class="grid">
                 <!-- <StackLayout class="input-field"> -->
                     <Image row="0" class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
                     <Label row="1" :text="errorMsg" color="red" textWrap=true textAlignment="center" :fontSize="size" />
@@ -31,6 +31,8 @@
                     </StackLayout>
 
                 <Button row="4" text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button> <!-- @tap="$goto('home')" -->
+                <Button row="5" text="Fake Log In" class="btn btn-primary m-t-20" @tap="FAKElogin()"></Button> <!-- @tap="$goto('home')" -->
+                
                 <!-- <ActivityIndicator :busy="processing" /> -->
                 </GridLayout>
         </FlexboxLayout>
@@ -56,12 +58,20 @@
                 errorMsg: "",
                 size: 0,
                 processing: false,
-            };            
+            };
 
         },
 
         methods: {
-
+            FAKElogin(){
+                this.$goto('home',{
+                            clearHistory: true,
+                            props: {
+                                email: "mail@falso.com",
+                                token: this.user.token,
+                            }
+                        });
+            },
             login(){
                 // console.log("IP:" + IP);
                 this.processing = true;
