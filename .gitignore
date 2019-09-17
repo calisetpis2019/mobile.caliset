@@ -1,8 +1,12 @@
 # NativeScript
 hooks/
 !hooks/after-createProject/*.js
-node_modules/
+
+node_modules/*
 #No ignoramos el script que modificamos del modulo de la camara
+!node_modules/nativescript-camera/
+node_modules/nativescript-camera/*
+
 !node_modules/nativescript-camera/camera.android.js
 platforms/
 
