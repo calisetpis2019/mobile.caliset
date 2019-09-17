@@ -1,39 +1,45 @@
 <template>
     <Page class="page" actionBarHidden="true">
-        <FlexboxLayout class="page" flexDirection="column" backgroundColor="#1F1B24">
-            <StackLayout class="form">
-                <!--<Image src='https://caliset.com/wp-content/uploads/2019/04/logo-web.png' stretch="aspectFit" />-->
-                <Image class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
-
-                <!-- <GridLayout rows="auto, auto, auto" class="grid"> -->
-
-                    <StackLayout class="input-field">
-
-                        <TextField class="input" hint="Email"
+        <FlexboxLayout class="page" backgroundColor="#1F1B24">
+                <GridLayout rows="*,auto,auto,auto" class="grid">
+                <!-- <StackLayout class="input-field"> -->
+                    <Image row="0" class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
+                    <Label row="1" :text="errorMsg" color="red" textWrap=true textAlignment="center" />
+                    <StackLayout row="2" class="form">
+                        
+                        <TextField row="2" class="input" hint="Email"
                             keyboardType="email" autocorrect="false"
                             autocapitalizationType="none"
-                            returnKeyType="next" v-model="user.email" v-bind:class="{'text-danger': hasError}" @tap="hasError = false">
+                            returnKeyType="next" v-model="user.email" >
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
 
-                    </StackLayout>
+                    <!-- </StackLayout> -->
 
-                    <StackLayout  class="input-field">
+                    <!-- <StackLayout  class="input-field"> -->
 
-                        <TextField class="input" ref="password" returnKeyType="done"
-                            hint="Password" secure="true" v-model="user.password" v-bind:class="{'text-danger': hasError}" @tap="hasError = false">
+                        <TextField row="3" class="input" ref="password" returnKeyType="done"
+                            hint="Password" secure="true" v-model="user.password" >
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
 
+                        <!-- </StackLayout> -->
+
+                    <!-- <ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator> -->
                     </StackLayout>
 
-                    <!--<ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator>-->
-                <!-- </GridLayout> -->
-
-                <Button text="Log In" class="btn btn-primary m-t-20" @tap="$goto('home')"></Button> <!-- @tap="$goto('home')" --> <!--@tap="login()"-->
-            </StackLayout>
+                <Button row="4" text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button> 
+                <!-- @tap="$goto('home',{
+                    clearHistory: true,
+                    props: {
+                        email: "email@falso.com",
+                        token: token,
+                    }})" -->
+                
+                <!-- <ActivityIndicator :busy="processing" /> -->
+                </GridLayout>
         </FlexboxLayout>
     </Page>
 </template>
@@ -51,22 +57,24 @@
                     password: "",
                     token: ""
                 },
-                hasError: false,
-            };            
+                errorMsg: "",
+                processing: false,
+            };
 
         },
 
         methods: {
-
             login(){
+                this.processing = true;
                 // Si alguno de los dos campos esta vacio se marca un error
                 if (!this.user.email || !this.user.password) {
-                    this.hasError = true;
+                    this.processing = false;                
+                    this.errorMsg = "You have to enter an email and password.";
                     return;
                 }
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://10.0.2.2:21021/api/TokenAuth/Authenticate",
+                url: "http://192.168.1.43:21021/api/TokenAuth/Authenticate",
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 content: JSON.stringify({
@@ -77,7 +85,8 @@
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
-                        this.hasError = true;
+                        this.processing = false;
+                        this.errorMsg = "Login failed! Please provide a valid email and password.";
                         console.log(result);
                     }
                     else {
@@ -94,6 +103,8 @@
                         });
                     }
                 }, error => {
+                    this.processing = false;
+                    this.errorMsg = "Connection failed. Please try again.";
                     console.error(error);
                     });
             },

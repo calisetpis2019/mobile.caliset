@@ -59,6 +59,8 @@
                             <Span text="Notas"></Span> 
                         -->
                         <Span :text="'fa-sticky-note' | fonticon" class="fas" ></Span>
+                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
+
 
                     </FormattedString>
                 </Button>
@@ -72,6 +74,8 @@
                     <FormattedString textWrap="true">
                         
                         <Span :text="'fa-camera' | fonticon" class="fas"></Span>
+                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
+
 
                     </FormattedString>
                             
@@ -88,6 +92,7 @@
                             <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
                         -->
                         <Span :text="'fa-barcode' | fonticon" class="fas" ></Span>
+                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
                     </FormattedString>
                 </Button>

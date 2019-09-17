@@ -11,25 +11,25 @@
         <GridLayout rows="auto, *, auto, auto">
             <StackLayout row="0" orientation="vertical" padding="5">
                 <StackLayout orientation="horizontal" row="0" padding="5">
-                    <Label text="saveToGallery" />
+                    <Label text="saveToGallery" color="white" />
                     <Switch v-model="saveToGallery"/>
                 </StackLayout>
                 <StackLayout android:visibility="collapsed" orientation="horizontal" row="0" padding="5">
-                    <Label text="allowsEditing" />
+                    <Label text="allowsEditing" color="white" />
                     <Switch v-model="allowsEditing"/>
                 </StackLayout>
                 <StackLayout orientation="horizontal" row="0" padding="5">
-                    <Label text="keepAspectRatio" />
+                    <Label text="keepAspectRatio" color="white" />
                     <Switch v-model="keepAspectRatio"/>
                 </StackLayout>
                 <StackLayout orientation="horizontal" padding="5">
-                    <Label text="width"></Label>
+                    <Label text="width" color="white"></Label>
                     <TextField hint="Enter width" keyboardType="number" v-model="width" class="input"></TextField>
-                    <Label text="height"></Label>
+                    <Label text="height" color="white"></Label>
                     <TextField hint="Enter height" keyboardType="number" v-model="height" class="input"></TextField>
                 </StackLayout>
                 <StackLayout>
-                    <TextField hint="Enter nameofpicture" keyboardType="number" v-model="nameOfPicture" class="input"></TextField> 
+                    <TextField hint="Enter nameofpicture" keyboardType="number" v-model="nameOfPicture" class="input" color="white"></TextField> 
                 </StackLayout>
             </StackLayout>
             <Image row="1" :src="cameraImage" id="image" stretch="aspectFit" margin="10"/>
