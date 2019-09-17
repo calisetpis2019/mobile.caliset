@@ -124,7 +124,7 @@
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://10.0.0.12:21021/api/services/app/Operation/GetAll",
+                url: "http://10.0.2.2:21021/api/services/app/Operation/GetAll",
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 }).then(response => {
