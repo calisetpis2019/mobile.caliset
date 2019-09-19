@@ -1,18 +1,15 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
-        <!--<ActionBar title="YOUR APP"></ActionBar>-->
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=user horizontalAlignment="right" color="white" style="margin:10px" />
+                <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
+                @tap="$goto('userPage')"/> 
             </GridLayout>
         </ActionBar>
         
-        <!-- <ScrollView backgroundColor="#1F1B24"> -->
-            <!--Add your page content here-->
         <GridLayout rows="2*,3*,auto">
 
-            <!--<StackLayout orientation="vertical" class="sub-panel">-->
             <StackLayout row="0">
 
                 <Label text="Nuevas Operaciones" class="subtitile" flexWrapBefore="true"/>
@@ -40,11 +37,11 @@
                 </ListView>
             </StackLayout>
 
+            
             <StackLayout row="1">
 
                 <Label text="Operaciones Activas" class="subtitile" />
 
-            <!--<StackLayout orientation="vertical" class="sub-panel">-->
                 <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation',{
                     clearHistory: false,
                     props: {
@@ -57,26 +54,16 @@
                                 <Label :text="'Operacion'+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
                                     <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/>
-                                    <!--<Label :text="active.destiny" color="white"/>
-                                    <Label :text="active.date"   color="white" />-->
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
                     </v-template>
                 </ListView>
+                <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
             </StackLayout>
 
             <StackLayout row="2">
-
-                <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
-                    clearHistory: false,
-                    props: {
-                        email: email,
-                        token: token,
-                        operations: operations,
-                    }})" class="btn btn-primary m-t-20" style="width:25%"></Button>
-                <!--</StackLayout>-->
 
                 <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
                 <Button text="logout" class="btn-primary" @tap="logout"> </Button>
@@ -86,7 +73,6 @@
 
         </GridLayout>
 
-       <!-- </ScrollView> -->
     </Page>
 </template>
 
@@ -100,6 +86,8 @@
         data() {
             return {
                 operations: [],
+
+                processing: false,
 
                 added: [{
                         name: "Operación 5",
@@ -130,6 +118,7 @@
 
         methods:{
             loadOperations(){
+                this.processing=true;
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
@@ -139,10 +128,12 @@
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
+                        this.processing=false;
                         this.hasError = true;
                         console.log(result);
                     }
                     else {
+                        
                         console.log("Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
@@ -152,11 +143,13 @@
                             this.operations.push(result[i]);
                         }
                         
-                        console.log("carga en el arreglo local:");
-                        console.log(operations);
+                        this.processing=false;
+                        //console.log("carga en el arreglo local:");
+                        //console.log(operations);
                         
                     }
                 }, error => {
+                    this.processing=false;
                     console.error(error);
                     });
             },

@@ -55,17 +55,3 @@ new Vue({
     store: store,
     render: h => h('frame', [h(router[route])]),
 }).$start()
-/*
->>>>>>> SF/skeleton
-new Vue({
-
-    template: `
-        <Frame>
-            <Home />
-        </Frame>`,
-
-    components: {
-        Home
-    }
-}).$start();
-*/

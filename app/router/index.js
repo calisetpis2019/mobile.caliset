@@ -6,6 +6,7 @@ import TimeSheet from '../components/TimeSheet'
 import Camera from '../components/Camera'
 import Notes from '../components/Notes'
 import Sample from '../components/Sample'
+import UserPage from '../components/UserPage'
 
 const router = {
     home: Home,
@@ -15,6 +16,7 @@ const router = {
     timeSheet: TimeSheet,
     camera: Camera,
     notes: Notes,
-    sample: Sample
+    sample: Sample,
+    userPage: UserPage,
 }
 export default router

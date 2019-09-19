@@ -1,30 +1,28 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Muestra" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
-                @tap="$goto('userPage')"/> 
+                @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="auto,auto,*,auto">
-
-            <Label row="0" text="Tomar Muestra" class="subtitile" style="margin-bottom:50;"/>
-
-            <StackLayout row="1">
-                <Label text="Etiqueta: " color="white" horizontalAlignment="left" fontSize="20" />
-                <Label text="#DEF4930FCX90" color="white" horizontalAlignment = "center" fontSize="20" class="card"/>
+        <GridLayout rows="auto,auto">
+            <StackLayout row="0" verticalAlignment="left" >
+                <Label text="aca iria la info del usuario logueado" class="text" />
             </StackLayout>
 
-            <FlexboxLayout row="2" flexDirection="column">
-                <TextView class="card text" hint="Escribir comentario..." v-model="coment"/>
-            </FlexboxLayout>
+            <StackLayout row="1" verticalAlignmen="center" >
+                <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
+                        clearHistory: false,
+                        props: {
+                            operations: operations,
+                        }})" class="btn btn-primary m-t-20" style="width:25%" />
 
-            <Button row="3" class="btn btn-primary" text="Guardar" @tap="saveComent()"/>
-
-
+                <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:25%" />
+            </StackLayout>
         </GridLayout>
 
     </Page>
@@ -32,11 +30,11 @@
 
 <script>
     export default {
-        props: ['email','token'],
+        // props: ['email','token'],
 
         data() {
             return {
-                coment: "",
+                
             }
         },
 
@@ -47,10 +45,9 @@
         },
 
         methods: {
-
-            saveComent(){
-                //Guarda comentario y borra el campo de texto
-                this.coment = "";
+            logout() {
+                this.$store.commit('logout');
+                this.$goto('login',{ clearHistory: true });
             }
         }
     };
