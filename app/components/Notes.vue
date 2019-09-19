@@ -4,7 +4,7 @@
         <ActionBar title="Notas" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
+                <Label :text=user horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
         <GridLayout rows="auto,*,auto">
@@ -31,6 +31,12 @@
         data() {
             return {
                 note: "",
+            }
+        },
+        
+        computed: {
+            user() {
+                return this.$store.state.session.email;
             }
         },
 

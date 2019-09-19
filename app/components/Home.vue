@@ -4,7 +4,7 @@
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
+                <Label :text=user horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
         
@@ -79,6 +79,8 @@
                 <!--</StackLayout>-->
 
                 <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
+                <Button text="logout" class="btn-primary" @tap="logout"> </Button>
+
 
             </StackLayout>
 
@@ -90,9 +92,10 @@
 
 <script>
     import * as http from "http";
-    export default {
+    import * as ApplicationSettings from "application-settings";
 
-        props: ['email','token'],
+    export default {
+        // props: ['email','token'],
 
         data() {
             return {
@@ -108,15 +111,21 @@
                     {
                         name: "Operación 6"
                     }
-                ]
+                ],
             };
         },
 
-        computed: {
-            logging(){
+        mounted() {
+            this.$store.subscribe((mutations, state) => {
+                ApplicationSettings.setString("store", JSON.stringify(state));
+            });
+            // this.$store.commit("load");
+        },
 
-                console.log("Holaaaaaa");
-            },
+        computed: {
+            user() {
+                return this.$store.state.session.email;
+            }
         },
 
         methods:{
@@ -124,7 +133,7 @@
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://10.0.2.2:21021/api/services/app/Operation/GetAll",
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Operation/GetAll",
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 }).then(response => {
@@ -150,6 +159,11 @@
                 }, error => {
                     console.error(error);
                     });
+            },
+
+            logout() {
+                this.$store.commit('logout');
+                this.$goto('login',{ clearHistory: true });
             }
         },
 
@@ -157,24 +171,6 @@
     };
 </script>
 
-
-<!--
-<script>
-    import Login from "./Login";
-
-    export default {
-        data() {
-            return {
-                message: "You have successfully authenticated. This is where you build your core application functionality."
-            };
-        },
-        methods: {
-
-        }
-    };
-</script>
-
--->
 <style scoped>
 
     .description-label {

@@ -2,6 +2,8 @@ import Vue from "nativescript-vue";
 import router from './router';
 import { TNSFontIcon, fonticon } from 'nativescript-fonticon'
 
+import store from './store'
+
 Vue.prototype.$router = router
 Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);
 
@@ -41,9 +43,17 @@ Vue.prototype.$goto = function (to, options) {
 
 Vue.config.silent = false;
 
+store.commit('load');
+var route = "";
+if (store.state.loggedIn) {
+  route = 'home';
+} else {
+  route = 'login';
+}
 
 new Vue({
-    render: h => h('frame', [h(router['login'])])
+    store: store,
+    render: h => h('frame', [h(router[route])]),
 }).$start()
 /*
 >>>>>>> SF/skeleton

@@ -4,7 +4,7 @@
         <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
+                <Label :text=user horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
 
@@ -106,7 +106,6 @@
 <script>
     
     export default {
-        props: ['email','token'],
 
         data() {
             return {
@@ -126,7 +125,6 @@
                     },
                     {
                         name: "Comentario 5"
-
                     },
                     {
                         name: "Comentario 4"
@@ -151,8 +149,8 @@
         },
 
         computed: {
-            message() {
-                return "Blank {N}-Vue app";
+            user() {
+                return this.$store.state.session.email;
             }
         }
 

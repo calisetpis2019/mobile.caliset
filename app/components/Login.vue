@@ -10,7 +10,7 @@
                         <TextField row="2" class="input" hint="Email"
                             keyboardType="email" autocorrect="false"
                             autocapitalizationType="none"
-                            returnKeyType="next" v-model="user.email" >
+                            returnKeyType="next" v-model="input.email" >
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
@@ -20,7 +20,7 @@
                     <!-- <StackLayout  class="input-field"> -->
 
                         <TextField row="3" class="input" ref="password" returnKeyType="done"
-                            hint="Password" secure="true" v-model="user.password" >
+                            hint="Password" secure="true" v-model="input.password" >
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
@@ -30,7 +30,8 @@
                     <!-- <ActivityIndicator rowSpan="3" :busy="processing"></ActivityIndicator> -->
                     </StackLayout>
 
-                <Button row="4" text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button> 
+                <!-- <Button row="4" text="Log In" class="btn btn-primary m-t-20" @tap="login()"></Button>  -->
+                <Button row="4" text="Log In" class="btn btn-primary m-t-20" @tap="login"></Button> 
                 <!-- @tap="$goto('home',{
                     clearHistory: true,
                     props: {
@@ -46,42 +47,96 @@
 
 <script>
     import * as http from "http";
+    import * as ApplicationSettings from "application-settings";
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity'
 
     export default {
 
         data() {
-
             return {
-                user: {
+                input: {
                     email: "",
                     password: "",
-                    token: ""
                 },
                 errorMsg: "",
                 processing: false,
             };
+        },
 
+        mounted() {
+            this.$store.subscribe((mutations, state) => {
+                ApplicationSettings.setString("store", JSON.stringify(state));
+                this.input.email = state.email;
+                this.input.password = state.password;
+            });
         },
 
         methods: {
-            login(){
-                this.processing = true;
-                // Si alguno de los dos campos esta vacio se marca un error
-                if (!this.user.email || !this.user.password) {
+            // login(){
+            //     this.processing = true;
+            //     // Si alguno de los dos campos esta vacio se marca un error
+            //     if (!this.input.email || !this.input.password) {
+            //         this.processing = false;                
+            //         this.errorMsg = "You have to enter an email and password.";
+            //         return;
+            //     }
+            //     http.request({
+            //     // Hay que sustituir la ip, obviamente
+            //     url: "http://10.0.2.2:21021/api/TokenAuth/Authenticate",
+            //     method: "POST",
+            //     headers: { "Content-Type": "application/json" },
+            //     content: JSON.stringify({
+            //         "userNameOrEmailAddress": this.input.email,
+            //         "password": this.input.password,
+            //         "rememberClient": true
+            //     })
+            //     }).then(response => {
+            //         var result = response.content.toJSON().result;
+            //         if (result == null) {
+            //             this.processing = false;
+            //             this.errorMsg = "Login failed! Please provide a valid email and password.";
+            //             console.log(result);
+            //         }
+            //         else {
+            //             this.input.token = result.accessToken;
+            //             var userId = result.userId;
+            //             console.log("Token:" + this.input.token);
+            //             console.log("userId:" + userId);
+            //             this.$goto('home',{
+            //                 clearHistory: true,
+            //                 props: {
+            //                     email: this.input.email,
+            //                     token: this.input.token,
+            //                 }
+            //             });
+            //         }
+            //     }, error => {
+            //         this.processing = false;
+            //         this.errorMsg = "Connection failed. Please try again.";
+            //         console.error(error);
+            //         });
+            // },
+            login() {
+                if (!this.input.email || !this.input.password) {
                     this.processing = false;                
                     this.errorMsg = "You have to enter an email and password.";
                     return;
                 }
+                else if (getConnectionType() === connectionType.none) {
+                    this.processing = false;                
+                    this.errorMsg = "You need an internet connection to login.";
+                    return;
+                }
                 http.request({
-                // Hay que sustituir la ip, obviamente
-                url: "http://10.0.2.2:21021/api/TokenAuth/Authenticate",
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                content: JSON.stringify({
-                    "userNameOrEmailAddress": this.user.email,
-                    "password": this.user.password,
-                    "rememberClient": true
-                })
+                    // Hay que sustituir la ip, obviamente
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/TokenAuth/Authenticate",
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    content: JSON.stringify({
+                        "userNameOrEmailAddress": this.input.email,
+                        "password": this.input.password,
+                        "rememberClient": true
+                    })
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
@@ -90,24 +145,19 @@
                         console.log(result);
                     }
                     else {
-                        this.user.token = result.accessToken;
-                        var userId = result.userId;
-                        console.log("Token:" + this.user.token);
-                        console.log("userId:" + userId);
-                        this.$goto('home',{
-                            clearHistory: true,
-                            props: {
-                                email: this.user.email,
-                                token: this.user.token,
-                            }
+                        console.log("Token:" + result.accessToken);
+                        this.$store.commit('login',{
+                            email: this.input.email,
+                            token: result.accessToken,
                         });
+                        this.$goto('home',{ clearHistory: true });
                     }
                 }, error => {
                     this.processing = false;
                     this.errorMsg = "Connection failed. Please try again.";
                     console.error(error);
                     });
-            },
+            }
 
             
         },
