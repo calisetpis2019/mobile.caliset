@@ -51,12 +51,7 @@
 
             <StackLayout row="2" orientation="horizontal" height="10%" horizontalAlign="center" >
             <!--<Label dock="bottom" text="OPERACION" color="white"/>-->
-                <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes',{
-                            clearHistory: false,
-                            props: {
-                                email: email,
-                                token: token,
-                            }})">
+                <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')">
                     <FormattedString>
                         <!--
                             <Span text="f249;\n" fontFamily="FontAwesome"></Span>
@@ -69,12 +64,7 @@
                     </FormattedString>
                 </Button>
 
-                <Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera',{
-                            clearHistory: false,
-                            props: {
-                                email: email,
-                                token: token,
-                            }})">
+                <Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera')">
                     <FormattedString textWrap="true">
                         
                         <Span :text="'fa-camera' | fonticon" class="fas"></Span>
@@ -85,12 +75,7 @@
                             
                 </Button> <!-- @tap="$goto('home')" -->
 
-                <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample',{
-                            clearHistory: false,
-                            props: {
-                                email: email,
-                                token: token,
-                            }})">
+                <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample')">
                     <FormattedString>
                         <!--
                             <Label text="&#xf02a;\n" fontFamily="FontAwesome" />

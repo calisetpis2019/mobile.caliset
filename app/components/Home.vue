@@ -17,8 +17,6 @@
                 <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
                     clearHistory: false,
                     props: {
-                        email: email,
-                        token: token,
                         added: added,
                     }})" backgroundColor="#1F1B24">
                     <v-template>
@@ -42,12 +40,7 @@
 
                 <Label text="Operaciones Activas" class="subtitile" />
 
-                <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation',{
-                    clearHistory: false,
-                    props: {
-                        email: email,
-                        token: token,
-                    }})">
+                <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation')">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card">
