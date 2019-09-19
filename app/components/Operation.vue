@@ -1,10 +1,16 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
+                <Button :text=email horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
+                @tap="$goto('userPage',{
+                    clearHistory: false,
+                    props: {
+                        email: email,
+                        token: token,
+                    }})"/> 
             </GridLayout>
         </ActionBar>
 
@@ -12,6 +18,9 @@
 
             <StackLayout row="0" >
                 <Label text="Operacion tal" class="title"/>
+                <Label :text="'fa-facebook-f' | fonticon" class="fa-brands" color="white"/>
+                <Label :text="'fa-eye' | fonticon" class="far" color="white"/>
+                <Label :text="'fa-eye' | fonticon" class="fas" color="white"/>
             </StackLayout>
 
             <ScrollView row="1" class="chat" backgroundColor="#1F1B24">

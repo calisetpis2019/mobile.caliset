@@ -69,7 +69,7 @@
                 // Si alguno de los dos campos esta vacio se marca un error
                 if (!this.user.email || !this.user.password) {
                     this.processing = false;                
-                    this.errorMsg = "You have to enter an email and password.";
+                    this.errorMsg = "Debe ingresar correo y contraseña";
                     return;
                 }
                 http.request({
@@ -86,7 +86,7 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing = false;
-                        this.errorMsg = "Login failed! Please provide a valid email and password.";
+                        this.errorMsg = "Ingrese correo y contraseña válidos.";
                         console.log(result);
                     }
                     else {
@@ -104,7 +104,7 @@
                     }
                 }, error => {
                     this.processing = false;
-                    this.errorMsg = "Connection failed. Please try again.";
+                    this.errorMsg = "Falló la conexión. Por favor intente luego.";
                     console.error(error);
                     });
             },

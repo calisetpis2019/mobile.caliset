@@ -45,17 +45,3 @@ Vue.config.silent = false;
 new Vue({
     render: h => h('frame', [h(router['login'])])
 }).$start()
-/*
->>>>>>> SF/skeleton
-new Vue({
-
-    template: `
-        <Frame>
-            <Home />
-        </Frame>`,
-
-    components: {
-        Home
-    }
-}).$start();
-*/

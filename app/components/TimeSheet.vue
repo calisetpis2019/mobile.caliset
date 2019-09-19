@@ -1,52 +1,60 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Operaciones" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
+                <Button :text=email horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
+                @tap="$goto('userPage',{
+                    clearHistory: false,
+                    props: {
+                        email: email,
+                        token: token,
+                    }})"/> 
             </GridLayout>
         </ActionBar>
-        <StackLayout class="form">
 
-            <Label text="Registro de Horas" class="subtitile" color="white"/>
+        <GridLayout rows="auto,auto,auto,auto,auto,auto">
 
-            <GridLayout rows="auto,auto,auto">
+            <Label row="0" text="Registro de Horas" class="subtitile" color="white"/>
 
-                <StackLayout row="0" >
-                    
-                    <Label text= "Operación:" color="white"/>
-                    <TextFIeld color="white" :text="selectedOperation" class="input"  @focus="showOperations()" 
-                    @blur="hideOperations()"  />
+            <StackLayout row="1" class="input-field">
+                
+                <Label text= "Operación:" color="white"/>
+                <TextFIeld editable="false" color="white" :text="selectedOperation" class="input"  @focus="showOperations()" 
+                @blur="hideOperations()"  />
 
-                    <ListPicker :items="$props.operations" :v-model="selectedOperation" backgroundColor="#B0C4DE" color="white" v-show="opVisible" />
+                <ListPicker :items="$props.operations" :v-model="selectedOperation" backgroundColor="#B0C4DE" color="white" v-show="opVisible" />
 
-                </StackLayout>
+            </StackLayout>
 
-                <StackLayout row="1" class="input-field">
-                    
-                    <Label text="Día:" color="white"/>
-                    <TextFIeld color="white" :text="date" class="input"  @focus="showDate()" @blur="hideDate()"  /> 
+            <StackLayout row="2" class="input-field">
+                
+                <Label text="Día:" color="white"/>
+                <TextFIeld editable="false" color="white" :text="date" class="input"  @focus="showDate()" @blur="hideDate()"  /> 
 
-                    <DatePicker :year="currentYear" :month="currentMonth" :day="currentDay" v-model="date"
-                        minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="#B0C4DE" v-show="dateVisible"/>
-                </StackLayout>  
+                <DatePicker :year="currentYear" :month="currentMonth" :day="currentDay" v-model="date"
+                    minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="#B0C4DE" v-show="dateVisible"/>
+            </StackLayout>  
 
-                <StackLayout row="2" class="input-field">
+            <StackLayout row="3" class="input-field">
 
-                    <Label text="Inicio:" color="white"/>
+                <Label text="Inicio:" color="white"/>
 
-                    <TextField color="white" :text="start" android:editable="false" class="input" @focus="showTime()" @blur="hideTime()"  />
+                <TextField editable="false" color="white" :text="start" class="input" @focus="showTime()" @blur="hideTime()" />
 
-                    <TimePicker :hour="currentHour" :minute="currentMinute" v-model="start"
-                        backgroundColor="#B0C4DE" v-show="timeVisible" />
-                </StackLayout>
+                <TimePicker :hour="currentHour" :minute="currentMinute" v-model="start"
+                    backgroundColor="#B0C4DE" v-show="timeVisible" />
+            </StackLayout>
 
-            </GridLayout>
+            <StackLayout row="4" class="input-field">
 
-            <Button text="CARGAR" class="btn btn-primary m-t-20"></Button>
+                <Label text="Horas:" color="white"/>
+                <TextField color="white"  class="input" keyboardType="number" />
+            </StackLayout>
 
-        </StackLayout>
+            <Button row="5" text="CARGAR" class="btn btn-primary m-t-20"></Button>
+        </GridLayout>
     <!--
                 <Label text="Hora fin:" class="text" />
                 <TimePicker :hour="currentHour" :minute="currentMinute" backgroundColor="white" />
