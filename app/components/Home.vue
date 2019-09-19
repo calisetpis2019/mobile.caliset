@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
         <!--<ActionBar title="YOUR APP"></ActionBar>-->
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
@@ -17,7 +17,7 @@
 
                 <Label text="Nuevas Operaciones" class="subtitile" flexWrapBefore="true"/>
 
-                <ListView class="list-group" for="n in added" @itemTap="$goto('operation',{
+                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
                     clearHistory: false,
                     props: {
                         email: email,

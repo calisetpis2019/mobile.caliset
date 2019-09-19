@@ -7,13 +7,18 @@
                 <Label :text=email horizontalAlignment="right" color="white" style="margin:10px" />
             </GridLayout>
         </ActionBar>
-        <GridLayout rows="auto,*">
+        <GridLayout rows="auto,*,auto">
 
             <Label row="0" text="Escribir Nota" class="subtitile" flexWrapBefore="true"/>
             
             <FlexboxLayout row="1" flexDirection="column">
-                <TextView class="card" padding="20" margin="40"/>
+                
+                <TextView class="card text" hint="Escribir nota..." v-model="note"/>
+                
             </FlexboxLayout>
+            
+            <Button row="2" class="btn btn-primary" text="Guardar" @tap="saveNote()"/>
+            
 
         </GridLayout>
     </Page>
@@ -25,11 +30,16 @@
 
         data() {
             return {
-              
+                note: "",
             }
         },
 
         methods: {
+
+            saveNote(){
+                //Envía el comentario al servidor y borra el texto.
+                this.note = "";
+            }
 
         }
     };

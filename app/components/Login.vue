@@ -74,7 +74,7 @@
                 }
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://192.168.1.43:21021/api/TokenAuth/Authenticate",
+                url: "http://10.0.2.2:21021/api/TokenAuth/Authenticate",
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 content: JSON.stringify({

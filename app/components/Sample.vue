@@ -8,20 +8,24 @@
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="auto,auto,*">
+        <GridLayout rows="auto,auto,*,auto">
 
-            <Label row="0" text="Tomar Muestra" class="subtitile" flexWrapBefore="true"/>
+            <Label row="0" text="Tomar Muestra" class="subtitile" style="margin-bottom:50;"/>
 
-            <Label row="1" text="#DEF4930FCX90" color="white" flexWrapBefore="true"/>
+            <StackLayout row="1">
+                <Label text="Etiqueta: " color="white" horizontalAlignment="left" fontSize="20" />
+                <Label text="#DEF4930FCX90" color="white" horizontalAlignment = "center" fontSize="20" class="card"/>
+            </StackLayout>
 
             <FlexboxLayout row="2" flexDirection="column">
-                <Label text="Comentario:" color="white" />
-                <TextView class="card" padding="20" margin="40"/>    
+                <TextView class="card text" hint="Escribir comentario..." v-model="coment"/>
             </FlexboxLayout>
 
-            
+            <Button row="3" class="btn btn-primary" text="Guardar" @tap="saveComent()"/>
+
 
         </GridLayout>
+
     </Page>
 </template>
 
@@ -31,12 +35,16 @@
 
         data() {
             return {
-              
+                coment: "",
             }
         },
 
         methods: {
 
+            saveComent(){
+                //Guarda comentario y borra el campo de texto
+                this.coment = "";
+            }
         }
     };
 
