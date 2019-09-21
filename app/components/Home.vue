@@ -59,8 +59,6 @@
             <StackLayout row="2">
 
                 <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
-                <Button text="logout" class="btn-primary" @tap="logout"> </Button>
-
 
             </StackLayout>
 
@@ -100,9 +98,14 @@
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
-            // this.$store.commit("load");
         },
-
+        
+        updated() {
+            // this.$store.commit("load");
+            if (!this.$store.state.loggedIn) {
+                this.$goto('login',{ clearHistory: true });
+            }
+        },
         computed: {
             user() {
                 return this.$store.state.session.email;
