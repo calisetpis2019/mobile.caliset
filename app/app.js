@@ -7,26 +7,26 @@ import store from './store'
 Vue.prototype.$router = router
 Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);
 
-var firebase = require("nativescript-plugin-firebase");
+// var firebase = require("nativescript-plugin-firebase");
 
-    firebase.init({
-      showNotifications: true,
-      showNotificationsWhenInForeground: true,
+//     firebase.init({
+//       showNotifications: true,
+//       showNotificationsWhenInForeground: true,
 
-      onPushTokenReceivedCallback: (token) => {
-        console.log('[Firebase] onPushTokenReceivedCallback:', { token });
-      },
+//       onPushTokenReceivedCallback: (token) => {
+//         console.log('[Firebase] onPushTokenReceivedCallback:', { token });
+//       },
 
-      onMessageReceivedCallback: (message) => {
-        console.log('[Firebase] onMessageReceivedCallback:', { message });
-      }
-    })
-      .then(() => {
-        console.log('[Firebase] Initialized');
-      })
-      .catch(error => {
-        console.log('[Firebase] Initialize', { error });
-      });
+//       onMessageReceivedCallback: (message) => {
+//         console.log('[Firebase] onMessageReceivedCallback:', { message });
+//       }
+//     })
+//       .then(() => {
+//         console.log('[Firebase] Initialized');
+//       })
+//       .catch(error => {
+//         console.log('[Firebase] Initialize', { error });
+//       });
 
 TNSFontIcon.debug = true
 TNSFontIcon.paths = {
