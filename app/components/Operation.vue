@@ -13,9 +13,6 @@
 
             <StackLayout row="0" >
                 <Label text="Operacion tal" class="title"/>
-                <Label :text="'fa-facebook-f' | fonticon" class="fa-brands" color="white"/>
-                <Label :text="'fa-eye' | fonticon" class="far" color="white"/>
-                <Label :text="'fa-eye' | fonticon" class="fas" color="white"/>
             </StackLayout>
 
             <ScrollView row="1" class="chat" backgroundColor="#1F1B24">
@@ -57,7 +54,7 @@
                             <Span text="f249;\n" fontFamily="FontAwesome"></Span>
                             <Span text="Notas"></Span> 
                         -->
-                        <Span :text="'fa-sticky-note' | fonticon" class="fas" ></Span>
+                        <Span text.decode="&#xf249;" class="fas" ></Span>
                         <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
 
@@ -67,7 +64,7 @@
                 <Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera')">
                     <FormattedString textWrap="true">
                         
-                        <Span :text="'fa-camera' | fonticon" class="fas"></Span>
+                        <Span text.decode="&#xf030; " class="fas"></Span>
                         <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
 
@@ -80,7 +77,7 @@
                         <!--
                             <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
                         -->
-                        <Span :text="'fa-barcode' | fonticon" class="fas" ></Span>
+                        <Span text.decode="&#xf02a; " class="fas" ></Span>
                         <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
                     </FormattedString>
@@ -153,7 +150,7 @@
 
     // Custom styles
     .fa {
-        color: $accent-dark;   
+        color: $accent-dark;  
     }
 
     .info {

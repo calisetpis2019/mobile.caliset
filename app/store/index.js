@@ -10,7 +10,8 @@ const store = new Vuex.Store({
             email: "",
             token: "",
         },
-        ipAPI : "192.168.1.43",
+        ipAPI : "10.0.2.2",
+        //ipAPI : "172.20.10.2",
         loggedIn: false,
     },
     mutations: {
