@@ -60,6 +60,7 @@
                 },
                 errorMsg: "",
                 processing: false,
+                primerLogin: true,
             };
         },
 
@@ -90,6 +91,7 @@
                     this.errorMsg = "Se necesita conexión a internet para ingresar.";
                     return;
                 }
+                console.log(this.$store.state.ipAPI);
                 http.request({
                     // Hay que sustituir la ip, obviamente
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/TokenAuth/Authenticate",
@@ -109,11 +111,26 @@
                     }
                     else {
                         console.log("Token:" + result.accessToken);
-                        this.$store.commit('login',{
-                            email: this.input.email,
-                            token: result.accessToken,
-                        });
-                        this.$goto('home',{ clearHistory: true });
+                        // this.$store.commit('login',{
+                        //     email: this.input.email,
+                        //     token: result.accessToken,
+                        // });
+                        if (this.primerLogin) {
+                            this.$goto('terms', {
+                                clearHistory: true,
+                                props: {
+                                    email: this.input.email,
+                                    token: result.accessToken
+                                }
+                            });
+                        }
+                        else {
+                            this.$store.commit('login',{
+                                email: this.input.email,
+                                token: result.accessToken,
+                            });
+                            this.$goto('home',{ clearHistory: true });
+                        }
                     }
                 }, error => {
                     this.processing = false;
