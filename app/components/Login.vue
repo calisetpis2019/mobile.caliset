@@ -112,8 +112,9 @@
                         this.$store.commit('login',{
                             email: this.input.email,
                             token: result.accessToken,
+                            password: this.input.password,
                         });
-                        this.$goto('home',{ clearHistory: true });
+                        this.$goto('editPassword',{ clearHistory: true });
                     }
                 }, error => {
                     this.processing = false;

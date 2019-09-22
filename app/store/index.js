@@ -25,6 +25,7 @@ const store = new Vuex.Store({
         login(state, data) {
             state.session.email = data.email;
             state.session.token = data.token;
+            state.session.password = data.password
             state.loggedIn = true;
         },
         logout(state) {
