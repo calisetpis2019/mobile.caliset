@@ -71,10 +71,18 @@
             });
             
         },
-        
+
+
         updated() {
             if (this.$store.state.loggedIn) {
-                this.$goto('home',{ clearHistory: true });
+                if (this.$store.state.firstLogIn){
+                    //Debe ir a terminos y condiciones
+                    this.$goto('editPassword',{ clearHistory: true });
+                }
+                else{
+                    this.$goto('home',{ clearHistory: true });    
+                }
+                
             }
         },
 
@@ -108,13 +116,26 @@
                         console.log(result);
                     }
                     else {
-                        console.log("Token:" + result.accessToken);
+                        console.log("Token:" + result.accessToken); 
                         this.$store.commit('login',{
                             email: this.input.email,
                             token: result.accessToken,
                             password: this.input.password,
+                            firstLogin: result.firstLogin,
                         });
-                        this.$goto('editPassword',{ clearHistory: true });
+
+                        if (result.firstLogin){
+                            //ir a terminos y condiciones
+                            console.log("primer log in");
+                            console.log(result.firstLogin);
+                            this.$goto('editPassword',{ clearHistory: true });
+                        }
+                        else {
+                            console.log("log in");
+                            console.log(result.firstLogin);
+                            this.$goto('home',{ clearHistory: true });   
+                        }
+                        
                     }
                 }, error => {
                     this.processing = false;

@@ -6,19 +6,19 @@
             <StackLayout row="0" >
                 <Label text="Contraseña anterior:" class="info"/>
                 <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red"/>
-                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword" @focus="clearErrorPwd"/>
+                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword"/>
             </StackLayout>
 
             <StackLayout row="1">
                 <Label text="Nueva contraseña:" class="info" />
                 <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" />
-                <TextField v-model="input.newPass" class="input" @textChange="checkNewPassword" @focus="clearErrorNPwd"/>
+                <TextField v-model="input.newPass" class="input" @textChange="checkNewPassword"/>
             </StackLayout>
 
             <StackLayout row="2">
                 <Label row="2" text="Repita la nueva contraseña:" class="info" />
                 <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" />
-                <TextField v-model="input.newPass2" class="input" @textChange="checkIfNewPasswordMatches" @focus="clearErrorNPwd2" />
+                <TextField v-model="input.newPass2" class="input" @textChange="checkIfNewPasswordMatches"/>
             </StackLayout>
 
             <Button row="3" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd" 
@@ -99,7 +99,7 @@
                     this.ctrl.trd=true;
                 }
             },
-
+/*
             clearErrorPwd() {
                 this.incorrectPassword = false;
             },
@@ -111,7 +111,7 @@
             clearErrorNPwd2() {
                 this.incorrectNewPassword2 = false;
             },
-
+*/  
             changePassword() {
                 http.request({
                     // Hay que sustituir la ip, obviamente
@@ -136,6 +136,7 @@
                         console.log("respondio OK");
                         console.log(result);
                         alert("Se ha cambiado la contraseña");
+                        this.$store.state.firstLogIn = false;
                         this.$goto('home',{ clearHistory: true });
                     }
                 }, error => {

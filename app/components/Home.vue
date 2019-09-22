@@ -99,13 +99,14 @@
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
         },
-        
+
         updated() {
             // this.$store.commit("load");
             if (!this.$store.state.loggedIn) {
                 this.$goto('login',{ clearHistory: true });
             }
         },
+
         computed: {
             user() {
                 return this.$store.state.session.email;

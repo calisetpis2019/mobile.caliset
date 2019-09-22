@@ -26,8 +26,17 @@ const store = new Vuex.Store({
             state.session.email = data.email;
             state.session.token = data.token;
             state.session.password = data.password
-            state.loggedIn = true;
+            state.session.firstLogin = data.firstLogin;
+            if (data.firstLogin) {
+                console.log("store -> mutation -> login(): firstlogin");
+                state.loggedIn = false;
+            }
+            else {
+                console.log("store -> mutation -> login(): not firstlogin");
+                state.loggedIn = true;
+            }
         },
+
         logout(state) {
             state.session.email = "";
             state.session.token = "";
