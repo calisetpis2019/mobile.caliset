@@ -23,6 +23,9 @@ const store = new Vuex.Store({
             }
         },
         login(state, data) {
+            console.log("userId en el store");
+            console.log(data.userId);
+            state.session.userId = data.userId;
             state.session.email = data.email;
             state.session.token = data.token;
             state.session.password = data.password

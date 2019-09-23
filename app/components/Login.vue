@@ -117,7 +117,9 @@
                     }
                     else {
                         console.log("Token:" + result.accessToken); 
+                        console.log("userId: " + result.userId);
                         this.$store.commit('login',{
+                            userId: result.userId,
                             email: this.input.email,
                             token: result.accessToken,
                             password: this.input.password,

@@ -1,27 +1,31 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true">
 
-        <GridLayout rows="auto,auto,auto,auto" verticalAlignment="center">
-
-            <StackLayout row="0" >
+        <GridLayout rows="auto,auto,auto,auto,*,auto" >
+            <StackLayout row="0" verticalAlignment="top">
+                <Label text="Ingrese una nueva contraseña: " class="subtitle" style="margin-bottom:100"/>
+            </StackLayout>
+            <StackLayout row="1" style="padding: 10">
                 <Label text="Contraseña anterior:" class="info"/>
                 <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red"/>
                 <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword"/>
             </StackLayout>
 
-            <StackLayout row="1">
+            <StackLayout row="2" style="padding: 10">
                 <Label text="Nueva contraseña:" class="info" />
                 <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" />
                 <TextField v-model="input.newPass" class="input" @textChange="checkNewPassword"/>
             </StackLayout>
 
-            <StackLayout row="2">
-                <Label row="2" text="Repita la nueva contraseña:" class="info" />
+            <StackLayout row="3" style="padding: 10">
+                <Label text="Repita la nueva contraseña:" class="info" />
                 <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" />
                 <TextField v-model="input.newPass2" class="input" @textChange="checkIfNewPasswordMatches"/>
             </StackLayout>
 
-            <Button row="3" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd" 
+            <StackLayout row="4" />
+
+            <Button row="5" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd" style="padding: 10"
                     class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
         </GridLayout>
@@ -63,6 +67,8 @@
 
             checkPassword() {
                 
+                console.log(this.pass);
+                console.log(this.$store.state.session.password);
                 if (this.input.pass != this.$store.state.session.password){
 
                     this.incorrectPassword = true;
@@ -117,7 +123,9 @@
                     // Hay que sustituir la ip, obviamente
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/ChangePassword",
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token },
                     content: JSON.stringify({
                         "currentPassword": this.input.pass,
                         "newPassword": this.input.newPass,
@@ -128,14 +136,53 @@
                         this.processing = false;
                         this.errorMsg = "No se realizó el cambio: La respuesta vino vacía";
                         alert(this.errorMsg);
-                        console.log("respuesta vacía");
+                        console.log("changePassword: respuesta vacía");
                         console.log(result);
                         this.$goto('login',{ clearHistory: true });
                     }
                     else {
-                        console.log("respondio OK");
+                        console.log("changePassword respondio OK");
                         console.log(result);
-                        alert("Se ha cambiado la contraseña");
+                        this.setFirstLogin();
+                        
+                    }
+                }, error => {
+                    console.log("respondió con error");
+                    this.processing = false;
+                    this.errorMsg = "Falló la conexión. Por favor intente luego.";
+                    alert(this.errorMsg);
+                    console.error(error);
+                    this.$goto('login',{ clearHistory: true });
+                    });
+            },
+
+            setFirstLogin() {
+                alert("Se ha cambiado la contraseña");
+                console.log("userId");
+                console.log(this.$store.state.session.userId);
+                http.request({
+                    // Hay que sustituir la ip, obviamente
+                    url: "http://" + this.$store.state.ipAPI + 
+                        ":21021/api/services/app/User/SetFirstLogin?id="+this.$store.state.session.userId,
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token,
+                    },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processing = false;
+                        this.errorMsg = "No se pudo actualizar firstLogIn";
+                        alert(this.errorMsg);
+                        console.log("setFirstLogin: respuesta vacía");
+                        console.log(result);
+                        this.$goto('login',{ clearHistory: true });
+                    }
+                    else {
+                        console.log("setFirstLogIn respondio OK");
+                        console.log(result);
+                        alert("Usuario modificado con éxito!");
                         this.$store.state.firstLogIn = false;
                         this.$goto('home',{ clearHistory: true });
                     }
@@ -148,8 +195,6 @@
                     this.$goto('login',{ clearHistory: true });
                     });
             },
-
-
         }
     };
 
