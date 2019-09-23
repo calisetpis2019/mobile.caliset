@@ -12,7 +12,7 @@
         
         <GridLayout rows="auto,*,auto">
 
-            <Label row="0" text="Escribir Nota" class="subtitile" flexWrapBefore="true"/>
+            <Label row="0" text="Escribir Nota" class="subtitle" flexWrapBefore="true"/>
             
             <FlexboxLayout row="1" flexDirection="column">
                 

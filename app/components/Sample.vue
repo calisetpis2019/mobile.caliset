@@ -11,7 +11,7 @@
 
         <GridLayout rows="auto,auto,*,auto">
 
-            <Label row="0" text="Tomar Muestra" class="subtitile" style="margin-bottom:50;"/>
+            <Label row="0" text="Tomar Muestra" class="subtitle" style="margin-bottom:50;"/>
 
             <StackLayout row="1">
                 <Label text="Etiqueta: " color="white" horizontalAlignment="left" fontSize="20" />
