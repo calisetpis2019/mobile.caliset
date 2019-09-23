@@ -162,8 +162,7 @@
                 console.log(this.$store.state.session.userId);
                 http.request({
                     // Hay que sustituir la ip, obviamente
-                    url: "http://" + this.$store.state.ipAPI + 
-                        ":21021/api/services/app/User/SetFirstLogin?id="+this.$store.state.session.userId,
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/SetFirstLogin",
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
