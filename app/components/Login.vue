@@ -60,7 +60,6 @@
                 },
                 errorMsg: "",
                 processing: false,
-                primerLogin: true,
             };
         },
 
@@ -72,10 +71,18 @@
             });
             
         },
-        
+
+
         updated() {
             if (this.$store.state.loggedIn) {
-                this.$goto('home',{ clearHistory: true });
+                if (this.$store.state.firstLogIn){
+                    //Debe ir a terminos y condiciones
+                    this.$goto('editPassword',{ clearHistory: true });
+                }
+                else{
+                    this.$goto('home',{ clearHistory: true });    
+                }
+                
             }
         },
 
@@ -111,25 +118,26 @@
                     }
                     else {
                         console.log("Token:" + result.accessToken);
-                        // this.$store.commit('login',{
-                        //     email: this.input.email,
-                        //     token: result.accessToken,
-                        // });
-                        if (this.primerLogin) {
-                            this.$goto('terms', {
-                                clearHistory: true,
-                                props: {
-                                    email: this.input.email,
-                                    token: result.accessToken
-                                }
-                            });
+                        console.log("userId: " + result.userId);
+
+                        this.$store.commit('login',{
+                            userId: result.userId,
+                            email: this.input.email,
+                            token: result.accessToken,
+                            password: this.input.password,
+                            firstLogin: result.firstLogin,
+                        });
+
+                        if (result.firstLogin){
+                            //ir a terminos y condiciones
+                            console.log("primer log in");
+                            console.log(result.firstLogin);
+                            this.$goto('terms',{ clearHistory: true });
                         }
                         else {
-                            this.$store.commit('login',{
-                                email: this.input.email,
-                                token: result.accessToken,
-                            });
-                            this.$goto('home',{ clearHistory: true });
+                            console.log("log in");
+                            console.log(result.firstLogin);
+                            this.$goto('home',{ clearHistory: true });   
                         }
                     }
                 }, error => {

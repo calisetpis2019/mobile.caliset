@@ -14,8 +14,8 @@
             <StackLayout row="0" >
                 <Label text="Operacion tal" class="info"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
-                    <Button textWrap="true" text="Asignaciones" class="btn-confirm" width="50%" />
-                    <Button textWrap="true" text="Informacion" class=" btn-reject" width="50%" />
+                    <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" />
+                    <Button textWrap="true" text="Informacion" class=" btn-primary" width="50%" />
                 </StackLayout>
             </StackLayout>
 

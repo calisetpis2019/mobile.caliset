@@ -10,8 +10,8 @@ const store = new Vuex.Store({
             email: "",
             token: "",
         },
-        // ipAPI : "10.0.2.2",
-        ipAPI : "192.168.1.4",
+        ipAPI : "10.0.2.2",
+        //ipAPI : "192.168.1.4",
         loggedIn: false,
     },
     mutations: {
@@ -21,13 +21,27 @@ const store = new Vuex.Store({
                     Object.assign(state, JSON.parse(ApplicationSettings.getString("store")))
                 );
             }
-            state.ipAPI = "192.168.1.4";
+            //state.ipAPI = "192.168.1.4";
+            ipAPI : "10.0.2.2";
         },
         login(state, data) {
+            console.log("userId en el store");
+            console.log(data.userId);
+            state.session.userId = data.userId;
             state.session.email = data.email;
             state.session.token = data.token;
-            state.loggedIn = true;
+            state.session.password = data.password
+            state.session.firstLogin = data.firstLogin;
+            if (data.firstLogin) {
+                console.log("store -> mutation -> login(): firstlogin");
+                state.loggedIn = false;
+            }
+            else {
+                console.log("store -> mutation -> login(): not firstlogin");
+                state.loggedIn = true;
+            }
         },
+
         logout(state) {
             state.session.email = "";
             state.session.token = "";

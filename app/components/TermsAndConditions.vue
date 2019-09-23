@@ -15,7 +15,6 @@
     import * as ApplicationSettings from "application-settings";
 
     export default {
-        props: ['email','token'],
 
         data() {
             return {
@@ -31,11 +30,7 @@
 
         methods:{
             accept() {
-                this.$store.commit('login',{
-                    email: this.email,
-                    token: this.token
-                });
-                this.$goto('home',{ clearHistory: true });
+                this.$goto('editPassword',{ clearHistory: true });
             },
             dismiss() {
                 // this.$store.commit('logout');

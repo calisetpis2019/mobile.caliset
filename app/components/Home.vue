@@ -12,7 +12,7 @@
 
             <StackLayout row="0">
 
-                <Label text="Nuevas Operaciones" class="subtitile" flexWrapBefore="true"/>
+                <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
                 <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
                     clearHistory: false,
@@ -38,7 +38,7 @@
             
             <StackLayout row="1">
 
-                <Label text="Operaciones Activas" class="subtitile" />
+                <Label text="Operaciones Activas" class="subtitle" />
 
                 <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation')">
                     <v-template>
@@ -99,13 +99,14 @@
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
         },
-        
+
         updated() {
             // this.$store.commit("load");
             if (!this.$store.state.loggedIn) {
                 this.$goto('login',{ clearHistory: true });
             }
         },
+
         computed: {
             user() {
                 return this.$store.state.session.email;
