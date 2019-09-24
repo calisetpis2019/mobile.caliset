@@ -1,11 +1,18 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Camera" class="action-bar" backgroundColor="#1F1B24" >
+        <!-- <ActionBar title="Camera" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
                 @tap="$goto('userPage')"/> 
+            </GridLayout>
+        </ActionBar> -->
+        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+            <GridLayout rows="auto" columns="auto,*,*" >
+                <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
+                <Button row="0" col="2" :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
+                @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
 

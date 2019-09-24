@@ -1,13 +1,19 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
-        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+        <!-- <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
-                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
+                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" />
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
                 @tap="$goto('userPage')"/> 
             </GridLayout>
+        </ActionBar> -->
+        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+            <GridLayout rows="auto" columns="auto,*,*" >
+                <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
+                <Button row="0" col="2" :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
+                @tap="$goto('userPage')"/>
+            </GridLayout>
         </ActionBar>
-        
         <GridLayout rows="2*,3*,auto">
 
             <StackLayout row="0">
@@ -99,17 +105,17 @@
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
-            if (!this.$store.state.loggedIn) {
-                this.$goto('login',{ clearHistory: true });
-            }
+            // if (!this.$store.state.loggedIn) {
+            //     this.$goto('login',{ clearHistory: true });
+            // }
         },
 
-        updated() {
-            // this.$store.commit("load");
-            if (!this.$store.state.loggedIn) {
-                this.$goto('login',{ clearHistory: true });
-            }
-        },
+        // updated() {
+        //     // this.$store.commit("load");
+        //     if (!this.$store.state.loggedIn) {
+        //         this.$goto('login',{ clearHistory: true });
+        //     }
+        // },
 
         computed: {
             user() {

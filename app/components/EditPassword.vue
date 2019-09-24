@@ -197,6 +197,12 @@
                         alert("Usuario modificado con éxito!");
                         this.$store.state.session.firstLogIn = false;
                         this.$store.state.loggedIn = true;
+                        // Se guarda la fecha de inicio de sesión
+                        var d = new Date();
+                        this.$store.state.session.date.year = d.getFullYear();
+                        // Se suma 1 porque da valores entre 0 y 11
+                        this.$store.state.session.date.month = d.getMonth() + 1;
+                        this.$store.state.session.date.day = d.getDate();
                         this.$goto('home',{ clearHistory: true });
                     }
                 }, error => {

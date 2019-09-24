@@ -12,6 +12,11 @@ const store = new Vuex.Store({
             password: "",
             token: "",
             firstLogin: false,
+            date: {
+                year: "",
+                month: "",
+                day: ""
+            }
         },
         ipAPI : "",
         loggedIn: false,
@@ -42,6 +47,12 @@ const store = new Vuex.Store({
             else {
                 console.log("store -> mutation -> login(): not firstlogin");
                 state.loggedIn = true;
+                // Se guarda el día para controlar que al año se cierre sesión
+                var d = new Date();
+                state.session.date.year = d.getFullYear();
+                // Se suma 1 porque da valores entre 0 y 11
+                state.session.date.month = d.getMonth() + 1;
+                state.session.date.day = d.getDate();
             }
         },
 
@@ -51,6 +62,9 @@ const store = new Vuex.Store({
             state.session.password = "";
             state.session.token = "";
             state.session.firstLogin = false;
+            state.session.date.year = "";
+            state.session.date.year = "";
+            state.session.date.year = "";
             state.loggedIn = false;
         }
     }

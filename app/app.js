@@ -39,17 +39,17 @@ Vue.config.silent = false;
 
 store.commit('load');
 
-var route = "";
+// var route = "";
 
-if (store.state.loggedIn) {
-  route = 'home';
-} else {
-  route = 'login';
-}
+// if (store.state.loggedIn) {
+//   route = 'home';
+// } else {
+//   route = 'login';
+// }
 
 new Vue({
     store: store,
     // render: h => h('frame', [h(router[route])]),
-    // Para evitar que se muestre home cuando no está iniciado, que siempre inicie en login y se vaya a donde corresponda
-    render: h => h('frame', [h(router['login'])]),
+    // Para evitar que se muestre home cuando no está iniciado, que siempre inicie en dummy y se vaya a donde corresponda
+    render: h => h('frame', [h(router['dummy'])]),
 }).$start()

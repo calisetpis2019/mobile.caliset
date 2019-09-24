@@ -11,6 +11,7 @@ import TermsAndConditions from '../components/TermsAndConditions'
 import EditPassword from '../components/EditPassword'
 import Asignations from '../components/Asignations'
 import Information from '../components/Information'
+import Dummy from '../components/Dummy'
 
 
 const router = {
@@ -27,5 +28,6 @@ const router = {
     editPassword: EditPassword,
     asignations: Asignations,
     information: Information,
+    dummy: Dummy
 }
 export default router
