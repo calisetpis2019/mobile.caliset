@@ -33,7 +33,7 @@
                 this.$goto('editPassword',{ clearHistory: true });
             },
             dismiss() {
-                // this.$store.commit('logout');
+                this.$store.commit('logout');
                 this.$goto('login',{ clearHistory: true });
             }
         },

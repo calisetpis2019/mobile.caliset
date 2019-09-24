@@ -23,7 +23,7 @@ const router = {
     notes: Notes,
     sample: Sample,
     userPage: UserPage,
-    terms: TermsAndConditions,
+    termsAndConditions: TermsAndConditions,
     editPassword: EditPassword,
     asignations: Asignations,
     information: Information,

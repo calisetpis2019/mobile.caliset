@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" actionBarHidden="true">
+    <Page class="page" actionBarHidden="true" @navigatedTo="checkLoggedIn">
         <FlexboxLayout class="page" backgroundColor="#1F1B24">
                 <GridLayout rows="*,auto,auto,auto" class="grid">
                 <!-- <StackLayout class="input-field"> -->
@@ -69,15 +69,26 @@
                 this.input.email = state.email;
                 this.input.password = state.password;
             });
-            
+            if (this.$store.state.loggedIn) {
+                if (this.$store.state.firstLogIn){
+                    this.$goto('termsAndConditions',{ clearHistory: true });
+                    //Debe ir a terminos y condiciones
+                    // this.$goto('editPassword',{ clearHistory: true });
+                }
+                else{
+                    this.$goto('home',{ clearHistory: true });    
+                }
+                
+            }
         },
 
 
         updated() {
             if (this.$store.state.loggedIn) {
                 if (this.$store.state.firstLogIn){
+                    this.$goto('termsAndConditions',{ clearHistory: true });
                     //Debe ir a terminos y condiciones
-                    this.$goto('editPassword',{ clearHistory: true });
+                    // this.$goto('editPassword',{ clearHistory: true });
                 }
                 else{
                     this.$goto('home',{ clearHistory: true });    
@@ -87,6 +98,21 @@
         },
 
         methods: {
+            checkLoggedIn(){
+                // this.$store.commit('load');
+                if (this.$store.state.loggedIn) {
+                    if (this.$store.state.firstLogIn){
+                        this.$goto('termsAndConditions',{ clearHistory: true });
+                        //Debe ir a terminos y condiciones
+                        // this.$goto('editPassword',{ clearHistory: true });
+                    }
+                    else{
+                        this.$goto('home',{ clearHistory: true });
+                    }
+                
+                }
+            },
+
             login() {
                 if (!this.input.email || !this.input.password) {
                     this.processing = false;                
@@ -132,7 +158,7 @@
                             //ir a terminos y condiciones
                             console.log("primer log in");
                             console.log(result.firstLogin);
-                            this.$goto('terms',{ clearHistory: true });
+                            this.$goto('termsAndConditions',{ clearHistory: true });
                         }
                         else {
                             console.log("log in");

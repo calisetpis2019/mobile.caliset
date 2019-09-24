@@ -7,11 +7,13 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         session : {
+            userId: "",
             email: "",
+            password: "",
             token: "",
+            firstLogin: false,
         },
-        ipAPI : "10.0.2.2",
-        //ipAPI : "192.168.1.4",
+        ipAPI : "",
         loggedIn: false,
     },
     mutations: {
@@ -21,16 +23,17 @@ const store = new Vuex.Store({
                     Object.assign(state, JSON.parse(ApplicationSettings.getString("store")))
                 );
             }
-            //state.ipAPI = "192.168.1.4";
-            ipAPI : "10.0.2.2";
+            // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
+            state.ipAPI = "192.168.1.2";
         },
+        
         login(state, data) {
             console.log("userId en el store");
             console.log(data.userId);
             state.session.userId = data.userId;
             state.session.email = data.email;
+            state.session.password = data.password;
             state.session.token = data.token;
-            state.session.password = data.password
             state.session.firstLogin = data.firstLogin;
             if (data.firstLogin) {
                 console.log("store -> mutation -> login(): firstlogin");
@@ -43,8 +46,11 @@ const store = new Vuex.Store({
         },
 
         logout(state) {
+            state.session.userId = "";
             state.session.email = "";
+            state.session.password = "";
             state.session.token = "";
+            state.session.firstLogin = false;
             state.loggedIn = false;
         }
     }
