@@ -1,5 +1,9 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true">
+    <!-- <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true"> -->
+    <Page class="page" backgroundColor="#1F1B24" >
+    <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
+        <!-- <Label text="Cambio de contraseña" color="white" style="margin:5px"/> -->
+    <!-- </ActionBar> -->
 
         <GridLayout rows="auto,auto,auto,auto,*,auto" >
             <StackLayout row="0" verticalAlignment="top">
@@ -7,20 +11,20 @@
             </StackLayout>
             <StackLayout row="1" style="padding: 10">
                 <Label text="Contraseña anterior:" class="info"/>
-                <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red"/>
+                <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red" textWrap="true" />
                 <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword"/>
             </StackLayout>
 
             <StackLayout row="2" style="padding: 10">
                 <Label text="Nueva contraseña:" class="info" />
-                <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" />
-                <TextField v-model="input.newPass" class="input" @textChange="checkNewPassword"/>
+                <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" textWrap="true" />
+                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword"/>
             </StackLayout>
 
             <StackLayout row="3" style="padding: 10">
                 <Label text="Repita la nueva contraseña:" class="info" />
-                <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" />
-                <TextField v-model="input.newPass2" class="input" @textChange="checkIfNewPasswordMatches"/>
+                <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" textWrap="true" />
+                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches"/>
             </StackLayout>
 
             <StackLayout row="4" />
@@ -138,6 +142,9 @@
                         alert(this.errorMsg);
                         console.log("changePassword: respuesta vacía");
                         console.log(result);
+                        // Si hubo error debo borrar los datos del login...
+                        this.$store.commit('logout');
+                        // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña
                         this.$goto('login',{ clearHistory: true });
                     }
                     else {
@@ -152,6 +159,9 @@
                     this.errorMsg = "Falló la conexión. Por favor intente luego.";
                     alert(this.errorMsg);
                     console.error(error);
+                    // Si hubo error debo borrar los datos del login...
+                    this.$store.commit('logout');
+                    // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña
                     this.$goto('login',{ clearHistory: true });
                     });
             },
@@ -177,13 +187,17 @@
                         alert(this.errorMsg);
                         console.log("setFirstLogin: respuesta vacía");
                         console.log(result);
+                        // Si hubo error debo borrar los datos del login...
+                        this.$store.commit('logout');
+                        // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña
                         this.$goto('login',{ clearHistory: true });
                     }
                     else {
                         console.log("setFirstLogIn respondio OK");
                         console.log(result);
                         alert("Usuario modificado con éxito!");
-                        this.$store.state.firstLogIn = false;
+                        this.$store.state.session.firstLogIn = false;
+                        this.$store.state.loggedIn = true;
                         this.$goto('home',{ clearHistory: true });
                     }
                 }, error => {
@@ -192,6 +206,8 @@
                     this.errorMsg = "Falló la conexión. Por favor intente luego.";
                     alert(this.errorMsg);
                     console.error(error);
+                    // Si hubo error debo borrar los datos del login...
+                    this.$store.commit('logout');
                     this.$goto('login',{ clearHistory: true });
                     });
             },

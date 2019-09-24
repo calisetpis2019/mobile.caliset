@@ -95,9 +95,13 @@
         },
 
         mounted() {
+            // this.loadOperations();
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
+            if (!this.$store.state.loggedIn) {
+                this.$goto('login',{ clearHistory: true });
+            }
         },
 
         updated() {

@@ -7,7 +7,9 @@ import Camera from '../components/Camera'
 import Notes from '../components/Notes'
 import Sample from '../components/Sample'
 import UserPage from '../components/UserPage'
+import TermsAndConditions from '../components/TermsAndConditions'
 import EditPassword from '../components/EditPassword'
+
 
 const router = {
     home: Home,
@@ -19,6 +21,7 @@ const router = {
     notes: Notes,
     sample: Sample,
     userPage: UserPage,
-    editPassword: EditPassword,
+    termsAndConditions: TermsAndConditions,
+    editPassword: EditPassword
 }
 export default router

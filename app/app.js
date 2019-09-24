@@ -49,5 +49,5 @@ if (store.state.loggedIn) {
 
 new Vue({
     store: store,
-    render: h => h('frame', [h(router[route])]),
+    render: h => h('frame', [h(router['login'])]),
 }).$start()

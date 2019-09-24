@@ -9,18 +9,20 @@
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="auto,auto">
+        <GridLayout rows="auto,auto,*,auto">
             <StackLayout row="0" verticalAlignment="left" >
                 <Label text="aca iria la info del usuario logueado" class="text" />
             </StackLayout>
 
-            <StackLayout row="1" verticalAlignmen="center" >
+            <StackLayout row="1" verticalAlignment="center" >
                 <Button text="REGISTRO DE HORAS" @tap="$goto('timeSheet',{
                         clearHistory: false,
                         props: {
                             operations: operations,
                         }})" class="btn btn-primary m-t-20" style="width:25%" />
-
+            </StackLayout>
+            <StackLayout row="2" />
+            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="left" >
                 <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:25%" />
             </StackLayout>
         </GridLayout>

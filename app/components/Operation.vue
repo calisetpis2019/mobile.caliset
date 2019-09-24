@@ -12,7 +12,11 @@
         <GridLayout rows="auto,*,auto" >
 
             <StackLayout row="0" >
-                <Label text="Operacion tal" class="title"/>
+                <Label text="Operacion tal" class="info"/>
+                <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
+                    <Button textWrap="true" text="Asignaciones" class="btn-confirm" width="50%" />
+                    <Button textWrap="true" text="Informacion" class=" btn-reject" width="50%" />
+                </StackLayout>
             </StackLayout>
 
             <ScrollView row="1" class="chat" backgroundColor="#1F1B24">
@@ -151,10 +155,6 @@
     // Custom styles
     .fa {
         color: $accent-dark;  
-    }
-
-    .info {
-        font-size: 20;
     }
 
     .fas {
