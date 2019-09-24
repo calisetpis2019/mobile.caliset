@@ -28,7 +28,7 @@
                         }})" class="btn btn-primary m-t-20" style="width:25%" />
             </StackLayout>
             <StackLayout row="2" />
-            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="left" >
+            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
                 <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:25%" />
             </StackLayout>
         </GridLayout>

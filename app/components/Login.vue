@@ -50,9 +50,8 @@
     import * as http from "http";
     import * as ApplicationSettings from "application-settings";
     import { connectionType, getConnectionType } from 'tns-core-modules/connectivity'
-
+    // var patt = new RegExp("^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$");
     export default {
-
         data() {
             return {
                 input: {
@@ -98,25 +97,18 @@
         // },
 
         methods: {
-            // checkLoggedIn(){
-            //     // this.$store.commit('load');
-            //     if (this.$store.state.loggedIn) {
-            //         if (this.$store.state.firstLogIn){
-            //             this.$goto('termsAndConditions',{ clearHistory: true });
-            //             //Debe ir a terminos y condiciones
-            //             // this.$goto('editPassword',{ clearHistory: true });
-            //         }
-            //         else{
-            //             this.$goto('home',{ clearHistory: true });
-            //         }
-                
-            //     }
-            // },
-
+            validEmail(text){
+                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text);
+            },
             login() {
                 if (!this.input.email || !this.input.password) {
-                    this.processing = false;                
+                    this.processing = false;
                     this.errorMsg = "Debe ingresar correo y contraseña";
+                    return;
+                }
+                else if (!this.validEmail(this.input.email)){
+                    this.processing = false;
+                    this.errorMsg = "El correo electrónico no es válido.";
                     return;
                 }
                 else if (getConnectionType() === connectionType.none) {
