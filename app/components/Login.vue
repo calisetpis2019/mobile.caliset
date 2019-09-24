@@ -88,7 +88,6 @@
                 if (this.$store.state.firstLogIn){
                     this.$goto('termsAndConditions',{ clearHistory: true });
                     //Debe ir a terminos y condiciones
-                    // this.$goto('editPassword',{ clearHistory: true });
                 }
                 else{
                     this.$goto('home',{ clearHistory: true });    

@@ -14,11 +14,7 @@
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
-                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation',{
-                    clearHistory: false,
-                    props: {
-                        added: added,
-                    }})" backgroundColor="#1F1B24">
+                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation')" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card">
@@ -40,10 +36,11 @@
 
                 <Label text="Operaciones Activas" class="subtitle" />
 
-                <ListView class="list-group" for="active in operations"  @itemTap="$goto('operation')">
+                <!--@itemTap="goToOperation(active.id)" Esto iba ListView-->
+                <ListView class="list-group" for="active in operations" >
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card">
+                            <StackLayout class="card" @tap="goToOperation(active)">
                                 <Label :text="'Operacion'+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
                                     <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/>
@@ -117,7 +114,8 @@
             }
         },
 
-        methods:{
+        methods: {
+
             loadOperations(){
                 this.processing=true;
                 this.operations = [];
@@ -144,6 +142,8 @@
                             this.operations.push(result[i]);
                         }
                         
+                        console.log("Home: Guardo las operaciones del usuario en el store");
+                        this.$store.commit('operations',{ operations: this.operations });
                         this.processing=false;
                         //console.log("carga en el arreglo local:");
                         //console.log(operations);
@@ -155,10 +155,15 @@
                     });
             },
 
-            logout() {
-                this.$store.commit('logout');
-                this.$goto('login',{ clearHistory: true });
-            }
+            goToOperation(operation) {
+                console.log("Selecciono operacion ")
+                console.log(operation.id);
+                this.$store.commit('selectedOperation',{ selectedOperation: operation});
+                console.log("operacion guardada:");
+                console.log(this.$store.state.selectedOperation.id);
+                this.$goto('operation');
+            },
+
         },
 
 
