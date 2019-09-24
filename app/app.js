@@ -49,5 +49,7 @@ if (store.state.loggedIn) {
 
 new Vue({
     store: store,
+    // render: h => h('frame', [h(router[route])]),
+    // Para evitar que se muestre home cuando no está iniciado, que siempre inicie en login y se vaya a donde corresponda
     render: h => h('frame', [h(router['login'])]),
 }).$start()

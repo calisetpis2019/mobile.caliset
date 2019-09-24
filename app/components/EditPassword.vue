@@ -1,7 +1,7 @@
 <template>
     <!-- <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true"> -->
     <Page class="page" backgroundColor="#1F1B24" >
-    <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
+        <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
         <!-- <Label text="Cambio de contraseña" color="white" style="margin:5px"/> -->
     <!-- </ActionBar> -->
 

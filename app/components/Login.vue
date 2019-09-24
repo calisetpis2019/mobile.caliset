@@ -60,7 +60,6 @@
                 },
                 errorMsg: "",
                 processing: false,
-                primerLogin: true,
             };
         },
 
@@ -144,8 +143,9 @@
                         console.log(result);
                     }
                     else {
-                        console.log("Token:" + result.accessToken); 
+                        console.log("Token:" + result.accessToken);
                         console.log("userId: " + result.userId);
+
                         this.$store.commit('login',{
                             userId: result.userId,
                             email: this.input.email,
@@ -165,7 +165,6 @@
                             console.log(result.firstLogin);
                             this.$goto('home',{ clearHistory: true });   
                         }
-                        
                     }
                 }, error => {
                     this.processing = false;

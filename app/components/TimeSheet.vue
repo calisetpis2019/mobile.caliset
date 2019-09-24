@@ -1,7 +1,7 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="TimeSheet" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
@@ -11,7 +11,7 @@
 
         <GridLayout rows="auto,auto,auto,auto,auto,auto">
 
-            <Label row="0" text="Registro de Horas" class="subtitile" color="white"/>
+            <Label row="0" text="Registro de Horas" class="subtitle" color="white"/>
 
             <StackLayout row="1" class="input-field">
                 
@@ -141,7 +141,7 @@
         font-size: 20;
     }
 
-    .subtitile {
+    .subtitle {
         text-align: center;
         font-size: 30px;
         background-color: #1F1B24;

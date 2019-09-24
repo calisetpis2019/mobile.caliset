@@ -1,7 +1,7 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Muestra" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="UserPage" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 

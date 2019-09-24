@@ -1,7 +1,7 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Operation" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
@@ -14,8 +14,10 @@
             <StackLayout row="0" >
                 <Label text="Operacion tal" class="info"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
-                    <Button textWrap="true" text="Asignaciones" class="btn-confirm" width="50%" />
-                    <Button textWrap="true" text="Informacion" class=" btn-reject" width="50%" />
+                    <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
+                            @tap="$goto('asignations')"/>
+                    <Button textWrap="true" text="Informacion" class=" btn-primary" width="50%" 
+                            @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
 

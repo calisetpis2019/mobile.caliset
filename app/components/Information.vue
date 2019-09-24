@@ -1,7 +1,7 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
 
-        <ActionBar title="Sample" class="action-bar" backgroundColor="#1F1B24" >
+        <ActionBar title="Information" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
                 <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
@@ -9,21 +9,14 @@
             </GridLayout>
         </ActionBar>
 
-        <GridLayout rows="auto,auto,*,auto">
+        <GridLayout rows="auto,*">
 
-            <Label row="0" text="Tomar Muestra" class="subtitle" style="margin-bottom:50;"/>
+            <Label row="0" text="Aca se muestra la informacion de la operación seleccionada" class="subtitle"       style="margin-bottom:50;"/>
 
-            <StackLayout row="1">
-                <Label text="Etiqueta: " color="white" horizontalAlignment="left" fontSize="20" />
-                <Label text="#DEF4930FCX90" color="white" horizontalAlignment = "center" fontSize="20" class="card"/>
-            </StackLayout>
-
-            <FlexboxLayout row="2" flexDirection="column">
-                <TextView class="card text" hint="Escribir comentario..." v-model="coment"/>
-            </FlexboxLayout>
-
-            <Button row="3" class="btn btn-primary" text="Guardar" @tap="saveComent()"/>
-
+            <GridLayout row="1" rows="*" columns="*,*">
+                <Label row="0" column="0" text="info1: " color="white" horizontalAlignment="left" fontSize="20" />
+                <Label row="0" column="1" rowtext="#DEF4930FCX90" color="white" horizontalAlignment = "center" fontSize="20" class="card"/>
+            </GridLayout>
 
         </GridLayout>
 
@@ -48,10 +41,6 @@
 
         methods: {
 
-            saveComent(){
-                //Guarda comentario y borra el campo de texto
-                this.coment = "";
-            }
         }
     };
 
