@@ -75,7 +75,6 @@
     import * as ApplicationSettings from "application-settings";
 
     export default {
-        // props: ['email','token'],
 
         data() {
             return {
@@ -98,21 +97,11 @@
         },
 
         mounted() {
-            // this.loadOperations();
+
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
-            // if (!this.$store.state.loggedIn) {
-            //     this.$goto('login',{ clearHistory: true });
-            // }
         },
-
-        // updated() {
-        //     // this.$store.commit("load");
-        //     if (!this.$store.state.loggedIn) {
-        //         this.$goto('login',{ clearHistory: true });
-        //     }
-        // },
 
         computed: {
             user() {
@@ -134,7 +123,6 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        this.hasError = true;
                         console.log(result);
                     }
                     else {

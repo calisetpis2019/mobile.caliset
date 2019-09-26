@@ -22,22 +22,21 @@
                 <Label :text="'Operación '+ this.$store.state.selectedOperation.id" class="info"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
                     <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
-                            @tap="$goto('asignations')"/>
+                            @tap="$goto('assignations')"/>
                     <Button textWrap="true" text="Informacion" class=" btn-primary" width="50%" 
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
 
             <ScrollView row="1" class="chat" backgroundColor="#1F1B24">
-                <!-- aca van los comentarios-->
-                <!--<WrapLayout orientation="horizontal">-->
                 <ListView class="list-group" for="c in comments" separatorColor="#1F1B24"> <!--for="for c in comments" -->
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card">
+                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
                             <StackLayout class="card">
                                 <Label
                                     row="1"
-                                    :text="c.name"
+                                    :text="c.id"
                                     horizontalAlignment="center"
                                     verticalAlignment="top"
                                     backgroundColor="black"
@@ -48,28 +47,21 @@
                                 ></Label>
 
                                 <TextView  editable="false" backgroundColor="#565656">
-                                    <Span :text="c.text" color="white" />
+                                    <Span :text="c.commentary" color="white" />
                                 </TextView>
                             
                             </StackLayout>
                         </CardView>
                     </v-template>
-                    <!--<Label text="aca van los comentarios" color="white"/>-->
                 </ListView>
-                <!--</WrapLayout>-->
             </ScrollView>            
 
             <StackLayout row="2" orientation="horizontal" height="10%" horizontalAlign="center" >
-            <!--<Label dock="bottom" text="OPERACION" color="white"/>-->
+            
                 <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')">
                     <FormattedString>
-                        <!--
-                            <Span text="f249;\n" fontFamily="FontAwesome"></Span>
-                            <Span text="Notas"></Span> 
-                        -->
-                        <Span text.decode="&#xf249;" class="fas" ></Span>
-                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
+                        <Span text.decode="&#xf249;" class="fas" ></Span>                        
 
                     </FormattedString>
                 </Button>
@@ -78,20 +70,15 @@
                     <FormattedString textWrap="true">
                         
                         <Span text.decode="&#xf030; " class="fas"></Span>
-                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
-
 
                     </FormattedString>
                             
-                </Button> <!-- @tap="$goto('home')" -->
+                </Button>
 
                 <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample')">
                     <FormattedString>
-                        <!--
-                            <Label text="&#xf02a;\n" fontFamily="FontAwesome" />
-                        -->
+                        
                         <Span text.decode="&#xf02a; " class="fas" ></Span>
-                        <!-- <Span class="fa" text.decode="&#xf030;"/> -->
 
                     </FormattedString>
                 </Button>
@@ -103,47 +90,17 @@
 </template>
 
 <script>
+    import * as http from "http";
     
     export default {
 
         data() {
             return {
-                comments: [{
-                        name: "Juan Carlos",
-                        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                comments: [],
 
-                    },
-                    {
-                        name: "Comentario 2"
-                    },
-                    {
-                        name: "Comentario 3"
-                    },
-                    {
-                        name: "Comentario 4"
-                    },
-                    {
-                        name: "Comentario 5"
-                    },
-                    {
-                        name: "Comentario 4"
-                    },
-                    {
-                        name: "Comentario 5"
+                show: [],
 
-                    },
-                    {
-                        name: "Comentario 4"
-                    },
-                    {
-                        name: "Comentario 5"
-
-                    },
-                    {
-                        name: "Comentario 6"
-
-                    }
-                ],
+                processing: false,
             };
         },
 
@@ -159,6 +116,60 @@
                 //por implementar...
                 //Carga los mensajes en la pantalla principal de la operación.
                 console.log("carga los comentarios de la operación con id: " + this.$store.state.selectedOperation.id);
+
+                this.comments = [];
+                http.request({
+                // Hay que sustituir la ip, obviamente
+                url: "http://" + this.$store.state.ipAPI + 
+                ":21021/api/services/app/Comments/GetCommentsByOperation?operationId="+this.$store.state.selectedOperation.id,
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processing=false;
+                        console.log(result);
+                    }
+                    else {
+                        
+                        console.log("Largo del resultado:");
+                        console.log(result.length);
+                        console.log("Resultado json:");
+                        console.log(result);
+                        
+                        for(var i = 0; i < result.length; i++){
+
+                            this.comments.push(result[i]);
+
+                            //Aca tiene que obtener de alguna forma el usuario y la fecha del comentario:
+/*
+                            http.request({
+                            url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/Get?Id="+result.C,
+                            method: "GET",
+                            headers: { "Content-Type": "application/json" },
+                            }).then(response => {
+                                var result = response.content.toJSON().result;
+                                if (result == null) {
+                                    console.log(result);
+                                }
+                                else {
+                                    
+                                        this.comments[i].name = result.userName;
+                                    
+                                }
+                            }, error => {                                
+                                console.error(error);
+                                });
+*/
+                        }
+
+                        this.processing=false;
+                    }
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                    });
+
             }
         },
 

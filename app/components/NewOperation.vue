@@ -16,10 +16,16 @@
             </GridLayout>
         </ActionBar>
         
-        <GridLayout rows="auto,*">
+        <GridLayout rows="auto,auto,*">
 
             <Label row="0" text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
+            <Label row="1" text="En Construcción..." class="subtitle" flexWrapBefore="true" style="margin-top: 20"/>
+
+            <Label row="2" text.decode="&#xf0ad; " class="fas" style="font-size:140; padding: 40;color: gray"
+                        verticalAlignment="center" horizontalAlignment="center"/>
+
+<!--
             <ListView row="1" class="list-group" for="n in added" backgroundColor="#1F1B24" @itemTap="showButtons">
                 <v-template>
                     <CardView  margin="10" elevation="40" radius="1" class="card">
@@ -39,14 +45,13 @@
                     </CardView>
                 </v-template>
             </ListView>
-
+-->
         </GridLayout>
     </Page>
 </template>
 
 <script>
     export default {
-        props: ['email','token','added'],
 
         data() {
             return {

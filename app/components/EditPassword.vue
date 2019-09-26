@@ -4,7 +4,7 @@
         <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
         <!-- <Label text="Cambio de contraseña" color="white" style="margin:5px"/> -->
     <!-- </ActionBar> -->
-
+    <FlexboxLayout>
         <GridLayout rows="auto,auto,auto,auto,*,auto" >
             <StackLayout row="0" verticalAlignment="top">
                 <Label text="Ingrese una nueva contraseña: " class="subtitle" style="margin-bottom:100"/>
@@ -33,6 +33,8 @@
                     class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
         </GridLayout>
+
+    </FlexboxLayout>
 
     </Page>
 </template>

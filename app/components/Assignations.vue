@@ -17,7 +17,7 @@
         </ActionBar>
         <GridLayout rows="auto,*">
 
-            <Label row="0" text="Asignaciones Operacion tal:" class="subtitle" flexWrapBefore="true"/>
+            <Label row="0" :text="'Asignaciones Operacion:'+this.$store.state.selectedOperation.id" class="subtitle" flexWrapBefore="true"/>
 
 <!--
             <Label row="1" text="Acá se listan las asignaciones de la operación seleccionada"
@@ -30,10 +30,9 @@
                             <StackLayout row="0" class="container">
                                 <Label :text="a.operation.id + ' : ' + a.date " class="list-group-item-heading"/>
                                 <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
-                                <Label :text="'Embarcación: ' + a.shipName"   color="white"  />
-                                <Label :text="'Cliente: ' + a.client" color="white"  />
-                                <Label v-if="a.aware" text="Aceptada"   color="white"  />
-                                <Label v-else text="Rechazada">
+                                <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
+                                <Label :text="'Cliente: ' + a.operation.client" color="white"  />
+                               <!-- <Label :text="a.aware"   color="white"  />-->
                             </StackLayout >
                         </GridLayout>
                     </CardView>
@@ -45,6 +44,7 @@
 </template>
 
 <script>
+    import * as http from "http";
     export default {
 
         data() {
@@ -62,25 +62,24 @@
         methods: {
 
             loadAssignations() {
+                console.log("entro aca!");
                 this.assignations = [];
                 http.request({
-                // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + 
-                    ":21021/api/services/app/Comments/Assignation/GetMyAssignmentsByOperation?operationId="
-                    +this.$store.state.selectedOperation.id,
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignmentsByOperation?operationId="+this.$store.state.selectedOperation.id,
                 method: "GET",
-                headers: {  
-                        "Content-Type": "application/json"
-                        "Authorization":"Bearer "+ this.$store.state.session.token 
-                    },
+                headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token },
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
+                        console.log("fue null??");
                         console.log(result);
                     }
                     else {
                         
+                        console.log("entonces aca..");
                         console.log("Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
@@ -89,6 +88,7 @@
                         for(var i = 0; i < result.length; i++){
 
                             this.assignations.push(result[i]);
+                            /*
                             if (this.assignations.aware == NULL) {
                                 this.assignations.aware = "Pendiente";
                             }
@@ -97,13 +97,14 @@
                             }
                             else {
                                 this.assignations.splice(i,1);
-                            }
+                            }*/
                         }
 
                         this.processing=false;
                     }
                 }, error => {
-                    this.processing=false;
+                    console.log("hubo error?");
+                    this.processing=false;                
                     console.error(error);
                     });
             }

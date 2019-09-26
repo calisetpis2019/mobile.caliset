@@ -9,7 +9,7 @@ import Sample from '../components/Sample'
 import UserPage from '../components/UserPage'
 import TermsAndConditions from '../components/TermsAndConditions'
 import EditPassword from '../components/EditPassword'
-import Asignations from '../components/Asignations'
+import Assignations from '../components/Assignations'
 import Information from '../components/Information'
 import Dummy from '../components/Dummy'
 
@@ -26,7 +26,7 @@ const router = {
     userPage: UserPage,
     termsAndConditions: TermsAndConditions,
     editPassword: EditPassword,
-    asignations: Asignations,
+    assignations: Assignations,
     information: Information,
     dummy: Dummy
 }
