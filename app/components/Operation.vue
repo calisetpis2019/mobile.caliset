@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadComments">
 
         <!-- <ActionBar title="Operation" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
@@ -19,7 +19,7 @@
         <GridLayout rows="auto,*,auto" >
 
             <StackLayout row="0" >
-                <Label text="Operacion tal" class="info"/>
+                <Label :text="'Operación '+ this.$store.state.selectedOperation.id" class="info"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
                     <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
                             @tap="$goto('asignations')"/>
@@ -151,7 +151,16 @@
             user() {
                 return this.$store.state.session.email;
             }
-        }
+        },
+
+        methods: {
+
+            loadComments() {
+                //por implementar...
+                //Carga los mensajes en la pantalla principal de la operación.
+                console.log("carga los comentarios de la operación con id: " + this.$store.state.selectedOperation.id);
+            }
+        },
 
     };
 </script>

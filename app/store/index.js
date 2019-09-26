@@ -21,6 +21,7 @@ const store = new Vuex.Store({
         ipAPI : "",
         loggedIn: false,
     },
+
     mutations: {
         load(state) {
             if(ApplicationSettings.getString("store")) {
@@ -29,7 +30,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "192.168.1.2";
+            state.ipAPI = "10.0.2.2";
         },
         
         login(state, data) {
@@ -54,6 +55,16 @@ const store = new Vuex.Store({
                 state.session.date.month = d.getMonth() + 1;
                 state.session.date.day = d.getDate();
             }
+        },
+
+        operations(state,data) {
+            console.log("Store: Guardo las operaciones del usuario en el store");
+            state.operations = data.operations;
+        },
+
+        selectedOperation(state,data) {
+            console.log("Store: Guardo la operación seleccionada");
+            state.selectedOperation = data.selectedOperation;
         },
 
         logout(state) {
