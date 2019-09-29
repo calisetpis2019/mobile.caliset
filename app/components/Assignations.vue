@@ -62,7 +62,6 @@
         methods: {
 
             loadAssignations() {
-                console.log("entro aca!");
                 this.assignations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignmentsByOperation?operationId="+this.$store.state.selectedOperation.id,
@@ -74,12 +73,10 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        console.log("fue null??");
                         console.log(result);
                     }
                     else {
                         
-                        console.log("entonces aca..");
                         console.log("Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
@@ -88,22 +85,18 @@
                         for(var i = 0; i < result.length; i++){
 
                             this.assignations.push(result[i]);
-                            /*
-                            if (this.assignations.aware == NULL) {
-                                this.assignations.aware = "Pendiente";
-                            }
-                            else if (this.assignations.aware) {
+                            
+                            if (this.assignations.aware) {
                                 this.assignations.aware = "Aceptada";
                             }
                             else {
                                 this.assignations.splice(i,1);
-                            }*/
+                            }
                         }
 
                         this.processing=false;
                     }
                 }, error => {
-                    console.log("hubo error?");
                     this.processing=false;                
                     console.error(error);
                     });
