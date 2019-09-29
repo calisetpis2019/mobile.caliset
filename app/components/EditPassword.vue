@@ -88,6 +88,7 @@
             },
 
             checkNewPassword() {
+                this.input.newPass2="";
                 var patt = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
                 //var res = patt.test(this.input.newPass);
                 if (!(patt.test(this.input.newPass))) {
