@@ -116,9 +116,9 @@
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Operation/GetAll",
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperations",
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
