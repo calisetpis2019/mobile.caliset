@@ -28,33 +28,29 @@
                 </StackLayout>
             </StackLayout>
 
-            <ScrollView row="1" class="chat" backgroundColor="#1F1B24">
-                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24"> <!--for="for c in comments" -->
-                    <v-template>
-                        <CardView margin="10" elevation="40" radius="1" class="card">
-                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                            <StackLayout class="card">
-                                <Label
-                                    row="1"
-                                    :text="c.id"
-                                    horizontalAlignment="center"
-                                    verticalAlignment="top"
-                                    backgroundColor="black"
-                                    width="100%"
-                                    padding="10"
-                                    fontSize="15"
-                                    color="white"
-                                ></Label>
+            <ListView row="1" class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
+                <v-template>
+                    <CardView margin="10" elevation="40" radius="1" class="card">
+                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
+                        <StackLayout class="card">
+                            <Label
+                                :text="c.creatorUser.name+' '+c.creatorUser.surname"
+                                backgroundColor="black"
+                                width="100%"
+                                fontSize="20"
+                                color="white"
+                            ></Label>
 
-                                <TextView  editable="false" backgroundColor="#565656">
-                                    <Span :text="c.commentary" color="white" />
-                                </TextView>
-                            
-                            </StackLayout>
-                        </CardView>
-                    </v-template>
-                </ListView>
-            </ScrollView>            
+                            <TextView  editable="false" backgroundColor="#565656">
+                                <Span :text="c.commentary" color="white" />
+                            </TextView>
+
+                            <Label :text="c.creationTime" fontSize="15" color="white" horizontalAlignment="right"/>
+                        
+                        </StackLayout>
+                    </CardView>
+                </v-template>
+            </ListView>
 
             <StackLayout row="2" orientation="horizontal" height="10%" horizontalAlign="center" >
             
@@ -116,14 +112,17 @@
                 //por implementar...
                 //Carga los mensajes en la pantalla principal de la operación.
                 console.log("carga los comentarios de la operación con id: " + this.$store.state.selectedOperation.id);
-
+                this.names = [];
                 this.comments = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
                 url: "http://" + this.$store.state.ipAPI + 
                 ":21021/api/services/app/Comments/GetCommentsByOperation?operationId="+this.$store.state.selectedOperation.id,
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token,
+                    },
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
@@ -141,28 +140,7 @@
 
                             this.comments.push(result[i]);
 
-                            //Aca tiene que obtener de alguna forma el usuario y la fecha del comentario:
-/*
-                            http.request({
-                            url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/Get?Id="+result.C,
-                            method: "GET",
-                            headers: { "Content-Type": "application/json" },
-                            }).then(response => {
-                                var result = response.content.toJSON().result;
-                                if (result == null) {
-                                    console.log(result);
-                                }
-                                else {
-                                    
-                                        this.comments[i].name = result.userName;
-                                    
-                                }
-                            }, error => {                                
-                                console.error(error);
-                                });
-*/
                         }
-
                         this.processing=false;
                     }
                 }, error => {

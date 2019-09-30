@@ -21,7 +21,7 @@
 
             <ScrollView row="1">
 
-                <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*" columns="">
+                <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*" columns="">
 
                     <Label :row="i" column="0" text="Fecha: " color="white" horizontalAlignment="left" fontSize="20"/>
                     <Label :row="i++" column="1" :text="operation.date" color="white" horizontalAlignment = "right" fontSize="20"/>
@@ -51,10 +51,13 @@
                     <Label :row="i++" column="1" :text="operation.operationType.name" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Nominador: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.nominador.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <Label :row="i++" column="1" :text="operation.nominator.name" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Cargador: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.cargador.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <Label :row="i++" column="1" :text="operation.charger.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+
+                    <Label :row="i" column="0" text="Responsable: " color="white" horizontalAlignment="left" fontSize="20" />
+                    <Label :row="i++" column="1" :text="operation.manager.name + ' ' + operation.manager.surname" color="white" horizontalAlignment = "right" fontSize="20"/>
 
 
 
