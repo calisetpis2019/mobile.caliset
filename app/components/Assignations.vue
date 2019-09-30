@@ -17,7 +17,7 @@
         </ActionBar>
         <GridLayout rows="auto,*">
 
-            <Label row="0" :text="'Asignaciones Operacion:'+this.$store.state.selectedOperation.id" class="subtitle" flexWrapBefore="true"/>
+            <Label row="0" :text="'Asignaciones Operacion: '+this.$store.state.selectedOperation.id" class="subtitle" flexWrapBefore="true"/>
 
 <!--
             <Label row="1" text="Acá se listan las asignaciones de la operación seleccionada"
@@ -28,10 +28,13 @@
                     <CardView  margin="10" elevation="40" radius="1" class="card">
                         <GridLayout rows="*,auto" class="card">
                             <StackLayout row="0" class="container">
+                                <!-- INFORMACION A DEFINIR -->
                                 <Label :text="a.operation.id + ' : ' + a.date " class="list-group-item-heading"/>
+                                <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
                                 <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
                                 <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
-                                <Label :text="'Cliente: ' + a.operation.client" color="white"  />
+                                <Label :text="'Nominador: ' + a.operation.nominator.id" color="white"  />
+                                <Label :text="'Cargador: ' + a.operation.charger.id" color="white"  />
                                <!-- <Label :text="a.aware"   color="white"  />-->
                             </StackLayout >
                         </GridLayout>
@@ -84,13 +87,8 @@
                         
                         for(var i = 0; i < result.length; i++){
 
-                            this.assignations.push(result[i]);
-                            
-                            if (this.assignations.aware) {
-                                this.assignations.aware = "Aceptada";
-                            }
-                            else {
-                                this.assignations.splice(i,1);
+                            if (result[i].aware){
+                                this.assignations.push(result[i]);    
                             }
                         }
 
