@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();">
         <!-- <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="*" >
                 <Label text="CALISET S.A." color="white" horizontalAlignment= "left" />
@@ -20,21 +20,19 @@
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
-                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation')" backgroundColor="#1F1B24">
+                <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card">
-                                <Label :text="n.name" class="list-group-item-heading"/>
+                            <StackLayout class="card" @tap="goToNewOperation(n)">
+                                <Label :text="'Operación: '+ n.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <Label :text="n.type" color="white"/>
-                                    <Label :text="n.load"   color="white"  />
-                                    <Label :text="n.client" color="white"  />
-                                    <Label :text="n.date"   color="white"  />
+                                    <Label :text="n.commodity+' | '+n.destiny+' | '+n.date" color="white"/>
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
                     </v-template>
                 </ListView>
+                <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
             </StackLayout>
 
             
@@ -47,7 +45,7 @@
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap="goToOperation(active)">
-                                <Label :text="'Operacion'+' '+active.id" class="list-group-item-heading"/>
+                                <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
                                     <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/>
                                 </StackLayout>
@@ -79,20 +77,11 @@
         data() {
             return {
                 operations: [],
+                newOperations: [],
 
                 processing: false,
+                processingNO: false,
 
-                added: [{
-                        name: "Operación 5",
-                        type: "Carga",
-                        load: "Arroz",
-                        client: "SAMAN",
-                        date: "11/10/2019"
-                    },
-                    {
-                        name: "Operación 6"
-                    }
-                ],
             };
         },
 
@@ -111,14 +100,56 @@
 
         methods: {
 
+            loadNewOperations(){
+                this.processingNO=true;
+                this.newOperations = [];
+                http.request({
+                // Hay que sustituir la ip, obviamente
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignments",
+                method: "GET",
+                headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processingNO=false;
+                        console.log(result);
+                    }
+                    else {
+                        
+                        console.log("Largo del resultado:");
+                        console.log(result.length);
+                        console.log("Resultado json:");
+                        console.log(result);
+                        
+                        for(var i = 0; i < result.length; i++){
+                            if (result[i].aware == null) {
+                                this.newOperations.push(result[i].operation);    
+
+                            }
+                        }
+
+                        this.processingNO=false;
+                        
+                    }
+
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                    });
+            },
+
             loadOperations(){
                 this.processing=true;
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Operation/GetAll",
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignments",
                 method: "GET",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token },
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
@@ -133,7 +164,9 @@
                         console.log(result);
                         
                         for(var i = 0; i < result.length; i++){
-                            this.operations.push(result[i]);
+                            if (result[i].aware){
+                                this.operations.push(result[i].operation);    
+                            }
                         }
                         
                         console.log("Home: Guardo las operaciones del usuario en el store");
@@ -149,8 +182,17 @@
                     });
             },
 
+            goToNewOperation(newOperation) {
+                console.log("Selecciono operacion con nuevas asignaciones ");
+                console.log(newOperation.id);
+                this.$store.commit('selectedNewOperation',{ selectedNewOperation: newOperation});
+                console.log("Nueva operacion guardada:");
+                console.log(this.$store.state.selectedNewOperation.id);
+                this.$goto('newOperation');
+            },
+
             goToOperation(operation) {
-                console.log("Selecciono operacion ")
+                console.log("Selecciono operacion ");
                 console.log(operation.id);
                 this.$store.commit('selectedOperation',{ selectedOperation: operation});
                 console.log("operacion guardada:");

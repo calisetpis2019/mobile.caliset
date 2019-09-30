@@ -67,6 +67,11 @@ const store = new Vuex.Store({
             state.selectedOperation = data.selectedOperation;
         },
 
+        selectedNewOperation(state,data) {
+            console.log("Store: Guardo la operación seleccionada");
+            state.selectedNewOperation = data.selectedNewOperation;
+        },
+
         logout(state) {
             state.session.userId = "";
             state.session.email = "";

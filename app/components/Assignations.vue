@@ -53,6 +53,7 @@
         data() {
             return {
                 assignations: [], 
+                processing: false,
             }
         },
 
@@ -66,6 +67,7 @@
 
             loadAssignations() {
                 this.assignations = [];
+                this.processing=true;
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignmentsByOperation?operationId="+this.$store.state.selectedOperation.id,
                 method: "GET",
