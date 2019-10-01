@@ -1,12 +1,5 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
-        <!-- <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
-            <GridLayout rows="auto" columns="*" >
-                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" />
-                <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
-                @tap="$goto('userPage')"/> 
-            </GridLayout>
-        </ActionBar> -->
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
                 <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
@@ -40,16 +33,22 @@
             
             <StackLayout row="1">
 
-                <Label text="Operaciones Activas" class="subtitle" />
+                <Label v-if="!processing && operations.length == 0" 
+                text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info" />
+                <Label v-if="operations.length > 0" text="Operaciones Activas" class="subtitle" />
 
                 <!--@itemTap="goToOperation(active.id)" Esto iba ListView-->
                 <ListView class="list-group" for="active in operations" >
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap="goToOperation(active)">
-                                <Label :text="'Operacion'+' '+active.id" class="list-group-item-heading"/>
+                                <Label :text="'Operación'+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/>
+                                    <!-- <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/> -->
+                                    <Label :text="active.commodity" color="white"/>
+                                    <Label :text="active.date" color="white"  />
+                                    <Label :text="active.location.id" color="white"  />
+                                    <Label :text="active.operationState.name"   color="white"  />
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
@@ -97,7 +96,6 @@
         },
 
         mounted() {
-
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
@@ -105,7 +103,9 @@
 
         computed: {
             user() {
-                return this.$store.state.session.email;
+                // return this.$store.state.session.email;
+                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
+                return name;
             }
         },
 
@@ -133,14 +133,24 @@
                         console.log(result);
                         
                         for(var i = 0; i < result.length; i++){
-                            this.operations.push(result[i]);
+                            // Solo se guarda si la operación está activa...
+                            if (result[i].operationState.id == 3){
+                                this.operations.push(result[i]);
+                            }
                         }
-                        
+
+                        // Se ordenan operaciones por orden ascendente de fecha...
+                        this.operations.sort(function(a,b){
+                            let x = new Date(a.date);
+                            let y = new Date(b.date);
+                            return x-y;
+                        });
+
                         console.log("Home: Guardo las operaciones del usuario en el store");
                         this.$store.commit('operations',{ operations: this.operations });
                         this.processing=false;
                         //console.log("carga en el arreglo local:");
-                        //console.log(operations);
+                        console.log(operations);
                         
                     }
                 }, error => {
@@ -150,7 +160,7 @@
             },
 
             goToOperation(operation) {
-                console.log("Selecciono operacion ")
+                console.log("Selecciono operacion ");
                 console.log(operation.id);
                 this.$store.commit('selectedOperation',{ selectedOperation: operation});
                 console.log("operacion guardada:");

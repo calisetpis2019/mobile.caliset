@@ -18,7 +18,7 @@
 
         <GridLayout rows="auto,auto,*,auto">
             <StackLayout row="0" verticalAlignment="left" >
-                <Label text="aca iria la info del usuario logueado" class="text" />
+                <Label text="Acá iria la info del usuario logueado" class="info" />
             </StackLayout>
 
             <StackLayout row="1" verticalAlignment="center" >
@@ -52,7 +52,9 @@
 
         computed: {
             user() {
-                return this.$store.state.session.email;
+                // return this.$store.state.session.email;
+                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
+                return name;
             }
         },
 
