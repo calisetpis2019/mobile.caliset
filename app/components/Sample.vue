@@ -1,13 +1,5 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
-
-        <!-- <ActionBar title="Sample" class="action-bar" backgroundColor="#1F1B24" >
-            <GridLayout rows="auto" columns="*" >
-                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
-                @tap="$goto('userPage')"/> 
-            </GridLayout>
-        </ActionBar> -->
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
                 <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
@@ -15,35 +7,44 @@
                 @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
-        
-        <GridLayout rows="auto,auto,*,auto">
+        <ScrollView>
+            <GridLayout rows="auto,auto,auto,*,auto">
 
-            <Label row="0" text="Tomar Muestra" class="subtitle" style="margin-bottom:50;"/>
+                <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
 
-            <StackLayout row="1">
-                <Label text="Etiqueta: " color="white" horizontalAlignment="left" fontSize="20" />
-                <Label text="#DEF4930FCX90" color="white" horizontalAlignment = "center" fontSize="20" class="card"/>
-            </StackLayout>
+                <GridLayout row="1" columns="auto,*">
+                    <Label col="0"  text="Id muestra:" color="white" class="subtitle" />
+                    <Label col="1" :text=idSample color="white" fontSize="20" class="card"/>
+                </GridLayout>
 
-            <FlexboxLayout row="2" flexDirection="column">
-                <TextView class="card text" hint="Escribir comentario..." v-model="coment"/>
-            </FlexboxLayout>
+                <FlexboxLayout row="2" flexDirection="column">
+                    <TextView class="card text" hint="Agregar comentario a la muestra..." v-model="comment"/>
+                </FlexboxLayout>
 
-            <Button row="3" class="btn btn-primary" text="Guardar" @tap="saveComent()"/>
+                <ActivityIndicator row="3" :busy="processing" color="white"></ActivityIndicator>
 
+                <GridLayout row="4" columns="auto,*">
+                    <Button col="0" :isEnabled="canAddSample" class="btn btn-primary" text="Agregar muestra" @tap="createSample()"/>
+                    <Button col="1" :isEnabled="(idSample != '') && !canAddSample" class="btn btn-primary" text="Nueva muestra" @tap="newSample()"/>
+                </GridLayout>
 
-        </GridLayout>
+            </GridLayout>
+        </ScrollView>
 
     </Page>
 </template>
 
 <script>
+    import * as http from "http";
+    
     export default {
-        // props: ['email','token'],
 
         data() {
             return {
-                coment: "",
+                comment: "",
+                idSample: "",
+                processing: false,
+                canAddSample: true
             }
         },
 
@@ -57,9 +58,48 @@
 
         methods: {
 
-            saveComent(){
+            createSample(){
+                this.processing = true;
+                this.canAddSample = false;
                 //Guarda comentario y borra el campo de texto
-                this.coment = "";
+                http.request({
+                    // Hay que sustituir la ip, obviamente
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Sample/Create",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer "+ this.$store.state.session.token
+                    },
+                    content: JSON.stringify({
+                        "comment": this.comment,
+                        "operationId": this.$store.state.selectedOperation.id
+                    })
+                }).then(response => {
+                    this.processing=false;
+                    var result = response.content.toJSON().result;
+                    if (response.content.toJSON().success) {
+                        console.log("Success. Se creó la muestra con éxito.");
+                        if (result == null) {
+                            this.idSample = "654321";
+                        }
+                        else {
+                            this.idSample = result;
+                        }
+                    }
+                    else {
+                        console.log("Algo falló al crear la muestra.");
+                    }
+                }, error => {
+                    this.processing = false;
+                    // this.errorMsg = "Falló la conexión. Por favor intente luego.";
+                    console.error(error);
+                    });
+            },
+            newSample(){
+                console.log("Nueva muestra");
+                this.idSample = "";
+                this.comment = "";
+                this.canAddSample = true;
             }
         }
     };
