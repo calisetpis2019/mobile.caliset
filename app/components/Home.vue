@@ -105,7 +105,7 @@
                 this.newOperations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignments",
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsPending",
                 method: "GET",
                 headers: { 
                         "Content-Type": "application/json",
@@ -125,7 +125,7 @@
                         
                         for(var i = 0; i < result.length; i++){
                             if (result[i].aware == null) {
-                                this.newOperations.push(result[i].operation);    
+                                this.newOperations.push(result[i]);    
 
                             }
                         }
