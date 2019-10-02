@@ -78,6 +78,7 @@
         data() {
             return {
                 operations: [],
+                idActiva: 2, //Hardcodeado en el backend.
 
                 processing: false,
 
@@ -116,7 +117,7 @@
                 this.operations = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperations",
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId="+this.idActiva,
                 method: "GET",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
                 }).then(response => {
@@ -133,10 +134,7 @@
                         console.log(result);
                         
                         for(var i = 0; i < result.length; i++){
-                            // Solo se guarda si la operación está activa...
-                            if (result[i].operationState.id == 3){
-                                this.operations.push(result[i]);
-                            }
+                            this.operations.push(result[i]);
                         }
 
                         // Se ordenan operaciones por orden ascendente de fecha...
