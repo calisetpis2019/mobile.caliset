@@ -17,7 +17,7 @@
         </ActionBar>
 
         <GridLayout rows="auto,*">
-            <Label row="0" :text="'Operación '+ operation.id" class="info" style="margin-bottom:50;"/>
+            <Label row="0" :text="'Operación '+ operation.id" class="subtitle" style="margin-bottom:50;"/>
 
             <ScrollView row="1">
 

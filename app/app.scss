@@ -45,10 +45,14 @@
 }
 
 .subtitle {
-    text-align: center;
-    font-size: 25;
-    background-color: #1F1B24;
+    text-align: left;
+    font-size: 20;
+    background-color: black;
     color: white;
+    padding: 5;
+    border-bottom-color: white;
+    border-bottom-style: outset;
+    border-with: 2px;
 }
 
 .list-group-item-heading {
@@ -58,8 +62,6 @@
 }
 
 .list-group {
-    margin: 10;
-    margin-bottom: 20;
     background-color:#1F1B24;
 }
 

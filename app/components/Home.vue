@@ -1,5 +1,6 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();">
+
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
                 <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
@@ -7,42 +8,53 @@
                 @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
-        <GridLayout rows="2*,3*,auto">
 
-            <StackLayout row="0">
+        <GridLayout rows="auto,*">
+
+            <StackLayout row="0" >
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
-                <ListView class="list-group" for="n in added" @itemTap="$goto('newOperation')" backgroundColor="#1F1B24">
+                <Label  v-if="!processingNO && newOperations.length == 0" 
+                        text="No hay nuevas operaciones" textWrap="true" class="info"
+                        style="margin-top: 20" />
+
+                <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card">
-                                <Label :text="n.name" class="list-group-item-heading"/>
+                            <StackLayout class="card" @tap="goToNewOperation(n)">
+                                <Label :text="'Operación: '+ n.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <Label :text="n.type" color="white"/>
-                                    <Label :text="n.load"   color="white"  />
-                                    <Label :text="n.client" color="white"  />
-                                    <Label :text="n.date"   color="white"  />
+                                    <!--<Label :text="n.commodity+' | '+n.destiny+' | '+n.date" color="white"/>-->
+                                    <Label :text="n.commodity" color="white"/>
+                                    <Label :text="n.date" color="white"  />
+                                    <Label :text="n.location.id" color="white"  />
+                                    <Label :text="n.operationState.name"   color="white"  />
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
                     </v-template>
                 </ListView>
+                <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
             </StackLayout>
 
             
             <StackLayout row="1">
 
-                <Label v-if="!processing && operations.length == 0" 
-                text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info" />
-                <Label v-if="operations.length > 0" text="Operaciones Activas" class="subtitle" />
+                <!--<Label v-if="operations.length > 0" text="Operaciones Activas" class="subtitle" />-->
+
+                <Label  text="Operaciones Activas" class="subtitle" />
+                
+                <Label  v-if="!processing && operations.length == 0" 
+                        text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
+                        style="margin-top: 20" />
 
                 <!--@itemTap="goToOperation(active.id)" Esto iba ListView-->
-                <ListView class="list-group" for="active in operations" >
+                <ListView class="list-group" for="active in operations">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap="goToOperation(active)">
-                                <Label :text="'Operación'+' '+active.id" class="list-group-item-heading"/>
+                                <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
                                     <!-- <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/> -->
                                     <Label :text="active.commodity" color="white"/>
@@ -58,11 +70,13 @@
 
             </StackLayout>
 
+<!--
             <StackLayout row="2">
 
                 <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
 
             </StackLayout>
+-->
 
         </GridLayout>
 
@@ -79,20 +93,11 @@
             return {
                 operations: [],
                 idActiva: 2, //Hardcodeado en el backend.
+                newOperations: [],
 
                 processing: false,
+                processingNO: false,
 
-                added: [{
-                        name: "Operación 5",
-                        type: "Carga",
-                        load: "Arroz",
-                        client: "SAMAN",
-                        date: "11/10/2019"
-                    },
-                    {
-                        name: "Operación 6"
-                    }
-                ],
             };
         },
 
@@ -111,6 +116,43 @@
         },
 
         methods: {
+
+            loadNewOperations(){
+                this.processingNO=true;
+                this.newOperations = [];
+                http.request({
+                // Hay que sustituir la ip, obviamente
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsPending",
+                method: "GET",
+                headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processingNO=false;
+                        console.log(result);
+                    }
+                    else {
+                        
+                        console.log("Largo del resultado:");
+                        console.log(result.length);
+                        console.log("Resultado json:");
+                        console.log(result);
+                        
+                        for(var i = 0; i < result.length; i++){
+                                this.newOperations.push(result[i]);
+                        }
+
+                        this.processingNO=false;
+                        
+                    }
+
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                    });
+            },
 
             loadOperations(){
                 this.processing=true;
@@ -155,6 +197,15 @@
                     this.processing=false;
                     console.error(error);
                     });
+            },
+
+            goToNewOperation(newOperation) {
+                console.log("Selecciono operacion con nuevas asignaciones ");
+                console.log(newOperation.id);
+                this.$store.commit('selectedNewOperation',{ selectedNewOperation: newOperation});
+                console.log("Nueva operacion guardada:");
+                console.log(this.$store.state.selectedNewOperation.id);
+                this.$goto('newOperation');
             },
 
             goToOperation(operation) {
