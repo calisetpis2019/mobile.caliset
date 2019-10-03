@@ -7,8 +7,6 @@ Vue.prototype.$router = router
 Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);
 
 
-//Esto no funciona con el tns preview:
-/*
 var firebase = require("nativescript-plugin-firebase");
 
     firebase.init({
@@ -17,6 +15,8 @@ var firebase = require("nativescript-plugin-firebase");
 
       onPushTokenReceivedCallback: (token) => {
         console.log('[Firebase] onPushTokenReceivedCallback:', { token });
+        store.commit('load');
+        store.commit('saveFirebaseToken', {token: token});
       },
 
       onMessageReceivedCallback: (message) => {
@@ -29,7 +29,7 @@ var firebase = require("nativescript-plugin-firebase");
       .catch(error => {
         console.log('[Firebase] Initialize', { error });
       });
-*/
+
 
 Vue.prototype.$goto = function (to, options) {
     this.$navigateTo(this.$router[to], options)

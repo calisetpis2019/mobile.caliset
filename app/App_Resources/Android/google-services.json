@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "229842680005",
-    "firebase_url": "https://mobile-caliset-pushtest.firebaseio.com",
-    "project_id": "mobile-caliset-pushtest",
-    "storage_bucket": "mobile-caliset-pushtest.appspot.com"
+    "project_number": "69850736628",
+    "firebase_url": "https://calidapp-157d8.firebaseio.com",
+    "project_id": "calidapp-157d8",
+    "storage_bucket": "calidapp-157d8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:229842680005:android:b8a3c50cf894e088",
+        "mobilesdk_app_id": "1:69850736628:android:b05fbf5729a8d4c7743ba1",
         "android_client_info": {
           "package_name": "org.nativescript.mobilecaliset"
         }
       },
       "oauth_client": [
         {
-          "client_id": "229842680005-tngrna8p1r9jah295f66h0stlrsg6mho.apps.googleusercontent.com",
+          "client_id": "69850736628-lg0t22u9gqdmvr9amrm1o9789clet1u0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA6nKDSvXCS5hUYOZm1DcNEtarrTgT3gIA"
+          "current_key": "AIzaSyC948aDZa-ntaoKhRb9r7HG_FlMFB3JIqE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "229842680005-tngrna8p1r9jah295f66h0stlrsg6mho.apps.googleusercontent.com",
+              "client_id": "69850736628-lg0t22u9gqdmvr9amrm1o9789clet1u0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

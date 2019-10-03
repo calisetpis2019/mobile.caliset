@@ -8,9 +8,9 @@
                 @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
+        <GridLayout rows="auto,*,auto">
 
-        <GridLayout rows="auto,*">
-
+            <TextView row="2" :text=firebaseToken />
             <StackLayout row="0" >
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
@@ -112,6 +112,9 @@
                 // return this.$store.state.session.email;
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
+            },
+            firebaseToken() {
+                return this.$store.state.session.firebaseToken;
             }
         },
 
