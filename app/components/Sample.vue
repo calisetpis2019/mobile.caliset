@@ -79,12 +79,7 @@
                     var result = response.content.toJSON().result;
                     if (response.content.toJSON().success) {
                         console.log("Success. Se creó la muestra con éxito.");
-                        if (result == null) {
-                            this.idSample = "654321";
-                        }
-                        else {
-                            this.idSample = result;
-                        }
+                        this.idSample = result;
                     }
                     else {
                         console.log("Algo falló al crear la muestra.");
