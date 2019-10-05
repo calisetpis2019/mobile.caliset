@@ -50,7 +50,6 @@
 
         computed: {
             user() {
-                // return this.$store.state.session.email;
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
             }
@@ -63,7 +62,6 @@
                 this.canAddSample = false;
                 //Guarda comentario y borra el campo de texto
                 http.request({
-                    // Hay que sustituir la ip, obviamente
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Sample/Create",
                     method: "POST",
                     headers: {
@@ -86,7 +84,6 @@
                     }
                 }, error => {
                     this.processing = false;
-                    // this.errorMsg = "Falló la conexión. Por favor intente luego.";
                     console.error(error);
                     });
             },
