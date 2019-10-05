@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations()">
 
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
@@ -10,7 +10,7 @@
         </ActionBar>
         <GridLayout rows="auto,*,auto">
 
-            <TextView row="2" :text=firebaseToken />
+            <TextView row="2" :text=firebaseToken color="white" editable="false" @tap="sendDeviceToken()" />
             <StackLayout row="0" >
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
@@ -25,7 +25,6 @@
                             <StackLayout class="card" @tap="goToNewOperation(n)">
                                 <Label :text="'Operación: '+ n.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <!--<Label :text="n.commodity+' | '+n.destiny+' | '+n.date" color="white"/>-->
                                     <Label :text="n.commodity" color="white"/>
                                     <Label :text="n.date" color="white"  />
                                     <Label :text="n.location.id" color="white"  />
@@ -41,22 +40,18 @@
             
             <StackLayout row="1">
 
-                <!--<Label v-if="operations.length > 0" text="Operaciones Activas" class="subtitle" />-->
-
                 <Label  text="Operaciones Activas" class="subtitle" />
                 
                 <Label  v-if="!processing && operations.length == 0" 
                         text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
                         style="margin-top: 20" />
 
-                <!--@itemTap="goToOperation(active.id)" Esto iba ListView-->
                 <ListView class="list-group" for="active in operations">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap="goToOperation(active)">
                                 <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <!-- <Label :text="active.commodity+' | '+active.destiny+' | '+active.date" color="white"/> -->
                                     <Label :text="active.commodity" color="white"/>
                                     <Label :text="active.date" color="white"  />
                                     <Label :text="active.location.id" color="white"  />
@@ -69,14 +64,6 @@
                 <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
             </StackLayout>
-
-<!--
-            <StackLayout row="2">
-
-                <Button text="cargar opes" class="btn-primary" @tap="loadOperations"> </Button>
-
-            </StackLayout>
--->
 
         </GridLayout>
 
@@ -105,16 +92,16 @@
             this.$store.subscribe((mutations, state) => {
                 ApplicationSettings.setString("store", JSON.stringify(state));
             });
+            this.sendDeviceToken();
         },
 
         computed: {
             user() {
-                // return this.$store.state.session.email;
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
             },
             firebaseToken() {
-                return this.$store.state.session.firebaseToken;
+                return this.$store.state.session.deviceToken.token;
             }
         },
 
@@ -124,7 +111,6 @@
                 this.processingNO=true;
                 this.newOperations = [];
                 http.request({
-                // Hay que sustituir la ip, obviamente
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsPending",
                 method: "GET",
                 headers: { 
@@ -161,8 +147,7 @@
                 this.processing=true;
                 this.operations = [];
                 http.request({
-                // Hay que sustituir la ip, obviamente
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId="+this.idActiva,
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idActiva,
                 method: "GET",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
                 }).then(response => {
@@ -192,7 +177,6 @@
                         console.log("Home: Guardo las operaciones del usuario en el store");
                         this.$store.commit('operations',{ operations: this.operations });
                         this.processing=false;
-                        //console.log("carga en el arreglo local:");
                         console.log(operations);
                         
                     }
@@ -219,6 +203,34 @@
                 console.log(this.$store.state.selectedOperation.id);
                 this.$goto('operation');
             },
+
+            sendDeviceToken() {
+                if (this.$store.state.session.deviceToken.updated){
+                    console.log("http://" + this.$store.state.ipAPI + ":21021/api/services/app/UserDeviceToken/AddDeviceToken?input=" + this.$store.state.session.deviceToken.token);
+                    //Se envía deviceToken al back...
+                    http.request({
+                        url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/UserDeviceToken/AddDeviceToken?input=" + this.$store.state.session.deviceToken.token,
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":"Bearer "+ this.$store.state.session.token 
+                        }
+                    }).then(response => {
+                        var result = response.content.toJSON().result;
+                        if (response.content.toJSON().success) {
+                            console.log("Se envió device token con éxito.");                                
+                            console.log(result);
+                            this.$store.state.session.deviceToken.updated = false;
+                        }
+                        else {
+                            console.log("Hubo un problema al enviar el device token.");
+                        }
+                    }, error => {
+                        this.processing=false;
+                        console.error(error);
+                    });
+                }
+            }
 
         },
 
