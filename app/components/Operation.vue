@@ -93,7 +93,8 @@
                 comments: [],
                 show: [],
                 processing: false,
-                nameOfPicture: "prueba_1",
+                nameOfPicture: "prueba_1.jpg",
+                folder: "Camera/Prueba", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
             };
         },
 
@@ -158,13 +159,13 @@
 
                 const fileSystemModule = require("tns-core-modules/file-system");
 
-                const folderPath = fileSystemModule.path.join(tempPicturePath, "Prueba");
+                const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
                 const folder = fileSystemModule.Folder.fromPath(folderPath);
 
                 console.log(folderPath);
 
                 //Defino las opciones con las que se guardará la imagen:
-                var options = { width: 300, height: 300, keepAspectRatio: false, nameOfPicture: this.nameOfPicture};
+                var options = { width: 300, height: 300, keepAspectRatio: false, saveToGallery: false, nameOfPicture: this.nameOfPicture};
 
                 //Modulo necesario para guardar la imagen:
                 const imageSourceModule = require("tns-core-modules/image-source");
