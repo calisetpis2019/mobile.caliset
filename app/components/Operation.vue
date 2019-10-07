@@ -93,8 +93,8 @@
                 comments: [],
                 show: [],
                 processing: false,
-                nameOfPicture: "prueba_1.jpg",
-                folder: "Camera/Prueba", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
+                nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id + "_",
+                folder: "Camera/Operacion_" + this.$store.state.selectedOperation.id, // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
             };
         },
 
@@ -102,10 +102,21 @@
             user() {
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
-            }
+            },            
         },
 
         methods: {
+            createDateTimeStamp() {
+                var result = "";
+                var date = new Date();
+                result = date.getFullYear().toString() +
+                    ((date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1).toString() : (date.getMonth() + 1).toString()) +
+                    (date.getDate() < 10 ? "0" + date.getDate().toString() : date.getDate().toString()) + "_" +
+                    date.getHours().toString() +
+                    date.getMinutes().toString() +
+                    date.getSeconds().toString();
+                return result;
+            },
 
             loadComments() {
                 //por implementar...
@@ -150,6 +161,7 @@
             },
 
             takePicture() {
+                var timeStamp = this.createDateTimeStamp();
 
                 //Creo el directorio donde se guardará la foto:
                 var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
@@ -158,22 +170,21 @@
 
                 const fileSystemModule = require("tns-core-modules/file-system");
 
-                const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
-                const folder = fileSystemModule.Folder.fromPath(folderPath);
-
-                console.log(folderPath);
-
                 //Defino las opciones con las que se guardará la imagen:
-                var options = { width: 300, height: 300, keepAspectRatio: false, saveToGallery: false, nameOfPicture: this.nameOfPicture};
+                var options = {keepAspectRatio: true, saveToGallery: false, nameOfPicture: this.nameOfPicture};
+                // var options = { width: 300, height: 300, keepAspectRatio: true, nameOfPicture: this.nameOfPicture};
 
                 //Modulo necesario para guardar la imagen:
                 const imageSourceModule = require("tns-core-modules/image-source");
-
                 //Utilizo la cámara para obtener la imagen:
                 camera.requestPermissions()
                 .then(() => {
                     camera.takePicture(options).
                     then((imageAsset) => {
+                        const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
+                        const folder = fileSystemModule.Folder.fromPath(folderPath);
+
+                        console.log(folderPath);
                         console.log("Result is an image asset instance");
                         console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
                         console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
@@ -182,7 +193,7 @@
                         const source = new imageSourceModule.ImageSource();
                         source.fromAsset(imageAsset)
                         .then((imageSource) => {
-                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture);
+                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture + timeStamp + ".jpg");
                             const saved = imageSource.saveToFile(filePath, "jpg");
                             if (saved) {
                                 console.log("Saved: " + filePath);
