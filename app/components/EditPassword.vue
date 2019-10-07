@@ -1,9 +1,6 @@
 <template>
-    <!-- <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true"> -->
     <Page class="page" backgroundColor="#1F1B24" >
         <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
-        <!-- <Label text="Cambio de contraseña" color="white" style="margin:5px"/> -->
-    <!-- </ActionBar> -->
     <FlexboxLayout>
         <GridLayout rows="auto,auto,auto,auto,*,auto" >
             <StackLayout row="0" verticalAlignment="top">
@@ -90,7 +87,6 @@
             checkNewPassword() {
                 this.input.newPass2="";
                 var patt = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
-                //var res = patt.test(this.input.newPass);
                 if (!(patt.test(this.input.newPass))) {
                     console.log("verdadero");
                     this.incorrectNewPassword = true;
@@ -112,22 +108,9 @@
                     this.ctrl.trd=true;
                 }
             },
-/*
-            clearErrorPwd() {
-                this.incorrectPassword = false;
-            },
 
-            clearErrorNPwd() {
-                this.incorrectNewPassword = false;
-            },
-
-            clearErrorNPwd2() {
-                this.incorrectNewPassword2 = false;
-            },
-*/  
             changePassword() {
                 http.request({
-                    // Hay que sustituir la ip, obviamente
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/ChangePassword",
                     method: "POST",
                     headers: { 
@@ -174,7 +157,6 @@
                 console.log("userId");
                 console.log(this.$store.state.session.userId);
                 http.request({
-                    // Hay que sustituir la ip, obviamente
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/SetFirstLogin",
                     method: "POST",
                     headers: { 

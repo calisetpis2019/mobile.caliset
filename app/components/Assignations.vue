@@ -1,13 +1,5 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadAssignations">
-
-        <!-- <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
-            <GridLayout rows="auto" columns="*" >
-                <Label text="CALISET S.A." color="white" horizontalAlignment= "left" style="margin:5px"/>
-                <Button :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
-                @tap="$goto('userPage')"/> 
-            </GridLayout>
-        </ActionBar> -->
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
                 <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
@@ -19,10 +11,6 @@
 
             <Label row="0" :text="'Asignaciones Operacion '+this.$store.state.selectedOperation.id" class="subtitle" flexWrapBefore="true"/>
 
-<!--
-            <Label row="1" text="Acá se listan las asignaciones de la operación seleccionada"
-                    color="white" />
--->
             <ListView row="1" class="list-group" for="a in assignations" backgroundColor="#1F1B24">
                 <v-template>
                     <CardView  margin="10" elevation="40" radius="1" class="card">
@@ -35,7 +23,6 @@
                                 <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
                                 <Label :text="'Nominador: ' + a.operation.nominator.id" color="white"  />
                                 <Label :text="'Cargador: ' + a.operation.charger.id" color="white"  />
-                               <!-- <Label :text="a.aware"   color="white"  />-->
                             </StackLayout >
                         </GridLayout>
                     </CardView>
@@ -59,7 +46,6 @@
 
         computed: {
             user() {
-                // return this.$store.state.session.email;
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
             }

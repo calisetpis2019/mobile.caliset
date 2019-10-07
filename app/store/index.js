@@ -1,8 +1,11 @@
 import Vue from 'nativescript-vue';
 import Vuex from 'vuex';
+import * as http from "http";
 import * as ApplicationSettings from "application-settings";
 
 Vue.use(Vuex);
+
+var firebase = require("nativescript-plugin-firebase");
 
 const store = new Vuex.Store({
     state: {
@@ -16,6 +19,10 @@ const store = new Vuex.Store({
                 year: "",
                 month: "",
                 day: ""
+            },
+            deviceToken: {
+                token: "",
+                updated: true 
             }
         },
         ipAPI : "",
@@ -55,6 +62,7 @@ const store = new Vuex.Store({
                 state.session.date.month = d.getMonth() + 1;
                 state.session.date.day = d.getDate();
             }
+            firebase.registerForPushNotifications();
         },
 
         operations(state,data) {
@@ -73,6 +81,7 @@ const store = new Vuex.Store({
         },
 
         logout(state) {
+            firebase.unregisterForPushNotifications();
             state.session.userId = "";
             state.session.email = "";
             state.session.password = "";
@@ -82,11 +91,39 @@ const store = new Vuex.Store({
             state.session.date.year = "";
             state.session.date.year = "";
             state.loggedIn = false;
+        },
+
+        saveDeviceToken(state, data){
+            state.session.deviceToken.token = data.token;
+            state.session.deviceToken.updated = true;
+            if (state.session.token != ""){
+                http.request({
+                    url: "http://" + state.ipAPI + ":21021/api/services/app/UserDeviceToken/AddDeviceToken?input=" + state.session.deviceToken.token,
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ state.session.token 
+                    }
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (response.content.toJSON().success) {
+                        console.log("Se envió device token con éxito.");                                
+                        console.log(result);
+                        state.session.deviceToken.updated = false;
+                    }
+                    else {
+                        console.log("Hubo un problema al enviar el device token.");
+                    }
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                });
+            }
+
         }
     }
 });
 
 Vue.prototype.$store = store;
 
-// module.exports = store;
 export default store
