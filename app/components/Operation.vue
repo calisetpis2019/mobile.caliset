@@ -54,7 +54,8 @@
                     </FormattedString>
                 </Button>
 
-                <Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera')">
+                <!--<Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera')">-->
+                <Button  textWrap="true" width="40%" class="btn-primary " @tap="takePicture">
                     <FormattedString textWrap="true">
                         
                         <Span text.decode="&#xf030; " class="fas"></Span>
@@ -79,16 +80,21 @@
 
 <script>
     import * as http from "http";
+
+    //Para utilizar la cámara:
+    import * as camera from "nativescript-camera";
+    import { Image } from "tns-core-modules/ui/image";
+
     
     export default {
 
         data() {
             return {
                 comments: [],
-
                 show: [],
-
                 processing: false,
+                nameOfPicture: "prueba_1.jpg",
+                folder: "Camera/Prueba", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
             };
         },
 
@@ -141,7 +147,58 @@
                     console.error(error);
                     });
 
-            }
+            },
+
+            takePicture() {
+
+                //Creo el directorio donde se guardará la foto:
+                var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
+
+                console.log(tempPicturePath);
+
+                const fileSystemModule = require("tns-core-modules/file-system");
+
+                const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
+                const folder = fileSystemModule.Folder.fromPath(folderPath);
+
+                console.log(folderPath);
+
+                //Defino las opciones con las que se guardará la imagen:
+                var options = { width: 300, height: 300, keepAspectRatio: false, saveToGallery: false, nameOfPicture: this.nameOfPicture};
+
+                //Modulo necesario para guardar la imagen:
+                const imageSourceModule = require("tns-core-modules/image-source");
+
+                //Utilizo la cámara para obtener la imagen:
+                camera.requestPermissions()
+                .then(() => {
+                    camera.takePicture(options).
+                    then((imageAsset) => {
+                        console.log("Result is an image asset instance");
+                        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
+                        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
+
+
+                        const source = new imageSourceModule.ImageSource();
+                        source.fromAsset(imageAsset)
+                        .then((imageSource) => {
+                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture);
+                            const saved = imageSource.saveToFile(filePath, "jpg");
+                            if (saved) {
+                                console.log("Saved: " + filePath);
+                                console.log("Image saved successfully!");
+                            }
+                        }).catch((err) => {
+                            console.log("Error -> " + err.message);
+                        });
+                    }).catch((err) => {
+                        console.log("Error -> " + err.message);
+                    });
+                }).catch((err) => {
+                    console.log("Error -> " + err.message);
+                });
+            },
+
         },
 
     };
