@@ -1,27 +1,35 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" >
         <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
-    <FlexboxLayout>
-        <GridLayout rows="auto,auto,auto,auto,*,auto" >
+    <FlexboxLayout class="page" backgroundColor="#1F1B24">
+        <ScrollView>
+        <GridLayout rows="auto,auto,auto,auto,*,auto" class="grid">
             <StackLayout row="0" verticalAlignment="top">
                 <Label v-if="equalPasswords" v-model="errorLabelEqualPwds" color="red" textWrap="true" />
             </StackLayout>
-            <StackLayout row="1" style="padding: 10">
-                <Label text="Contraseña anterior:" class="info"/>
+
+            <StackLayout row="1" style="padding: 10" class="form">
+                <Label text="Contraseña actual:" class="info" style="padding: 10"/>
                 <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red" textWrap="true" />
-                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword"/>
+                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword" returnKeyType="next">
+                </TextField>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <StackLayout row="2" style="padding: 10">
-                <Label text="Nueva contraseña:" class="info" />
+            <StackLayout row="2" style="padding: 10" class="form">
+                <Label text="Nueva contraseña:" class="info" style="padding: 10"/>
                 <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" textWrap="true" />
-                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword"/>
+                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword" returnKeyType="next" />
+            <StackLayout class="hr-light"></StackLayout>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <StackLayout row="3" style="padding: 10">
-                <Label text="Repita la nueva contraseña:" class="info" />
+            <StackLayout row="3" style="padding: 10" class="form">
+                <Label text="Repita la nueva contraseña:" class="info" style="padding: 10" />
                 <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" textWrap="true" />
-                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches"/>
+                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches" returnKeyType="done">
+                </TextField>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
             <StackLayout row="4" />
@@ -30,6 +38,7 @@
                     class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
         </GridLayout>
+        </ScrollView>
 
     </FlexboxLayout>
 
@@ -222,16 +231,5 @@
     // Start custom common variables
     @import '../app-variables';
     // End custom common variables
-
-    // Custom styles
-    .fa {
-        color: $accent-dark;
-    }
-
-    .info {
-        font-size: 20;
-        color: white;
-    }
-
 
 </style>

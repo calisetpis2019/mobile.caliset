@@ -9,8 +9,8 @@
 
         <GridLayout rows="auto,auto,*,auto">
             <StackLayout row="0" verticalAlignment="left" >
-                <Label :text=userEmail class="info" />
-                <Label :text=lastLogin class="info" />
+                <Label :text=userEmail class="info" textWrap="true" />
+                <Label :text=lastLogin class="info" textWrap="true" />
             </StackLayout>
 
             <StackLayout row="1" verticalAlignment="center" >
