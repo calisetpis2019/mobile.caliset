@@ -8,17 +8,19 @@
             </GridLayout>
         </ActionBar>
         
-        <GridLayout rows="auto,*,auto">
+        <GridLayout rows="auto,auto,*,auto">
 
-            <Label row="0" text="Escribir Nota" class="subtitle" flexWrapBefore="true"/>
+            <Label row="0" text="Escribir comentario" class="subtitle" flexWrapBefore="true"/>
+
+            <ActivityIndicator row="1" :busy="processing" color="white" />
             
-            <FlexboxLayout row="1" flexDirection="column">
+            <FlexboxLayout row="2" flexDirection="column">
                 
-                <TextView class="card text" hint="Escribir nota..." v-model="note"/>
+                <TextView class="card text" hint="Escribir comentario..." v-model="comment" />
                 
             </FlexboxLayout>
             
-            <Button row="2" class="btn btn-primary" text="Guardar" @tap="saveNote()"/>
+            <Button row="3" class="btn btn-primary" text="Agregar comentario" @tap="saveNote()" />
             
 
         </GridLayout>
@@ -26,12 +28,14 @@
 </template>
 
 <script>
+    import * as http from "http";
+
     export default {
-        props: ['email','token'],
 
         data() {
             return {
-                note: "",
+                comment: "",
+                processing: false
             }
         },
         
@@ -43,10 +47,35 @@
         },
 
         methods: {
-
             saveNote(){
+                this.processing = true;
                 //Envía el comentario al servidor y borra el texto.
-                this.note = "";
+                http.request({
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Comments/Create",
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization":"Bearer "+ this.$store.state.session.token                       
+                    },
+                    content: JSON.stringify({
+                        "commentary": this.comment,
+                        "operationId": this.$store.state.selectedOperation.id
+                    })
+                }).then(response => {
+                    this.processing = false;
+                    var result = response.content.toJSON().result;
+                    if (response.content.toJSON().success) {
+                        console.log("Comentario agregado con éxito.");
+                        this.comment = "";
+                        this.$goto('operation');
+                    }
+                    else {
+                        console.log("Ocurrió un error al agregar el comentario.")
+                    }
+                }, error => {
+                    this.errorMsg = "Falló la conexión. Por favor intente luego.";
+                    console.error(error);
+                });
             }
 
         }

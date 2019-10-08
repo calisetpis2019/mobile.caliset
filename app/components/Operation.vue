@@ -44,31 +44,23 @@
                 </v-template>
             </ListView>
 
-            <StackLayout row="2" orientation="horizontal" height="10%" horizontalAlign="center" >
+            <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" >
             
-                <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')">
+                <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')" >
                     <FormattedString>
-
-                        <Span text.decode="&#xf249;" class="fas" ></Span>                        
-
+                        <Span text.decode="&#xf249;" class="fas" />                        
                     </FormattedString>
                 </Button>
 
-                <!--<Button  textWrap="true" width="40%" class="btn-primary " @tap="$goto('camera')">-->
-                <Button  textWrap="true" width="40%" class="btn-primary " @tap="takePicture">
+                <Button textWrap="true" width="40%" class="btn-primary" @tap="takePicture" >
                     <FormattedString textWrap="true">
-                        
-                        <Span text.decode="&#xf030; " class="fas"></Span>
-
+                        <Span text.decode="&#xf030;" class="fas" />
                     </FormattedString>
-                            
                 </Button>
 
-                <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample')">
+                <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample')" >
                     <FormattedString>
-                        
-                        <Span text.decode="&#xf02a; " class="fas" ></Span>
-
+                        <Span text.decode="&#xf02a;" class="fas" />
                     </FormattedString>
                 </Button>
 
