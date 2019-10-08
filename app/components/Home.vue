@@ -1,6 +1,5 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations()">
-
         <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
             <GridLayout rows="auto" columns="auto,*,*" >
                 <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
@@ -8,9 +7,8 @@
                 @tap="$goto('userPage')"/>
             </GridLayout>
         </ActionBar>
-        <GridLayout rows="auto,*,auto">
+        <GridLayout rows="auto,*">
 
-            <TextView row="2" :text=firebaseToken color="white" editable="false" @tap="sendDeviceToken()" />
             <StackLayout row="0" >
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
