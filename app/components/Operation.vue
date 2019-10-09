@@ -86,7 +86,7 @@
                 show: [],
                 processing: false,
                 nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id + "_",
-                folder: "Camera/Operacion_" + this.$store.state.selectedOperation.id, // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
+                folder: "Camera" // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
             };
         },
 
@@ -157,8 +157,6 @@
 
                 //Creo el directorio donde se guardará la foto:
                 var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
-
-                console.log(tempPicturePath);
 
                 const fileSystemModule = require("tns-core-modules/file-system");
 
