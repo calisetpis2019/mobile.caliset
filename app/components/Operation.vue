@@ -93,8 +93,8 @@
                 comments: [],
                 show: [],
                 processing: false,
-                nameOfPicture: "prueba_1.jpg",
-                folder: "Camera/Prueba", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
+                nameOfPicture: "test.png",
+                folder: "Camera/Fotos", // Acá va el directorio dentro de DCIM en el que se quiere guardar las fotos
             };
         },
 
@@ -118,7 +118,7 @@
                 url: "http://" + this.$store.state.ipAPI + 
                 ":21021/api/services/app/Comments/GetCommentsByOperation?operationId="+this.$store.state.selectedOperation.id,
                 method: "GET",
-                headers: { 
+                headers: {  
                         "Content-Type": "application/json",
                         "Authorization":"Bearer "+ this.$store.state.session.token,
                     },
@@ -151,52 +151,62 @@
 
             takePicture() {
 
-                //Creo el directorio donde se guardará la foto:
-                var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
+                const permissions = require('nativescript-permissions');
+                permissions.requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, "Permisos para crear sub carpeta de imágenes")
+                  .then( () => {
+                     console.log("Permiso para crear carpetas concedido");
 
-                console.log(tempPicturePath);
+                    //Creo el directorio donde se guardará la foto:
+                    var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-                const fileSystemModule = require("tns-core-modules/file-system");
+                    console.log(tempPicturePath);
 
-                const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
-                const folder = fileSystemModule.Folder.fromPath(folderPath);
+                    const fileSystemModule = require("tns-core-modules/file-system");
 
-                console.log(folderPath);
+                    const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
+                    const folder = fileSystemModule.Folder.fromPath(folderPath);
 
-                //Defino las opciones con las que se guardará la imagen:
-                var options = { width: 300, height: 300, keepAspectRatio: false, saveToGallery: false, nameOfPicture: this.nameOfPicture};
+                    console.log(folderPath);
 
-                //Modulo necesario para guardar la imagen:
-                const imageSourceModule = require("tns-core-modules/image-source");
+                    //Defino las opciones con las que se guardará la imagen:
+                    var options = { width: 960, height: 1024, keepAspectRatio: false, saveToGallery: false, nameOfPicture: this.nameOfPicture};
 
-                //Utilizo la cámara para obtener la imagen:
-                camera.requestPermissions()
-                .then(() => {
-                    camera.takePicture(options).
-                    then((imageAsset) => {
-                        console.log("Result is an image asset instance");
-                        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
-                        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
+                    //Modulo necesario para guardar la imagen:
+                    const imageSourceModule = require("tns-core-modules/image-source");
+
+                    //Utilizo la cámara para obtener la imagen:
+                    camera.requestPermissions()
+                    .then(() => {
+                        camera.takePicture(options).
+                        then((imageAsset) => {
+                            console.log("Result is an image asset instance");
+                            console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
+                            console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
 
 
-                        const source = new imageSourceModule.ImageSource();
-                        source.fromAsset(imageAsset)
-                        .then((imageSource) => {
-                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture);
-                            const saved = imageSource.saveToFile(filePath, "jpg");
-                            if (saved) {
-                                console.log("Saved: " + filePath);
-                                console.log("Image saved successfully!");
-                            }
+                            const source = new imageSourceModule.ImageSource();
+                            source.fromAsset(imageAsset)
+                            .then((imageSource) => {
+                                const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture);
+                                const saved = imageSource.saveToFile(filePath, "png");
+                                if (saved) {
+                                    console.log("Saved: " + filePath);
+                                    console.log("Image saved successfully!");
+                                }
+                            }).catch((err) => {
+                                console.log("Error -> " + err.message);
+                            });
                         }).catch((err) => {
                             console.log("Error -> " + err.message);
                         });
                     }).catch((err) => {
                         console.log("Error -> " + err.message);
                     });
-                }).catch((err) => {
-                    console.log("Error -> " + err.message);
-                });
+
+                  })
+                  .catch( () => {
+                     console.log("Permiso NO concedido");
+                  });
             },
 
         },
