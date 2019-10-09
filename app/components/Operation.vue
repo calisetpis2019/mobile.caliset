@@ -121,7 +121,7 @@
                 url: "http://" + this.$store.state.ipAPI + 
                 ":21021/api/services/app/Comments/GetCommentsByOperation?operationId="+this.$store.state.selectedOperation.id,
                 method: "GET",
-                headers: {  
+                headers: { 
                         "Content-Type": "application/json",
                         "Authorization":"Bearer "+ this.$store.state.session.token,
                     },
@@ -155,62 +155,51 @@
             takePicture() {
                 var timeStamp = this.createDateTimeStamp();
 
-                const permissions = require('nativescript-permissions');
-                permissions.requestPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, "Permisos para crear sub carpeta de imágenes")
-                  .then( () => {
-                     console.log("Permiso para crear carpetas concedido");
+                //Creo el directorio donde se guardará la foto:
+                var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-                    //Creo el directorio donde se guardará la foto:
-                    var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
+                console.log(tempPicturePath);
 
-                    console.log(tempPicturePath);
+                const fileSystemModule = require("tns-core-modules/file-system");
 
-                    const fileSystemModule = require("tns-core-modules/file-system");
-                    
-                    //Defino las opciones con las que se guardará la imagen:
-                    var options = {keepAspectRatio: true, saveToGallery: false, nameOfPicture: this.nameOfPicture};
-                    // var options = { width: 300, height: 300, keepAspectRatio: true, nameOfPicture: this.nameOfPicture};
+                //Defino las opciones con las que se guardará la imagen:
+                var options = {keepAspectRatio: true, saveToGallery: false, nameOfPicture: this.nameOfPicture};
+                // var options = { width: 300, height: 300, keepAspectRatio: true, nameOfPicture: this.nameOfPicture};
 
-                    //Modulo necesario para guardar la imagen:
-                    const imageSourceModule = require("tns-core-modules/image-source");
-                    //Utilizo la cámara para obtener la imagen:
-                    camera.requestPermissions()
-                    .then(() => {
-                        camera.takePicture(options).
-                        then((imageAsset) => {
-                            const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
-                            const folder = fileSystemModule.Folder.fromPath(folderPath);
+                //Modulo necesario para guardar la imagen:
+                const imageSourceModule = require("tns-core-modules/image-source");
+                //Utilizo la cámara para obtener la imagen:
+                camera.requestPermissions()
+                .then(() => {
+                    camera.takePicture(options).
+                    then((imageAsset) => {
+                        const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
+                        const folder = fileSystemModule.Folder.fromPath(folderPath);
 
-                            console.log(folderPath);
-                            console.log("Result is an image asset instance");
-                            console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
-                            console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
+                        console.log(folderPath);
+                        console.log("Result is an image asset instance");
+                        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
+                        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
 
-                            const source = new imageSourceModule.ImageSource();
-                            
-                            source.fromAsset(imageAsset)
-                            .then((imageSource) => {
-                                const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture + timeStamp + ".jpg");
-                                const saved = imageSource.saveToFile(filePath, "jpg");
-                                if (saved) {
-                                    console.log("Saved: " + filePath);
-                                    console.log("Image saved successfully!");
-                                }
-                            }).catch((err) => {
-                                console.log("Error -> " + err.message);
-                            });
 
+                        const source = new imageSourceModule.ImageSource();
+                        source.fromAsset(imageAsset)
+                        .then((imageSource) => {
+                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture + timeStamp + ".jpg");
+                            const saved = imageSource.saveToFile(filePath, "jpg");
+                            if (saved) {
+                                console.log("Saved: " + filePath);
+                                console.log("Image saved successfully!");
+                            }
                         }).catch((err) => {
                             console.log("Error -> " + err.message);
                         });
                     }).catch((err) => {
                         console.log("Error -> " + err.message);
                     });
-
-                  })
-                  .catch( () => {
-                     console.log("Permiso NO concedido");
-                  });
+                }).catch((err) => {
+                    console.log("Error -> " + err.message);
+                });
             },
 
         },
