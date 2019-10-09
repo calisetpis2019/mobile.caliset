@@ -1,27 +1,35 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" >
         <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
-    <FlexboxLayout>
-        <GridLayout rows="auto,auto,auto,auto,*,auto" >
+    <FlexboxLayout class="page" backgroundColor="#1F1B24">
+        <ScrollView>
+        <GridLayout rows="auto,auto,auto,auto,*,auto" class="grid">
             <StackLayout row="0" verticalAlignment="top">
-                <Label text="Ingrese una nueva contraseña: " class="subtitle" style="margin-bottom:100"/>
+                <Label v-if="equalPasswords" v-model="errorLabelEqualPwds" color="red" textWrap="true" />
             </StackLayout>
-            <StackLayout row="1" style="padding: 10">
-                <Label text="Contraseña anterior:" class="info"/>
+
+            <StackLayout row="1" style="padding: 10" class="form">
+                <Label text="Contraseña actual:" class="info" style="padding: 10"/>
                 <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red" textWrap="true" />
-                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword"/>
+                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword" returnKeyType="next">
+                </TextField>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <StackLayout row="2" style="padding: 10">
-                <Label text="Nueva contraseña:" class="info" />
+            <StackLayout row="2" style="padding: 10" class="form">
+                <Label text="Nueva contraseña:" class="info" style="padding: 10"/>
                 <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" textWrap="true" />
-                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword"/>
+                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword" returnKeyType="next" />
+            <StackLayout class="hr-light"></StackLayout>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <StackLayout row="3" style="padding: 10">
-                <Label text="Repita la nueva contraseña:" class="info" />
+            <StackLayout row="3" style="padding: 10" class="form">
+                <Label text="Repita la nueva contraseña:" class="info" style="padding: 10" />
                 <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" textWrap="true" />
-                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches"/>
+                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches" returnKeyType="done">
+                </TextField>
+            <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
             <StackLayout row="4" />
@@ -30,6 +38,7 @@
                     class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
         </GridLayout>
+        </ScrollView>
 
     </FlexboxLayout>
 
@@ -56,9 +65,11 @@
                 incorrectPassword: false,
                 incorrectNewPassword: false,
                 incorrectNewPassword2: false,
+                equalPasswords: false,
                 errorLabelPwd: "La contraseña es incorrecta.",
                 errorLabelNPwd: "La contraseña debe incluir un caracter numérico,\n uno en mayúsculas y otro en minúsculas \ny ser de largo 8 o mayor.",
                 errorLabelNPwd2: "La contraseña no coincide.",
+                errorLabelEqualPwds: "La contraseña actual y la nueva son iguales y deben ser distintas.",
             }
         },
 
@@ -69,11 +80,9 @@
         methods: {
 
             checkPassword() {
-                
-                console.log(this.pass);
-                console.log(this.$store.state.session.password);
+                this.input.newPass = "";
+                this.equalPasswords = false;
                 if (this.input.pass != this.$store.state.session.password){
-
                     this.incorrectPassword = true;
                     this.ctrl.fst=false;
                 }
@@ -86,6 +95,7 @@
 
             checkNewPassword() {
                 this.input.newPass2="";
+                this.equalPasswords = false;
                 var patt = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
                 if (!(patt.test(this.input.newPass))) {
                     console.log("verdadero");
@@ -94,7 +104,12 @@
                 }
                 else {
                     this.incorrectNewPassword = false;
-                    this.ctrl.snd=true;
+                    if (this.input.pass == this.input.newPass){
+                        this.equalPasswords = true;
+                    }
+                    else {
+                        this.ctrl.snd=true;
+                    }
                 }
             },
 
@@ -136,7 +151,14 @@
                     else {
                         console.log("changePassword respondio OK");
                         console.log(result);
-                        this.setFirstLogin();
+                        // Se actualiza nueva pass en el store...
+                        this.$store.state.session.password = this.input.newPass;
+                        if (this.$store.state.session.firstLogin) {
+                            this.setFirstLogin();
+                        }
+                        else {
+                            this.$goto('home',{ clearHistory: true });
+                        }
                         
                     }
                 }, error => {
@@ -149,11 +171,10 @@
                     this.$store.commit('logout');
                     // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña
                     this.$goto('login',{ clearHistory: true });
-                    });
+                });
             },
 
             setFirstLogin() {
-                alert("Se ha cambiado la contraseña");
                 console.log("userId");
                 console.log(this.$store.state.session.userId);
                 http.request({
@@ -210,16 +231,5 @@
     // Start custom common variables
     @import '../app-variables';
     // End custom common variables
-
-    // Custom styles
-    .fa {
-        color: $accent-dark;
-    }
-
-    .info {
-        font-size: 20;
-        color: white;
-    }
-
 
 </style>
