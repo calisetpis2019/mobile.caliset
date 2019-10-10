@@ -22,9 +22,9 @@
 
             <ListView row="1" class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
                 <v-template>
-                    <CardView margin="10" elevation="40" radius="1" class="card">
+                    <CardView margin="10" elevation="40" radius="1" class="card" @tap="editNote(c)">
                         <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                        <StackLayout class="card">
+                        <StackLayout class="card" >
                             <Label
                                 :text="c.creatorUser.name+' '+c.creatorUser.surname"
                                 backgroundColor="black"
@@ -77,6 +77,9 @@
     import * as camera from "nativescript-camera";
     import { Image } from "tns-core-modules/ui/image";
 
+    //Pantalla para editar comentario
+    import EditNote from "./EditNote";
+
     
     export default {
 
@@ -98,6 +101,7 @@
         },
 
         methods: {
+
             createDateTimeStamp() {
                 var result = "";
                 var date = new Date();
@@ -200,9 +204,24 @@
                 });
             },
 
-        },
+            editNote(comment) {
+
+                console.log("editar comentario");
+                console.log(comment.id + ' ' + comment.commentary);
+                if (comment.creatorUser.id == this.$store.state.session.userId){
+                    this.$store.commit('selectedComment',{ selectedComment: comment});
+                    console.log("llega hasta aca?");
+                    this.$showModal(EditNote);    
+                    this.loadComments();
+                }
+                
+            },
+
+        },//termina methods
 
     };
+
+
 </script>
 
 <style scoped lang="scss">
