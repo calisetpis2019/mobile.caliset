@@ -1,21 +1,17 @@
-<template>
+<template >
     
-    <GridLayout rows="auto,auto,*,auto">
+    <GridLayout rows="*,auto" columns="*,*" backgroundColor="#1F1B24">
 
-        <Label row="0" text="Escribir comentario" class="subtitle" flexWrapBefore="true"/>
-
-        <ActivityIndicator row="1" :busy="processing" color="white" />
+        <!--<Label row="0"  text="Modificar comentario" class="subtitle" flexWrapBefore="true" width="100%"/>-->
         
-        <FlexboxLayout row="2" flexDirection="column">
+        <FlexboxLayout row="0" colSpan="2" flexDirection="column">
             
             <TextView class="card text" hint="Escribir comentario..." v-model="comment" />
             
         </FlexboxLayout>
         
-        <StackLayout row="3">
-            <Button class="btn btn-primary" text="Agregar comentario" @tap="saveNote()" />
-            <Button class="btn-reject" text="cancelar" @tap="$modal.close()" />
-        </StackLayout>
+        <Button row="1" col="0" class="btn-confirm" text="Guardar" @tap="saveNote()" />
+        <Button row="1" col="1" class="btn-reject" text="Cancelar" @tap="$modal.close()" />
 
     </GridLayout>
 
@@ -54,6 +50,7 @@
                         this.processing=false;
                         console.log("Comentario editado con éxito.");
                         this.$modal.close();
+
                     }
                     else {
                         processing=false;
