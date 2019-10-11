@@ -22,7 +22,7 @@
 
             <ListView row="1" class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
                 <v-template>
-                    <CardView margin="10" elevation="40" radius="1" class="card"  >
+                    <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
                         <StackLayout class="card"  >
                             <Label @tap="editNote(c)"
                                 :text="c.creatorUser.name+' '+c.creatorUser.surname"
@@ -85,6 +85,7 @@
 
         data() {
             return {
+                componentKey: 0,
                 comments: [],
                 show: [],
                 processing: false,
@@ -147,6 +148,7 @@
                             this.comments.push(result[i]);
 
                         }
+                        this.componentKey+=1;
                         this.processing=false;
                     }
                 }, error => {
@@ -206,8 +208,8 @@
 
             editNote(comment) {
 
-                console.log("editar comentario");
                 console.log(comment.id + ' ' + comment.commentary);
+
                 if (comment.creatorUser.id == this.$store.state.session.userId){
                     this.$store.commit('selectedComment',{ selectedComment: comment});
                     console.log("llega hasta aca?");
