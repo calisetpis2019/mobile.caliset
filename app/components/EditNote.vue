@@ -32,35 +32,44 @@
         methods: {
             saveNote(){
                 this.processing=true;
-                //Envía el comentario modificado al servidor.
-                http.request({
-                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Comments/Update",
-                    method: "PUT",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "Authorization":"Bearer "+ this.$store.state.session.token
-                    },
-                    content: JSON.stringify({
-                        "commentary": this.comment,
-                        "id": this.$store.state.selectedComment.id
-                    })
-                }).then(response => {
-                    var result = response.content.toJSON().result;
-                    if (response.content.toJSON().success) {
-                        this.processing=false;
-                        console.log("Comentario editado con éxito.");
-                        this.$modal.close();
 
-                    }
-                    else {
-                        processing=false;
-                        console.log("Ocurrió un error al editar el comentario.")
-                    }
-                }, error => {
-                    this.processing=false;
-                    this.errorMsg = "Falló la conexión. Por favor intente luego.";
-                    console.error(error);
-                });
+                if (this.comment != "") {
+                    //Envía el comentario modificado al servidor.
+                    http.request({
+                        url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Comments/Update",
+                        method: "PUT",
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "Authorization":"Bearer "+ this.$store.state.session.token
+                        },
+                        content: JSON.stringify({
+                            "commentary": this.comment,
+                            "id": this.$store.state.selectedComment.id
+                        })
+                    }).then(response => {
+                        var result = response.content.toJSON().result;
+                        if (response.content.toJSON().success) {
+                            this.processing=false;
+                            console.log("Comentario editado con éxito.");
+                            this.$modal.close();
+
+                        }
+                        else {
+                            processing=false;
+                            console.log("Ocurrió un error al editar el comentario.")
+                        }
+                    }, error => {
+                        this.processing=false;
+                        this.errorMsg = "Falló la conexión. Por favor intente luego.";
+                        console.error(error);
+                    });
+
+                }
+                else {
+
+                    alert("La nota no puede quedar en blanco");
+                }
+                
             }
 
         }
