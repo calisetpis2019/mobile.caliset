@@ -3,9 +3,9 @@
         <OurActionBar/>
 
         <GridLayout rows="auto,auto,*,auto">
-            <StackLayout row="0" verticalAlignment="left" >
-                <Label :text=userEmail class="info" textWrap="true" />
-                <Label :text=lastLogin class="info" textWrap="true" />
+            <StackLayout row="0" margin="20px">
+                <Label :text=userEmail class="info" textWrap="true" horizontalAlignment="left" />
+                <Label :text=lastLogin class="info" textWrap="true" horizontalAlignment="left" />
             </StackLayout>
 
             <StackLayout row="1" verticalAlignment="center" >
