@@ -16,27 +16,27 @@
 
             <ListView row="1" class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
                 <v-template>
-                    <CardView margin="10" elevation="40" radius="1" class="card">
-                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                        <StackLayout class="card">
-                            <Label
+                    <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
+                        <StackLayout class="card"  >
+                            <Label @tap="editNote(c)"
                                 :text="c.creatorUser.name+' '+c.creatorUser.surname"
                                 backgroundColor="black"
                                 width="100%"
                                 fontSize="20"
                                 color="white"
                             ></Label>
-
-                            <TextView  editable="false" backgroundColor="#565656">
-                                <Span :text="c.commentary" color="white" />
+                            <TextView  editable="false" backgroundColor="#565656" @tap="editNote(c)" >
+                                <FormattedString>
+                                    <Span :text="c.commentary" color="white" />
+                                </FormattedString>
                             </TextView>
 
-                            <Label :text="c.creationTime" fontSize="15" color="white" horizontalAlignment="right"/>
-                        
+                            <Label :text="c.creationTime" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
                         </StackLayout>
                     </CardView>
                 </v-template>
             </ListView>
+            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
             <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" >
             
@@ -71,11 +71,15 @@
     import * as camera from "nativescript-camera";
     import { Image } from "tns-core-modules/ui/image";
 
+    //Pantalla para editar comentario
+    import EditNote from "./EditNote";
+
     
     export default {
 
         data() {
             return {
+                componentKey: 0,
                 comments: [],
                 show: [],
                 processing: false,
@@ -92,6 +96,7 @@
         },
 
         methods: {
+
             createDateTimeStamp() {
                 var result = "";
                 var date = new Date();
@@ -137,6 +142,7 @@
                             this.comments.push(result[i]);
 
                         }
+                        this.componentKey+=1;
                         this.processing=false;
                     }
                 }, error => {
@@ -194,9 +200,23 @@
                 });
             },
 
-        },
+            editNote(comment) {
+
+                console.log(comment.id + ' ' + comment.commentary);
+
+                if (comment.creatorUser.id == this.$store.state.session.userId){
+                    this.$store.commit('selectedComment',{ selectedComment: comment});
+                    console.log("llega hasta aca?");
+                    this.$showModal(EditNote, { fullscreen: false }).then(data => this.loadComments());
+                }
+                
+            },
+
+        },//termina methods
 
     };
+
+
 </script>
 
 <style scoped lang="scss">
