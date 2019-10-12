@@ -1,7 +1,10 @@
 import Vue from "nativescript-vue";
 import router from './router';
+import OurActionBar from './components/OurActionBar'
 
 import store from './store';
+
+Vue.component('OurActionBar',OurActionBar);
 
 Vue.prototype.$router = router;
 Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);

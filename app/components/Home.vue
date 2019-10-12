@@ -1,12 +1,6 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations()">
-        <ActionBar title="Home" class="action-bar" backgroundColor="#1F1B24" >
-            <GridLayout rows="auto" columns="auto,*,*" >
-                <Image row="0" col="0" src="~/images/logo.png" class="action-image" stretch="aspectFit" height="140px" horizontalAlignment="left"></Image>
-                <Button row="0" col="2" :text=user horizontalAlignment="right" class="btn-primary" color="white" style="margin:10px" 
-                @tap="$goto('userPage')"/>
-            </GridLayout>
-        </ActionBar>
+        <OurActionBar/>
         <GridLayout rows="auto,*">
 
             <StackLayout row="0" >
@@ -79,6 +73,7 @@
                 operations: [],
                 idActiva: 2, //Hardcodeado en el backend.
                 newOperations: [],
+                operationsIds: [],
 
                 processing: false,
                 processingNO: false,
@@ -163,6 +158,8 @@
                         
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
+                            this.operationsIds.push(result[i].id);
+
                         }
 
                         // Se ordenan operaciones por orden ascendente de fecha...
@@ -173,7 +170,8 @@
                         });
 
                         console.log("Home: Guardo las operaciones del usuario en el store");
-                        this.$store.commit('operations',{ operations: this.operations });
+                        console.log(this.operationsIds);
+                        this.$store.commit('operations',{ operations: this.operationsIds });
                         this.processing=false;
                         console.log(operations);
                         
