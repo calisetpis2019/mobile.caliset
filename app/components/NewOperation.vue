@@ -5,26 +5,26 @@
         <GridLayout rows="auto,*">
 
 
-            <Label row="0" :text="'Alertas Operación: ' + this.$store.state.selectedNewOperation.id" class="subtitle" flexWrapBefore="true"/>
+            <Label row="0" text="Alertas Operación:" class="subtitle" flexWrapBefore="true"/>
 
             <ListView row="1" class="list-group" for="a in assignations" backgroundColor="#1F1B24">
                 <v-template>
                     <CardView  margin="10" elevation="40" radius="1" class="card">
-                        <GridLayout rows="*,auto" class="card">
-                            <StackLayout row="0" class="container" @tap="showButtons">
-                                <Label :text="'Operación: ' + a.operation.id" class="list-group-item-heading"/>
-                                <Label :text="'Fecha: ' + a.date"   color="white"  />
-                                <Label :text="'Tipo: '  + a.operation.operationType.id" color="white"/>
-                                <Label :text="'Nominador: '  + a.operation.nominator.id"   color="white"  />
-                                <Label :text="'Cargador: '  + a.operation.charger.id" color="white"  />
-                            </StackLayout >
+                        <StackLayout row="0" class="container" @tap="showButtons">
+                            <Label :text="'Operación: ' + a.operation.id" class="list-group-item-heading"/>
+                            <Label :text="'Fecha: ' + a.date"   color="white"  />
+                            <Label :text="'Tipo: '  + a.operation.operationType.id" color="white"/>
+                            <Label :text="'Nominador: '  + a.operation.nominator.id"   color="white"  />
+                            <Label :text="'Cargador: '  + a.operation.charger.id" color="white"  />
+
                             <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
                                 <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
                                         @tap="confirmAssignation(a)" />
                                 <Button textWrap="true" text.decode="&#xf00d;" class=" btn-reject fas" width="50%" 
                                         @tap="rejectAssignation(a)"/>
                             </StackLayout>
-                        </GridLayout>
+                        </StackLayout >
+                        
                     </CardView>
                 </v-template>
             </ListView>
@@ -40,7 +40,7 @@
 
         data() {
             return {
-                isIt: true,
+                isIt: false,
                 assignations: [],
             }
         },
@@ -57,7 +57,7 @@
             loadAssignations() {
                 this.assignations = [];
                 http.request({
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignmentsByOperation?operationId="+this.$store.state.selectedNewOperation.id,
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetAssignmentsByUser?userId="+this.$store.state.session.userId,
                 method: "GET",
                 headers: { 
                         "Content-Type": "application/json",
@@ -155,7 +155,9 @@
             showButtons() {
                 //Esto no anda, no se porque...
                 console.log("btonbotontotnot");
+                this.isIt = !this.isIt;
 
+/*
                 if (this.isIt) {
                     this.isIt = false;
                 }
@@ -163,6 +165,7 @@
                     console.log("muestra los botones!");
                     this.isIt = true;
                 }
+*/
 
             },
         }

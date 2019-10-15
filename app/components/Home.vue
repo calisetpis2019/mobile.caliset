@@ -3,7 +3,11 @@
         <OurActionBar/>
         <GridLayout rows="auto,*">
 
-            <StackLayout row="0" >
+            <StackLayout row="0" :visibility="newOperations.length == 0 ? 'collapsed' : 'visible' ">
+
+                <Button text="¡Nuevas Operaciones!" class="btn btn-alert" @tap="$goto('newOperation')" />
+
+            <!--
 
                 <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
@@ -27,6 +31,7 @@
                     </v-template>
                 </ListView>
                 <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
+            -->
             </StackLayout>
 
             
