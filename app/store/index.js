@@ -70,6 +70,11 @@ const store = new Vuex.Store({
             state.operations = data.operations;
         },
 
+        selectedComment(state,data){
+            console.log("Store: Guardo el comentario seleccionado");
+            state.selectedComment = data.selectedComment;
+        },
+
         selectedOperation(state,data) {
             console.log("Store: Guardo la operación seleccionada");
             state.selectedOperation = data.selectedOperation;

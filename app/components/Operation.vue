@@ -202,11 +202,11 @@
 
             editNote(comment) {
 
-                console.log(comment.id + ' ' + comment.commentary);
+                console.log("Comentario seleccionado para edición: ");
+                console.log(comment.id + ' - ' + comment.commentary);
 
                 if (comment.creatorUser.id == this.$store.state.session.userId){
                     this.$store.commit('selectedComment',{ selectedComment: comment});
-                    console.log("llega hasta aca?");
                     this.$showModal(EditNote, { fullscreen: false }).then(data => this.loadComments());
                 }
                 
