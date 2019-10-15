@@ -1,12 +1,14 @@
 <template>
     <Page class="page" actionBarHidden="true" >
         <FlexboxLayout class="page" backgroundColor="#1F1B24">
-                <GridLayout rows="*,auto,auto,auto" class="grid">
+                <GridLayout rows="*,auto,auto,auto,auto" class="grid">
                     <Image row="0" class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
-                    <Label row="1" :text="errorMsg" color="red" textWrap=true textAlignment="center" />
-                    <StackLayout row="2" class="form">
+                    <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>
+
+                    <Label row="2" :text="errorMsg" color="red" textWrap=true textAlignment="center" />
+                    <StackLayout row="3" class="form">
                         
-                        <TextField row="2" class="input" hint="Correo electrónico"
+                        <TextField class="input" hint="Correo electrónico"
                             keyboardType="email" autocorrect="false"
                             autocapitalizationType="none"
                             returnKeyType="next" v-model="input.email" >
@@ -14,14 +16,14 @@
 
                         <StackLayout class="hr-light"></StackLayout>
 
-                        <TextField row="3" class="input" ref="password" returnKeyType="done"
+                        <TextField row="4" class="input" ref="password" returnKeyType="done"
                             hint="Contraseña" secure="true" v-model="input.password" >
                         </TextField>
 
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
-                <Button row="4" text="Ingresar" class="btn btn-primary m-t-20" @tap="login"></Button> 
+                <Button row="5" text="Ingresar" class="btn btn-primary m-t-20" @tap="login"></Button> 
 
                 </GridLayout>
         </FlexboxLayout>
@@ -60,6 +62,7 @@
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(text);
             },
             login() {
+                this.processing = true;
                 if (!this.input.email || !this.input.password) {
                     this.processing = false;
                     this.errorMsg = "Debe ingresar correo y contraseña";
