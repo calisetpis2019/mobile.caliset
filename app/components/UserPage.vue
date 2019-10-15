@@ -1,6 +1,6 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
-        <OurActionBar/>
+        <OurActionBar userPage="true"/>
 
         <GridLayout rows="auto,auto,*,auto">
             <StackLayout row="0" margin="20px">
