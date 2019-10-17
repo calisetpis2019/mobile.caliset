@@ -15,12 +15,12 @@
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap="goToNewOperation(n)">
-                                <Label :text="'Operación: '+ n.id" class="list-group-item-heading"/>
+                                <Label :text="'Operación: '+ n.id" class="list-group-item-heading" />
                                 <StackLayout class="container">
-                                    <Label :text="n.commodity" color="white"/>
-                                    <Label :text="n.date" color="white"  />
-                                    <Label :text="n.location.id" color="white"  />
-                                    <Label :text="n.operationState.name"   color="white"  />
+                                    <Label :text="'Producto: ' + n.commodity" color="white" />
+                                    <Label :text="'Fecha: ' + formatDate(n.date)" color="white" />
+                                    <Label :text="'Lugar: ' + n.location.id" color="white" />
+                                    <Label :text="'Estado: ' + n.operationState.name"   color="white" />
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
@@ -44,10 +44,10 @@
                             <StackLayout class="card" @tap="goToOperation(active)">
                                 <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
                                 <StackLayout class="container">
-                                    <Label :text="active.commodity" color="white"/>
-                                    <Label :text="active.date" color="white"  />
-                                    <Label :text="active.location.id" color="white"  />
-                                    <Label :text="active.operationState.name"   color="white"  />
+                                    <Label :text="'Producto: ' + active.commodity" color="white"/>
+                                    <Label :text="'Fecha: ' + formatDate(active.date)" color="white"  />
+                                    <Label :text="'Lugar: ' + active.location.id" color="white"  />
+                                    <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
                                 </StackLayout>
                             </StackLayout>
                         </CardView>
@@ -99,6 +99,10 @@
         },
 
         methods: {
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
 
             loadNewOperations(){
                 this.processingNO=true;

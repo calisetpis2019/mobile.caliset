@@ -9,12 +9,12 @@
                 <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*" columns="">
 
                     <Label :row="i" column="0" text="Fecha: " color="white" horizontalAlignment="left" fontSize="20"/>
-                    <Label :row="i++" column="1" :text="operation.date" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <Label :row="i++" column="1" :text="formatDate(operation.date)" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Estado: " color="white" fontSize="20"/>
                     <Label :row="i++"  column="1" :text="operation.operationState.name" color="white" fontSize="20" horizontalAlignment = "right" />
 
-                    <Label :row="i" column="0" text="Commodity: " color="white" horizontalAlignment="left" fontSize="20" />
+                    <Label :row="i" column="0" text="Producto: " color="white" horizontalAlignment="left" fontSize="20" />
                     <Label :row="i++" column="1" :text="operation.commodity" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Paquete: " color="white" horizontalAlignment="left" fontSize="20" />
@@ -73,7 +73,10 @@
         },
 
         methods: {
-
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
         }
     };
 

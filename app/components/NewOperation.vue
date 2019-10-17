@@ -13,10 +13,10 @@
                         <GridLayout rows="*,auto" class="card">
                             <StackLayout row="0" class="container" @tap="showButtons">
                                 <Label :text="'Operación: ' + a.operation.id" class="list-group-item-heading"/>
-                                <Label :text="'Fecha: ' + a.date"   color="white"  />
-                                <Label :text="'Tipo: '  + a.operation.operationType.id" color="white"/>
-                                <Label :text="'Nominador: '  + a.operation.nominator.id"   color="white"  />
-                                <Label :text="'Cargador: '  + a.operation.charger.id" color="white"  />
+                                <Label :text="'Fecha: ' + formatDate(a.date)"   color="white"  />
+                                <Label :text="'Tipo: '  + a.operation.operationType.name" color="white"/>
+                                <Label :text="'Nominador: '  + a.operation.nominator.name"   color="white"  />
+                                <Label :text="'Cargador: '  + a.operation.charger.name" color="white"  />
                             </StackLayout >
                             <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
                                 <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
@@ -49,10 +49,15 @@
             user() {
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
-            }
+            },
+            
         },
 
         methods: {
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
 
             loadAssignations() {
                 this.assignations = [];

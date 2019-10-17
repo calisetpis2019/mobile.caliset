@@ -31,7 +31,7 @@
                                 </FormattedString>
                             </TextView>
 
-                            <Label :text="c.creationTime" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
+                            <Label :text="formatDate(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
                         </StackLayout>
                     </CardView>
                 </v-template>
@@ -81,7 +81,6 @@
             return {
                 componentKey: 0,
                 comments: [],
-                show: [],
                 processing: false,
                 nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id + "_",
                 folder: "Camera" // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
@@ -96,6 +95,10 @@
         },
 
         methods: {
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
 
             createDateTimeStamp() {
                 var result = "";
@@ -110,10 +113,8 @@
             },
 
             loadComments() {
-                //por implementar...
                 //Carga los mensajes en la pantalla principal de la operación.
                 console.log("carga los comentarios de la operación con id: " + this.$store.state.selectedOperation.id);
-                this.names = [];
                 this.comments = [];
                 http.request({
                 // Hay que sustituir la ip, obviamente
@@ -138,11 +139,14 @@
                         console.log(result);
                         
                         for(var i = 0; i < result.length; i++){
-
                             this.comments.push(result[i]);
-
                         }
                         this.componentKey+=1;
+                        this.comments.sort(function(a,b){
+                            let x = new Date(a.creationTime);
+                            let y = new Date(b.creationTime);
+                            return y-x;
+                        });
                         this.processing=false;
                     }
                 }, error => {
