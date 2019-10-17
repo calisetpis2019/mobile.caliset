@@ -2,7 +2,7 @@
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
         <ScrollView>
-            <GridLayout rows="auto,auto,auto,*,auto">
+            <GridLayout rows="auto,auto,auto,*,auto,auto">
 
                 <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
 
@@ -16,8 +16,9 @@
                 </FlexboxLayout>
 
                 <ActivityIndicator row="3" :busy="processing" color="white"></ActivityIndicator>
+                <Label row="4" :text="successMsg" color="white" class="info" />
 
-                <GridLayout row="4" columns="auto,*">
+                <GridLayout row="5" columns="auto,*">
                     <Button col="0" :isEnabled="canAddSample" class="btn btn-primary" text="Agregar muestra" @tap="createSample()"/>
                     <Button col="1" :isEnabled="(idSample != '') && !canAddSample" class="btn btn-primary" text="Nueva muestra" @tap="newSample()"/>
                 </GridLayout>
@@ -37,6 +38,7 @@
             return {
                 comment: "",
                 idSample: "",
+                successMsg: "",
                 processing: false,
                 canAddSample: true
             }
@@ -67,7 +69,8 @@
                         "operationId": this.$store.state.selectedOperation.id
                     })
                 }).then(response => {
-                    this.processing=false;
+                    this.processing = false;
+                    this.successMsg = "Se registró la muestra con éxito.";
                     var result = response.content.toJSON().result;
                     if (response.content.toJSON().success) {
                         console.log("Success. Se creó la muestra con éxito.");
@@ -85,6 +88,7 @@
                 console.log("Nueva muestra");
                 this.idSample = "";
                 this.comment = "";
+                this.successMsg = "";
                 this.canAddSample = true;
             }
         }

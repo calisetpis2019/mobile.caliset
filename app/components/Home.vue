@@ -127,9 +127,13 @@
                         console.log(result);
                         
                         for(var i = 0; i < result.length; i++){
-                                this.newOperations.push(result[i]);
+                            this.newOperations.push(result[i]);
                         }
-
+                        this.newOperations.sort(function(a,b){
+                            let x = new Date(a.date);
+                            let y = new Date(b.date);
+                            return x-y;
+                        });
                         this.processingNO=false;
                         
                     }
