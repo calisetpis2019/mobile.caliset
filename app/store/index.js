@@ -37,7 +37,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "192.168.1.2";
+            state.ipAPI = "172.16.117.36";
         },
         
         login(state, data) {
@@ -62,6 +62,25 @@ const store = new Vuex.Store({
                 state.session.date.month = d.getMonth() + 1;
                 state.session.date.day = d.getDate();
             }
+            http.request({
+                url: "http://" + state.ipAPI + ":21021/api/services/app/User/SetLastLoginTime",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization":"Bearer "+ state.session.token 
+                }
+            }).then(response => {
+                var result = response.content.toJSON().result;
+                if (response.content.toJSON().success) {
+                    console.log("Se actualizó lastLoginTime.");
+                    console.log(result);
+                }
+                else {
+                    console.log("Hubo un problema al actualizar lastLoginTime.");
+                }
+            }, error => {
+                console.error(error);
+            });
             firebase.registerForPushNotifications();
         },
 
@@ -120,7 +139,6 @@ const store = new Vuex.Store({
                         console.log("Hubo un problema al enviar el device token.");
                     }
                 }, error => {
-                    this.processing=false;
                     console.error(error);
                 });
             }

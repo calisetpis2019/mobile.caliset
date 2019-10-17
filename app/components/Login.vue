@@ -23,7 +23,7 @@
                         <StackLayout class="hr-light"></StackLayout>
                     </StackLayout>
 
-                <Button row="5" text="Ingresar" class="btn btn-primary m-t-20" @tap="login"></Button> 
+                <Button row="5" text="Ingresar" class="btn btn-primary m-t-20" @tap="login" :isEnabled="!processing"></Button> 
 
                 </GridLayout>
         </FlexboxLayout>

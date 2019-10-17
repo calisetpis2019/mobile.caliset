@@ -14,7 +14,7 @@
                 
             </FlexboxLayout>
             
-            <Button row="3" class="btn btn-primary" text="Agregar comentario" @tap="saveNote()" />
+            <Button row="3" class="btn btn-primary" text="Agregar comentario" @tap="saveNote()" :isEnabled='comment !== ""'/>
             
 
         </GridLayout>
