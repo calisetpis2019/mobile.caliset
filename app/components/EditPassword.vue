@@ -32,9 +32,9 @@
             <StackLayout class="hr-light"></StackLayout>
             </StackLayout>
 
-            <StackLayout row="4" />
-
-            <Button row="5" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd" style="padding: 10"
+            <ActivityIndicator row= "4" :busy="processing" color="white"></ActivityIndicator>
+            
+            <Button row="5" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd&&!processing" style="padding: 10"
                     class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
         </GridLayout>
@@ -52,6 +52,7 @@
 
         data() {
             return {
+                processing: false,
                 ctrl:{
                     fst: false,
                     snd: false,
@@ -78,7 +79,6 @@
         },
 
         methods: {
-
             checkPassword() {
                 this.input.newPass = "";
                 this.equalPasswords = false;
@@ -125,6 +125,7 @@
             },
 
             changePassword() {
+                this.processing = true;
                 http.request({
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/User/ChangePassword",
                     method: "POST",

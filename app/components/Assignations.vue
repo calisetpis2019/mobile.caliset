@@ -4,25 +4,25 @@
         <GridLayout rows="auto,*">
 
             <Label row="0" :text="'Asignaciones Operacion '+this.$store.state.selectedOperation.id" class="subtitle" flexWrapBefore="true"/>
-
-            <ListView row="1" class="list-group" for="a in assignations" backgroundColor="#1F1B24">
-                <v-template>
-                    <CardView  margin="10" elevation="40" radius="1" class="card">
-                        <GridLayout rows="*,auto" class="card">
-                            <StackLayout row="0" class="container">
-                                <!-- INFORMACION A DEFINIR -->
-                                <Label :text="formatDate(a.date) " class="list-group-item-heading"/>
-                                <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
-                                <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
-                                <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
-                                <Label :text="'Nominador: ' + a.operation.nominator.name" color="white"  />
-                                <Label :text="'Cargador: ' + a.operation.charger.name" color="white"  />
-                            </StackLayout >
-                        </GridLayout>
-                    </CardView>
-                </v-template>
-            </ListView>
-
+            <PullToRefresh row="1" @refresh="refreshList" >
+                <ListView  class="list-group" for="a in assignations" backgroundColor="#1F1B24">
+                    <v-template>
+                        <CardView  margin="10" elevation="40" radius="1" class="card">
+                            <GridLayout rows="*,auto" class="card">
+                                <StackLayout row="0" class="container">
+                                    <!-- INFORMACION A DEFINIR -->
+                                    <Label :text="formatDate(a.date) " class="list-group-item-heading"/>
+                                    <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
+                                    <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
+                                    <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
+                                    <Label :text="'Nominador: ' + a.operation.nominator.name" color="white"  />
+                                    <Label :text="'Cargador: ' + a.operation.charger.name" color="white"  />
+                                </StackLayout >
+                            </GridLayout>
+                        </CardView>
+                    </v-template>
+                </ListView>
+            </PullToRefresh>
         </GridLayout>
     </Page>
 </template>
@@ -46,6 +46,13 @@
         },
 
         methods: {
+            refreshList(args) {
+                var pullRefresh = args.object;
+                this.loadAssignations();
+                setTimeout(function() {
+                    pullRefresh.refreshing = false;
+                }, 1000);
+            },
             formatDate(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
@@ -79,6 +86,11 @@
                                 this.assignations.push(result[i]);    
                             }
                         }
+                        this.assignations.sort(function(a,b){
+                            let x = new Date(a.date);
+                            let y = new Date(b.date);
+                            return x-y;
+                        });
 
                         this.processing=false;
                     }

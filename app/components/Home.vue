@@ -1,63 +1,63 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations()">
         <OurActionBar/>
-        <GridLayout rows="auto,*">
+        <PullToRefresh @refresh="refreshLists" >
+            <GridLayout rows="auto,*">
+                <StackLayout row="0" >
 
-            <StackLayout row="0" >
+                        <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
 
-                <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
+                        <Label  v-if="!processingNO && newOperations.length == 0"
+                                text="No hay nuevas operaciones" textWrap="true" class="info"
+                                style="margin-top: 20" />
 
-                <Label  v-if="!processingNO && newOperations.length == 0" 
-                        text="No hay nuevas operaciones" textWrap="true" class="info"
-                        style="margin-top: 20" />
+                        <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
+                            <v-template>
+                                <CardView  margin="10" elevation="40" radius="1" class="card">
+                                    <StackLayout class="card" @tap="goToNewOperation(n)">
+                                        <Label :text="'Operación: '+ n.id" class="list-group-item-heading" />
+                                        <StackLayout class="container">
+                                            <Label :text="'Producto: ' + n.commodity" color="white" />
+                                            <Label :text="'Fecha: ' + formatDate(n.date)" color="white" />
+                                            <Label :text="'Lugar: ' + n.location.name" color="white" />
+                                            <Label :text="'Estado: ' + n.operationState.name"   color="white" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </CardView>
+                            </v-template>
+                        </ListView>
+                        <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
+                </StackLayout>
 
-                <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
-                    <v-template>
-                        <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card" @tap="goToNewOperation(n)">
-                                <Label :text="'Operación: '+ n.id" class="list-group-item-heading" />
-                                <StackLayout class="container">
-                                    <Label :text="'Producto: ' + n.commodity" color="white" />
-                                    <Label :text="'Fecha: ' + formatDate(n.date)" color="white" />
-                                    <Label :text="'Lugar: ' + n.location.id" color="white" />
-                                    <Label :text="'Estado: ' + n.operationState.name"   color="white" />
-                                </StackLayout>
-                            </StackLayout>
-                        </CardView>
-                    </v-template>
-                </ListView>
-                <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
-            </StackLayout>
+                <StackLayout row="1">
 
-            
-            <StackLayout row="1">
+                        <Label  text="Operaciones Activas" class="subtitle" />
 
-                <Label  text="Operaciones Activas" class="subtitle" />
-                
-                <Label  v-if="!processing && operations.length == 0" 
-                        text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
-                        style="margin-top: 20" />
+                        <Label  v-if="!processing && operations.length == 0"
+                                text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
+                                style="margin-top: 20" />
 
-                <ListView class="list-group" for="active in operations">
-                    <v-template>
-                        <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card" @tap="goToOperation(active)">
-                                <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
-                                <StackLayout class="container">
-                                    <Label :text="'Producto: ' + active.commodity" color="white"/>
-                                    <Label :text="'Fecha: ' + formatDate(active.date)" color="white"  />
-                                    <Label :text="'Lugar: ' + active.location.id" color="white"  />
-                                    <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
-                                </StackLayout>
-                            </StackLayout>
-                        </CardView>
-                    </v-template>
-                </ListView>
-                <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
+                        <ListView class="list-group" for="active in operations">
+                            <v-template>
+                                <CardView  margin="10" elevation="40" radius="1" class="card">
+                                    <StackLayout class="card" @tap="goToOperation(active)">
+                                        <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
+                                        <StackLayout class="container">
+                                            <Label :text="'Producto: ' + active.commodity" color="white"/>
+                                            <Label :text="'Fecha: ' + formatDate(active.date)" color="white"  />
+                                            <Label :text="'Lugar: ' + active.location.name" color="white"  />
+                                            <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </CardView>
+                            </v-template>
+                        </ListView>
+                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
-            </StackLayout>
+                </StackLayout>
 
-        </GridLayout>
+            </GridLayout>
+        </PullToRefresh>
 
     </Page>
 </template>
@@ -99,6 +99,14 @@
         },
 
         methods: {
+            refreshLists(args) {
+                var pullRefresh = args.object;
+                this.loadNewOperations();
+                this.loadOperations();
+                setTimeout(function() {
+                    pullRefresh.refreshing = false;
+                }, 1000);
+            },
             formatDate(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
@@ -110,7 +118,7 @@
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsPending",
                 method: "GET",
-                headers: { 
+                headers: {
                         "Content-Type": "application/json",
                         "Authorization":"Bearer "+ this.$store.state.session.token },
                 }).then(response => {
@@ -120,12 +128,12 @@
                         console.log(result);
                     }
                     else {
-                        
+
                         console.log("Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
                         console.log(result);
-                        
+
                         for(var i = 0; i < result.length; i++){
                             this.newOperations.push(result[i]);
                         }
@@ -135,7 +143,7 @@
                             return x-y;
                         });
                         this.processingNO=false;
-                        
+
                     }
 
                 }, error => {
@@ -158,12 +166,12 @@
                         console.log(result);
                     }
                     else {
-                        
+
                         console.log("Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
                         console.log(result);
-                        
+
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
                             this.operationsIds.push(result[i].id);
@@ -182,7 +190,7 @@
                         this.$store.commit('operations',{ operations: this.operationsIds });
                         this.processing=false;
                         console.log(operations);
-                        
+
                     }
                 }, error => {
                     this.processing=false;
@@ -217,12 +225,12 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization":"Bearer "+ this.$store.state.session.token 
+                            "Authorization":"Bearer "+ this.$store.state.session.token
                         }
                     }).then(response => {
                         var result = response.content.toJSON().result;
                         if (response.content.toJSON().success) {
-                            console.log("Se envió device token con éxito.");                                
+                            console.log("Se envió device token con éxito.");
                             console.log(result);
                             this.$store.state.session.deviceToken.updated = false;
                         }

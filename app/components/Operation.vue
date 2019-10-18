@@ -13,8 +13,7 @@
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
-            <StackLayout row="1">
-            <PullToRefresh @refresh="refreshList" >
+            <PullToRefresh row="1" @refresh="refreshList" >
                 <ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
@@ -38,7 +37,6 @@
                     </v-template>
                 </ListView>
             </PullToRefresh>
-            </StackLayout>
             <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
             <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" >
