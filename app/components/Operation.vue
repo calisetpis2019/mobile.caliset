@@ -13,29 +13,32 @@
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
+            <StackLayout row="1">
+            <PullToRefresh @refresh="refreshList" >
+                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
+                    <v-template>
+                        <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
+                            <StackLayout class="card"  >
+                                <Label @tap="editNote(c)"
+                                    :text="c.creatorUser.name+' '+c.creatorUser.surname"
+                                    backgroundColor="black"
+                                    width="100%"
+                                    fontSize="20"
+                                    color="white"
+                                ></Label>
+                                <TextView  editable="false" backgroundColor="#565656" @tap="editNote(c)" >
+                                    <FormattedString>
+                                        <Span :text="c.commentary" color="white" />
+                                    </FormattedString>
+                                </TextView>
 
-            <ListView row="1" class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
-                <v-template>
-                    <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
-                        <StackLayout class="card"  >
-                            <Label @tap="editNote(c)"
-                                :text="c.creatorUser.name+' '+c.creatorUser.surname"
-                                backgroundColor="black"
-                                width="100%"
-                                fontSize="20"
-                                color="white"
-                            ></Label>
-                            <TextView  editable="false" backgroundColor="#565656" @tap="editNote(c)" >
-                                <FormattedString>
-                                    <Span :text="c.commentary" color="white" />
-                                </FormattedString>
-                            </TextView>
-
-                            <Label :text="formatDate(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
-                        </StackLayout>
-                    </CardView>
-                </v-template>
-            </ListView>
+                                <Label :text="formatDate(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
+                            </StackLayout>
+                        </CardView>
+                    </v-template>
+                </ListView>
+            </PullToRefresh>
+            </StackLayout>
             <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
             <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" >
@@ -95,6 +98,14 @@
         },
 
         methods: {
+            refreshList(args) {
+                var pullRefresh = args.object;
+                this.loadComments();
+                setTimeout(function() {
+                    pullRefresh.refreshing = false;
+                }, 1000);
+            },
+            
             formatDate(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);

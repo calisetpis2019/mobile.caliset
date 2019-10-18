@@ -8,6 +8,7 @@ Vue.component('OurActionBar',OurActionBar);
 
 Vue.prototype.$router = router;
 Vue.registerElement('CardView', () => require('@nstudio/nativescript-cardview').CardView);
+Vue.registerElement('PullToRefresh',() => require('@nstudio/nativescript-pulltorefresh').PullToRefresh);
 
 store.commit('load');
 
