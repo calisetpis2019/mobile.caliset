@@ -2,17 +2,19 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadAssignations">
         <OurActionBar/>
         
-        <GridLayout rows="auto,auto,*">
-            <Label row="0" :text="'Alertas Operación: ' + this.$store.state.selectedNewOperation.id" class="subtitle" flexWrapBefore="true"/>
+        <GridLayout rows="auto,auto,auto,*">
+            <Label row="0" text="Alertas" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="1" :text="'Operación ' + this.$store.state.selectedNewOperation.id + '-' + formatDate(operDate)" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
         
-            <PullToRefresh row="2" @refresh="refreshList" >
+            <PullToRefresh row="3" @refresh="refreshList" >
                 <ListView class="list-group" for="a in assignations" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <GridLayout rows="*,auto" class="card">
                                 <StackLayout row="0" class="container" @tap="showButtons">
-                                    <Label :text="'Operación: ' + a.operation.id" class="list-group-item-heading"/>
-                                    <Label :text="'Fecha: ' + formatDate(a.date)"   color="white"  />
+                                    <Label :text="'Operación ' + a.operation.id + '-' + formatDate(operDate)" class="list-group-item-heading"/>
+                                    <Label :text="'Fecha: ' + formatDateHour(a.date)"   color="white"  />
                                     <Label :text="'Tipo: '  + a.operation.operationType.name" color="white"/>
                                     <Label :text="'Nominador: '  + a.operation.nominator.name"   color="white"  />
                                     <Label :text="'Cargador: '  + a.operation.charger.name" color="white"  />
@@ -28,7 +30,6 @@
                     </v-template>
                 </ListView>
             </PullToRefresh>
-            <Label row="1" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
 
         </GridLayout>
     </Page>
@@ -43,7 +44,8 @@
             return {
                 isIt: true,
                 assignations: [],
-                msg: ""
+                msg: "",
+                operDate: this.$store.state.selectedNewOperation.date
             }
         },
 
@@ -63,9 +65,14 @@
                     pullRefresh.refreshing = false;
                 }, 1000);
             },
-            formatDate(date){
+
+            formatDateHour(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
 
             loadAssignations() {

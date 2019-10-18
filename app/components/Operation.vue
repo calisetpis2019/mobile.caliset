@@ -5,7 +5,7 @@
         <GridLayout rows="auto,*,auto" >
 
             <StackLayout row="0" >
-                <Label :text="'Operación '+ this.$store.state.selectedOperation.id" class="subtitle"/>
+                <Label :text="'Operación '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
                     <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
                             @tap="$goto('assignations')"/>
@@ -31,7 +31,7 @@
                                     </FormattedString>
                                 </TextView>
 
-                                <Label :text="formatDate(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
+                                <Label :text="formatDateHour(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
                             </StackLayout>
                         </CardView>
                     </v-template>
@@ -104,9 +104,13 @@
                 }, 1000);
             },
             
-            formatDate(date){
+            formatDateHour(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
 
             createDateTimeStamp() {

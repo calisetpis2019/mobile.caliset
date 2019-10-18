@@ -15,10 +15,10 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
-                                        <Label :text="'Operación: '+ n.id" class="list-group-item-heading" />
+                                        <Label :text="'Operación '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
                                         <StackLayout class="container">
                                             <Label :text="'Producto: ' + n.commodity" color="white" />
-                                            <Label :text="'Fecha: ' + formatDate(n.date)" color="white" />
+                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" color="white" />
                                             <Label :text="'Lugar: ' + n.location.name" color="white" />
                                             <Label :text="'Estado: ' + n.operationState.name"   color="white" />
                                         </StackLayout>
@@ -41,10 +41,10 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(active)">
-                                        <Label :text="'Operación: '+' '+active.id" class="list-group-item-heading"/>
+                                        <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
                                             <Label :text="'Producto: ' + active.commodity" color="white"/>
-                                            <Label :text="'Fecha: ' + formatDate(active.date)" color="white"  />
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
                                             <Label :text="'Lugar: ' + active.location.name" color="white"  />
                                             <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
                                         </StackLayout>
@@ -107,9 +107,14 @@
                     pullRefresh.refreshing = false;
                 }, 1000);
             },
-            formatDate(date){
+
+            formatDateHour(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
 
             loadNewOperations(){

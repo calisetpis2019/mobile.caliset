@@ -1,15 +1,16 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
-        <GridLayout rows="auto,*">
-            <Label row="0" :text="'Operación '+ operation.id" class="subtitle" style="margin-bottom:50;"/>
+        <GridLayout rows="auto,auto,*">
+            <Label row="0" text="Información" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="1" :text="'Operación '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" style="margin-bottom:50;" textWrap="true" />
 
-            <ScrollView row="1">
+            <ScrollView row="2">
 
                 <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*" columns="">
 
                     <Label :row="i" column="0" text="Fecha: " color="white" horizontalAlignment="left" fontSize="20"/>
-                    <Label :row="i++" column="1" :text="formatDate(operation.date)" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <Label :row="i++" column="1" :text="formatDateHour(operation.date)" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Estado: " color="white" fontSize="20"/>
                     <Label :row="i++"  column="1" :text="operation.operationState.name" color="white" fontSize="20" horizontalAlignment = "right" />
@@ -73,9 +74,13 @@
         },
 
         methods: {
-            formatDate(date){
+            formatDateHour(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
+            formatDate(date){
+                var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
         }
     };
