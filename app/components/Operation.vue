@@ -39,7 +39,8 @@
             </PullToRefresh>
             <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
 
-            <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" >
+            <StackLayout row="2" orientation="horizontal" height="15%" horizontalAlign="center" 
+                            :visibility="isOperationFuture() ? 'collapsed' : 'visible' " >
             
                 <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')" >
                     <FormattedString>
@@ -84,7 +85,9 @@
                 comments: [],
                 processing: false,
                 nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id + "_",
-                folder: "Camera" // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
+                folder: "Camera", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
+                idFuture: 1, //Hardcodeado
+                isFuture: false,
             };
         },
 
@@ -92,10 +95,17 @@
             user() {
                 var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
                 return name;
-            },            
+            },
+
+                        
         },
 
         methods: {
+            isOperationFuture() {
+                var isFuture = (this.$store.state.selectedOperation.operationState.id == this.idFuture)
+                return isFuture;
+            },
+            
             refreshList(args) {
                 var pullRefresh = args.object;
                 this.loadComments();

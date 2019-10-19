@@ -1,11 +1,11 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations()">
+    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
         <PullToRefresh @refresh="refreshLists" >
             <GridLayout rows="auto,*">
                 <StackLayout row="0" >
 
-                        <Label text="Nuevas Operaciones" class="subtitle" flexWrapBefore="true"/>
+                        <Label text="NUEVAS" class="subtitle" flexWrapBefore="true"/>
 
                         <Label  v-if="!processingNO && newOperations.length == 0"
                                 text="No hay nuevas operaciones" textWrap="true" class="info"
@@ -29,8 +29,61 @@
                         <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
                 </StackLayout>
 
-                <StackLayout row="1">
+                <TabView row="1" tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
+                    <TabViewItem title="Activas">
+                        <StackLayout>
+                            <Label  v-if="!processing && operations.length == 0"
+                                    text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
+                                    style="margin-top: 20" />
 
+                            <ListView class="list-group" for="active in operations">
+                                <v-template>
+                                    <CardView  margin="10" elevation="40" radius="1" class="card">
+                                        <StackLayout class="card" @tap="goToOperation(active)">
+                                            <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
+                                            <StackLayout class="container">
+                                                <Label :text="'Producto: ' + active.commodity" color="white"/>
+                                                <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
+                                                <Label :text="'Lugar: ' + active.location.name" color="white"  />
+                                                <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </CardView>
+                                </v-template>
+                            </ListView>
+                        </StackLayout>
+                        
+                    </TabViewItem>
+
+                    <TabViewItem title="Futuras">
+                        
+                        <StackLayout>
+                            <Label  v-if="!processing && futureOperations.length == 0"
+                                    text="No hay operaciones futuras a las que esté asignado." textWrap="true" class="info"
+                                    style="margin-top: 20" />
+
+                            <ListView class="list-group" for="future in futureOperations">
+                                <v-template>
+                                    <CardView  margin="10" elevation="40" radius="1" class="card">
+                                        <StackLayout class="card" @tap="goToOperation(future)">
+                                            <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
+                                            <StackLayout class="container">
+                                                <Label :text="'Producto: ' + future.commodity" color="white"/>
+                                                <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white"  />
+                                                <Label :text="'Lugar: ' + future.location.name" color="white"  />
+                                                <Label :text="'Estado: ' + future.operationState.name"   color="white"  />
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </CardView>
+                                </v-template>
+                            </ListView>
+                        </StackLayout>
+                        
+                    </TabViewItem>
+                </TabView>
+
+<!--
+                <StackLayout row="1">
                         <Label  text="Operaciones Activas" class="subtitle" />
 
                         <Label  v-if="!processing && operations.length == 0"
@@ -53,9 +106,8 @@
                             </v-template>
                         </ListView>
                         <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-
                 </StackLayout>
-
+-->
             </GridLayout>
         </PullToRefresh>
 
@@ -71,12 +123,15 @@
         data() {
             return {
                 operations: [],
-                idActiva: 2, //Hardcodeado en el backend.
+                idActive: 2, //Hardcodeado en el backend.
                 newOperations: [],
                 operationsIds: [],
 
                 processing: false,
                 processingNO: false,
+
+                futureOperations: [],
+                idFuture: 1, //Hardcodeado en el backend.
 
             };
         },
@@ -103,6 +158,7 @@
                 var pullRefresh = args.object;
                 this.loadNewOperations();
                 this.loadOperations();
+                this.loadFutureOperations();
                 setTimeout(function() {
                     pullRefresh.refreshing = false;
                 }, 1000);
@@ -134,9 +190,9 @@
                     }
                     else {
 
-                        console.log("Largo del resultado:");
+                        console.log("loadNewOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("Resultado json:");
+                        console.log("loadNewOperations: Resultado json:");
                         console.log(result);
 
                         for(var i = 0; i < result.length; i++){
@@ -161,7 +217,7 @@
                 this.processing=true;
                 this.operations = [];
                 http.request({
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idActiva,
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idActive,
                 method: "GET",
                 headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
                 }).then(response => {
@@ -172,9 +228,9 @@
                     }
                     else {
 
-                        console.log("Largo del resultado:");
+                        console.log("loadOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("Resultado json:");
+                        console.log("loadOperations: Resultado json:");
                         console.log(result);
 
                         for(var i = 0; i < result.length; i++){
@@ -190,11 +246,53 @@
                             return x-y;
                         });
 
-                        console.log("Home: Guardo las operaciones del usuario en el store");
+                        console.log("loadOperations: Home: Guardo las operaciones del usuario en el store");
                         console.log(this.operationsIds);
                         this.$store.commit('operations',{ operations: this.operationsIds });
                         this.processing=false;
-                        console.log(operations);
+                        console.log(this.$store.state.operations);
+
+                    }
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                    });
+            },
+
+            loadFutureOperations(){
+                this.processing=true;
+                this.futureOperations = [];
+                http.request({
+                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idFuture,
+                method: "GET",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processing=false;
+                        console.log(result);
+                    }
+                    else {
+
+                        console.log("loadFutureOperations: Largo del resultado:");
+                        console.log(result.length);
+                        console.log("loadFutureOperations: Resultado json:");
+                        console.log(result);
+
+                        for(var i = 0; i < result.length; i++){
+                            this.futureOperations.push(result[i]);
+
+                        }
+
+                        // Se ordenan operaciones por orden ascendente de fecha...
+                        this.futureOperations.sort(function(a,b){
+                            let x = new Date(a.date);
+                            let y = new Date(b.date);
+                            return x-y;
+                        });
+
+                        //this.$store.commit('operations',{ operations: this.operationsIds });
+                        this.processing=false;
 
                     }
                 }, error => {
@@ -267,6 +365,11 @@
 
     .Ops {
         font-size: 10px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+        font-weight: bold;
     }
 
 </style>
