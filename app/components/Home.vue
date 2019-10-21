@@ -51,6 +51,7 @@
                                     </CardView>
                                 </v-template>
                             </ListView>
+                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
                         </StackLayout>
                         
                     </TabViewItem>
@@ -77,6 +78,7 @@
                                     </CardView>
                                 </v-template>
                             </ListView>
+                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
                         </StackLayout>
                         
                     </TabViewItem>
