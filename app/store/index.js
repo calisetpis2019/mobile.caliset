@@ -37,7 +37,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "app.caliset.com";
+            state.ipAPI = "192.168.1.2";
         },
         
         login(state, data) {
@@ -86,7 +86,9 @@ const store = new Vuex.Store({
 
         operations(state,data) {
             console.log("Store: Guardo las operaciones del usuario en el store");
+
             state.operations = data.operations;
+            console.log(state.operations);
         },
 
         selectedComment(state,data){

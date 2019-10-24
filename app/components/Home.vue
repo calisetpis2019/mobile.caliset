@@ -283,7 +283,7 @@
 
                         for(var i = 0; i < result.length; i++){
                             this.futureOperations.push(result[i]);
-
+                            this.futureOperationsIds.push(result[i].id);
                         }
 
                         // Se ordenan operaciones por orden ascendente de fecha...
@@ -293,7 +293,7 @@
                             return x-y;
                         });
 
-                        //this.$store.commit('operations',{ operations: this.operationsIds });
+                        this.$store.commit('operations',{ operations: this.futureOperationsIds });
                         this.processing=false;
 
                     }
