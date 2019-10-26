@@ -18,14 +18,14 @@
                 <StackLayout row="2" class="input-field"> 
                     <Label text="DÍA INICIO" class="subtitle" />
                     <TextView editable="false" color="white" :text="formatDate(startDate)" class="input" @tap="startDateVisible = !startDateVisible;chosenStartDate = true" @blur="startDateVisible = false" textAlignment="center" /> 
-                    <DatePicker :year="chosenOperation ? year : currentYear" :month="chosenOperation ? month : currentMonth" :day="chosenOperation ? day : currentDay" v-model="startDate"
-                        :minDate="chosenOperation ? operations[operationIndex].date : '2019-09-01'" maxDate="2100-12-31" backgroundColor="#B0C4DE" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
+                    <DatePicker :year="chosenOperation ? year : ''" :month="chosenOperation ? month : ''" :day="chosenOperation ? day : ''" v-model="startDate"
+                        :minDate="chosenOperation ? operations[operationIndex].date : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="3" class="input-field">
                     <Label text="HORA INICIO" class="subtitle" />
                     <TextView editable="false" color="white" :text="startTime == '' ? '' : formatDateHour(startTime)" class="input" @tap="startTimeVisible = !startTimeVisible" @blur="startTimeVisible = false" textAlignment="center" />
-                    <TimePicker :year="currentYear" :month="currentMonth" :day="currentDay" :hour="currentHour" :minute="currentMinute" v-model="startTime"
+                    <TimePicker hour="0" minute="0" v-model="startTime"
                         backgroundColor="#B0C4DE" :visibility="startTimeVisible ? 'visible' : 'collapsed'" @tap="startTimeVisible = false" />
                 </StackLayout>
 
@@ -33,13 +33,13 @@
                     <Label text="DÍA FIN" class="subtitle" />
                     <TextView editable="false" color="white" :text="formatDate(endDate)" class="input" @tap="endDateVisible = !endDateVisible" @blur="endDateVisible = false" textAlignment="center" /> 
                     <DatePicker :year="year" :month="month" :day="day" v-model="endDate"
-                        :minDate="chosenStartDate ? startDate : '2019-09-01'" maxDate="2100-12-31" backgroundColor="#B0C4DE" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
+                        :minDate="chosenStartDate ? startDate : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="5" class="input-field">
                     <Label text="HORA FIN" class="subtitle" />
                     <TextView editable="false" color="white" :text="endTime == '' ? '' : formatDateHour(endTime)" class="input"  @tap="endTimeVisible = !endTimeVisible" @blur="endTimeVisible = false" textAlignment="center" />
-                    <TimePicker :hour="currentHour" :minute="currentMinute" v-model="endTime"
+                    <TimePicker hour="0" minute="0" v-model="endTime"
                         backgroundColor="#B0C4DE" :visibility="endTimeVisible ? 'visible' : 'collapsed'" @tap="endTimeVisible = false" />
                 </StackLayout>
 
@@ -49,7 +49,7 @@
                 </StackLayout>
 
                 <Button row="7" text="Cargar registro de horas" class="btn btn-primary m-t-20" />
-                
+
             </GridLayout>
         </ScrollView>
     </Page>
@@ -63,9 +63,6 @@
         data() {
 
             return {
-                currentDay: new Date().getUTCDate(),
-                currentMonth: new Date().getUTCMonth() + 1,
-                currentYear: new Date().getUTCFullYear(),
                 currentHour: new Date().getUTCHours(),
                 currentMinute : new Date().getUTCMinutes(),
 
@@ -90,13 +87,18 @@
 
         computed: {
             countHours(){
-                var st = new Date(this.startTime);
-                var en = new Date(this.endTime);
-                var aux = en-st;
-                if (aux < 0){
+                var sT = new Date(this.startTime);
+                var eT = new Date(this.endTime);
+                var sD = new Date(this.startDate);
+                var eD = new Date(this.endDate);                
+                var auxstart = new Date(sD.getFullYear() + '/' + (sD.getMonth()+1) + '/' + sD.getDate() + ' ' +  sT.getHours() + ':' + sT.getMinutes());
+                var auxend = new Date(eD.getFullYear() + '/' + (eD.getMonth()+1) + '/' + eD.getDate() + ' ' + eT.getHours() + ':' + eT.getMinutes());
+                var dif = auxend-auxstart;
+                // return auxstart.toString() + '-' + auxend.toString() + '\n' + Math.floor((dif)/3600000) + ":" + ("0" + ((dif)/60000)%60).slice(-2);
+                if (dif < 0){
                     return "La hora de inicio no puede ser posterior a la hora de fin.";
                 }
-                return ("0" + Math.floor((aux)/3600000)).slice(-2) + ":" + ("0" + ((aux)/60000)%60).slice(-2);
+                return Math.floor((dif)/3600000) + ":" + ("0" + ((dif)/60000)%60).slice(-2);
             },
             year(){
                 var d = new Date(this.startDate);
@@ -104,7 +106,7 @@
             },
             month(){
                 var d = new Date(this.startDate);
-                return d.getMonth() + 1;
+                return d.getMonth()+1;
             },
             day(){
                 var d = new Date(this.startDate);
@@ -115,7 +117,7 @@
         methods: {
             formatDateHour(date){
                 var d = new Date(date);
-                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
                 var d = new Date(date);
