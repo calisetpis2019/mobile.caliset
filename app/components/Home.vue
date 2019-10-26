@@ -8,7 +8,7 @@
                         <Label text="NUEVAS" class="subtitle" flexWrapBefore="true"/>
 
                         <Label  v-if="!processingNO && newOperations.length == 0"
-                                text="No hay nuevas operaciones" textWrap="true" class="info"
+                                :text="errorN ? msgError : msgNuevas" textWrap="true" class="info"
                                 style="margin-top: 20" />
 
                         <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
@@ -33,7 +33,7 @@
                     <TabViewItem title="Activas">
                         <StackLayout>
                             <Label  v-if="!processing && operations.length == 0"
-                                    text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
+                                    :text="errorA ? msgError : msgActivas" textWrap="true" class="info"
                                     style="margin-top: 20" />
 
                             <ListView class="list-group" for="active in operations">
@@ -60,7 +60,7 @@
                         
                         <StackLayout>
                             <Label  v-if="!processing && futureOperations.length == 0"
-                                    text="No hay operaciones futuras a las que esté asignado." textWrap="true" class="info"
+                                    :text="errorF ? msgError : msgFuturas" textWrap="true" class="info"
                                     style="margin-top: 20" />
 
                             <ListView class="list-group" for="future in futureOperations">
@@ -134,7 +134,14 @@
 
                 futureOperations: [],
                 idFuture: 1, //Hardcodeado en el backend.
-
+                
+                msgNuevas: "No hay nuevas operaciones",
+                msgActivas: "No hay operaciones activas a las que esté asignado.",
+                msgFuturas: "No hay operaciones futuras a las que esté asignado.",
+                msgError: "No se pudo conectar al servidor.",
+                errorN : false,
+                errorA : false,
+                errorF : false
             };
         },
 
@@ -177,6 +184,7 @@
 
             loadNewOperations(){
                 this.processingNO=true;
+                this.errorN = false;
                 this.newOperations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsPending",
@@ -211,12 +219,14 @@
 
                 }, error => {
                     this.processing=false;
+                    this.errorN = true;
                     console.error(error);
                     });
             },
 
             loadOperations(){
                 this.processing=true;
+                this.errorA = false;
                 this.operations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idActive,
@@ -237,7 +247,7 @@
 
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
-                            this.operationsIds.push(result[i].id);
+                            this.operationsIds.push(result[i].id + '-' + this.formatDate(result[i].date));
 
                         }
 
@@ -250,19 +260,21 @@
 
                         console.log("loadOperations: Home: Guardo las operaciones del usuario en el store");
                         console.log(this.operationsIds);
-                        this.$store.commit('operations',{ operations: this.operationsIds });
+                        this.$store.commit('activeOperations',{ operations: this.operationsIds });
                         this.processing=false;
                         console.log(this.$store.state.operations);
 
                     }
                 }, error => {
                     this.processing=false;
+                    this.errorA = true;
                     console.error(error);
                     });
             },
 
             loadFutureOperations(){
                 this.processing=true;
+                this.errorF = false;
                 this.futureOperations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idFuture,
@@ -279,11 +291,10 @@
                         console.log("loadFutureOperations: Largo del resultado:");
                         console.log(result.length);
                         console.log("loadFutureOperations: Resultado json:");
-                        console.log(result);
+                        // console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.futureOperations.push(result[i]);
-                            this.futureOperationsIds.push(result[i].id);
                         }
 
                         // Se ordenan operaciones por orden ascendente de fecha...
@@ -293,12 +304,11 @@
                             return x-y;
                         });
 
-                        this.$store.commit('operations',{ operations: this.futureOperationsIds });
                         this.processing=false;
-
                     }
                 }, error => {
                     this.processing=false;
+                    this.errorF = true;
                     console.error(error);
                     });
             },
