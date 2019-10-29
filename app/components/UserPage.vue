@@ -2,7 +2,7 @@
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar userPage="true"/>
 
-        <GridLayout rows="auto,auto,*,auto">
+        <GridLayout rows="auto,auto,auto,*,auto" >
             <StackLayout row="0" margin="20px">
                 <Label :text=userEmail class="info" textWrap="true" horizontalAlignment="left" />
                 <Label :text=lastLogin class="info" textWrap="true" horizontalAlignment="left" />
@@ -10,11 +10,17 @@
 
             <StackLayout row="1" verticalAlignment="center" >
                 <Button class="btn btn-primary m-t-20" style="width: 25%" @tap="$goto('timeSheet')">
-
                     <FormattedString>
                         <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
                         <Span text.decode="&#xa;&#xa;"/>
-                        <Span text= "REGISTRO DE HORAS" /> 
+                        <Span text= "REGISTRO DE HORAS" />
+                    </FormattedString>
+                </Button>
+                <Button class="btn btn-primary m-t-20" style="width: 25%" @tap="$goto('timeRecord')">
+                    <FormattedString>
+                        <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
+                        <Span text.decode="&#xa;&#xa;"/>
+                        <Span text= "taimrecord" /> 
                     </FormattedString>
                 </Button>
             </StackLayout>
@@ -24,6 +30,7 @@
             </StackLayout>
 
             <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
+                <StackLayout class="hr-light"></StackLayout>
                 <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:40%" />
             </StackLayout>
         </GridLayout>
