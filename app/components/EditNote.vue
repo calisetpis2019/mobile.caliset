@@ -1,8 +1,6 @@
 <template >
     
     <GridLayout rows="*,auto" columns="*,*" backgroundColor="#1F1B24">
-
-        <!--<Label row="0"  text="Modificar comentario" class="subtitle" flexWrapBefore="true" width="100%"/>-->
         
         <FlexboxLayout row="0" colSpan="2" flexDirection="column">
             

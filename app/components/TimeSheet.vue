@@ -2,53 +2,58 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations()">
         <OurActionBar/>
         <ScrollView>
-            <GridLayout rows="auto,auto,auto,auto,auto,auto" >
+            <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
 
-                <!-- <Label row="0" text="Registro de Horas" class="subtitle" color="white"/> -->
                 <StackLayout row="0">
                     <Label text="REGISTRO DE HORAS" class="subtitle" flexWrapBefore="true"/>
                     <StackLayout class="hr-light"></StackLayout>
                 </StackLayout>
 
-
                 <StackLayout row="1" class="input-field">
-                    
                     <Label text= "OPERACIÓN" class="subtitle"/>
-                    <!-- <TextFIeld editable="false" color="white" :text="operationsIds[operationIndex]" class="input"  @tap="showOperations()" /> -->
-                    <TextFIeld editable="false" color="white" :text="yaAbrio ? this.$store.state.operations[operationIndex] : 'hola'" class="input"  @tap="showOperations()" />
-                    <!-- <ListPicker :items="operationsIds" v-model="operationIndex" backgroundColor="#B0C4DE" v-show="opVisible" @tap="opVisible=false" /> -->
-                    <ListPicker :items="this.$store.state.operations" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false" />
-
+                    <TextView editable="false" color="white" :text="haveIndex ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
+                    <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
                 </StackLayout>
 
-                <StackLayout row="2" class="input-field">
-                    
-                    <Label text="DÍA" class="subtitle" />
-                    <TextFIeld editable="false" color="white" :text="date" class="input"  @focus="showDate()" @blur="hideDate()"  /> 
-
-                    <DatePicker :year="currentYear" :month="currentMonth" :day="currentDay" v-model="date"
-                        minDate="2019-09-01" maxDate="2100-12-31" backgroundColor="#B0C4DE" v-show="dateVisible"/>
-                </StackLayout>  
+                <StackLayout row="2" class="input-field"> 
+                    <Label text="DÍA INICIO" class="subtitle" />
+                    <TextView editable="false" color="white" :text="formatDate(startDate)" class="input" @tap="startDateVisible = !startDateVisible;chosenStartDate = true" @blur="startDateVisible = false" textAlignment="center" /> 
+                    <DatePicker :year="chosenOperation ? year : ''" :month="chosenOperation ? month : ''" :day="chosenOperation ? day : ''" v-model="startDate"
+                        :minDate="chosenOperation ? operations[operationIndex].date : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
+                </StackLayout>
 
                 <StackLayout row="3" class="input-field">
-
-                    <Label text="INICIO" class="subtitle" />
-
-                    <TextField editable="false" color="white" :text="start" class="input" @focus="showTime()" @blur="hideTime()" />
-
-                    <TimePicker :hour="currentHour" :minute="currentMinute" v-model="start"
-                        backgroundColor="#B0C4DE" v-show="timeVisible" />
+                    <Label text="HORA INICIO" class="subtitle" />
+                    <TextField editable="false" color="white" :text="startTime == '' ? '' : formatDateHour(startTime)" class="input" @tap="startTimeVisible = !startTimeVisible" @blur="startTimeVisible = false" textAlignment="center" />
+                    <TimePicker hour="0" minute="0" v-model="startTime"
+                        backgroundColor="#B0C4DE" :visibility="startTimeVisible ? 'visible' : 'collapsed'" @tap="startTimeVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="4" class="input-field">
-
-                    <Label text="FIN" class="subtitle" />
-                    <TextField color="white"  class="input" keyboardType="number" />
+                    <Label text="DÍA FIN" class="subtitle" />
+                    <TextView editable="false" color="white" :text="formatDate(endDate)" class="input" @tap="endDateVisible = !endDateVisible" @blur="endDateVisible = false" textAlignment="center" /> 
+                    <DatePicker :year="year" :month="month" :day="day" v-model="endDate"
+                        :minDate="chosenStartDate ? startDate : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
                 </StackLayout>
 
-                <Button row="5" text="Cargar registro de horas" class="btn btn-primary m-t-20" />
+                <StackLayout row="5" class="input-field">
+                    <Label text="HORA FIN" class="subtitle" />
+                    <TextField editable="false" color="white" :text="endTime == '' ? '' : formatDateHour(endTime)" class="input"  @tap="endTimeVisible = !endTimeVisible" @blur="endTimeVisible = false" textAlignment="center" />
+                    <TimePicker hour="0" minute="0" v-model="endTime"
+                        backgroundColor="#B0C4DE" :visibility="endTimeVisible ? 'visible' : 'collapsed'" @tap="endTimeVisible = false" />
+                </StackLayout>
+
+                <StackLayout row="6" class="input-field">
+                    <Label text="TOTAL DE HORAS" class="subtitle" />
+                    <TextView :text="(startTime == '' || endTime == '') ? '' : countHours" color="white" editable="false" textAlignment="center" />
+                </StackLayout>
+                
+                <ActivityIndicator row="7" :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+                <Label row="8" :text="errorMsg" class="info" textWrap="true" :visibility="errorMsg != '' ? 'visible' : 'collapsed'" />
+                <Button row="9" text="Cargar registro de horas" class="btn btn-primary m-t-20" :isEnabled="!processing" @tap="createHourRecord" />
+
             </GridLayout>
-        </ScrollView>        
+        </ScrollView>
     </Page>
 </template>
 
@@ -60,79 +65,94 @@
         data() {
 
             return {
-                currentDay: new Date().getUTCDate(),
-                currentMonth: new Date().getUTCMonth() + 1,
-                currentYear: new Date().getUTCFullYear(),
                 currentHour: new Date().getUTCHours(),
                 currentMinute : new Date().getUTCMinutes(),
 
-                time: {
-                    date : '01/01/1800',
-                    start : '00:00',
-                    hours : '0'
-                },
-
-                dateVisible : false,
-                timeVisible : false,
+                startDateVisible : false,
+                endDateVisible : false,
+                startTimeVisible : false,
+                endTimeVisible : false,
                 opVisible : false,
-                date : "",
-                start : "",
+                startDate : "",
+                endDate : "",
+                startTime : "",
+                endTime: "",
+                
+                startRecord: "",
+                endRecord: "",
 
+                chosenOperation: false,
+                chosenStartDate: false,
                 operationIndex: 0,
-                // operations: [],
-                yaAbrio: false
+                operations: [],
+                finishedOperations: [],
+                haveIndex: false,
+
+                processing: false,
+                errorMsg: "",
+                errorStartEnd: false
             };
         },
 
         computed: {
-            user() {
-                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
-                return name;
+            countHours(){
+                var sT = new Date(this.startTime);
+                var eT = new Date(this.endTime);
+                var sD = new Date(this.startDate);
+                var eD = new Date(this.endDate);
+                this.startRecord = new Date(sD.getFullYear() + '/' + (sD.getMonth()+1) + '/' + sD.getDate() + ' ' +  sT.getHours() + ':' + sT.getMinutes() + ':00');
+                this.endRecord = new Date(eD.getFullYear() + '/' + (eD.getMonth()+1) + '/' + eD.getDate() + ' ' + eT.getHours() + ':' + eT.getMinutes() + ':00');
+                var dif = this.endRecord-this.startRecord;
+                if (dif <= 0){
+                    this.errorStartEnd = true;
+                    return "";
+                }
+                this.errorMsg = "";
+                this.errorStartEnd = false;
+                return Math.floor((dif)/3600000) + ":" + ("0" + ((dif)/60000)%60).slice(-2);
+            },
+            year(){
+                var d = new Date(this.startDate);
+                return d.getFullYear();
+            },
+            month(){
+                var d = new Date(this.startDate);
+                return d.getMonth()+1;
+            },
+            day(){
+                var d = new Date(this.startDate);
+                return d.getDate();
             }
         },
 
         methods: {
             formatDateHour(date){
                 var d = new Date(date);
-                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
 
-            showDate() {
-                this.dateVisible = true;
-                return;
-            },
-
-            hideDate(){
-                this.dateVisible = false;
-                return;
-            },
-            showTime() {
-                this.timeVisible = true;
-                return;
-            },
-
-            hideTime(){
-                this.timeVisible = false;
-                return;
-            },
             showOperations() {
                 this.loadOperations();
-                this.yaAbrio = true;
+                this.haveIndex = true;
                 this.opVisible = true;
+                this.operations = [];
+                this.operations = this.operations.concat(this.$store.state.activeOperations.concat(this.$store.state.finishedOperations));
             },
 
             loadOperations() {
-                // this.operations = [];
-                this.$store.commit('load');
                 // Obtengo las operaciones finalizadas
+                this.finishedOperations = [];
                 http.request({
-                url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=1",
-                method: "GET",
-                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + this.$store.state.session.token },
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=3",
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json", 
+                        "Authorization": "Bearer " + this.$store.state.session.token
+                    },
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (result == null) {
@@ -140,19 +160,74 @@
                         console.log(result);
                     }
                     else {
-
-                        // for(var i = 0; i < result.length; i++){
-                        //     this.operations.push(result[i].id + '-' + this.formatDate(result[i].date));
-                        // }
-
-                        // this.$store.commit('operations',{ operations: this.operations });
-                        console.log(this.$store.state.operations);
+                        for(var i = 0; i < result.length; i++){
+                            this.finishedOperations.push({
+                                id: result[i].id,
+                                date: result[i].date,
+                                operationId: result[i].id + '-' + this.formatDate(result[i].date)
+                            });
+                        }
+                        this.$store.commit('finishedOperations',{ operations: this.finishedOperations });
 
                     }
                 }, error => {
                     this.processing=false;
                     console.error(error);
                 });
+            },
+
+            createHourRecord(){
+                this.processing = true;
+                if (this.operations[this.operationIndex] == null) {
+                    this.errorMsg = "Debe eligir una operación.";
+                    this.processing = false;
+                }
+                else {
+                    var dateOper = new Date(this.operations[this.operationIndex].date);
+                    dateOper.setHours(0,0,0);
+                    if (this.startRecord == '' || this.endRecord == '') {
+                    this.errorMsg = "Debe completar las horas antes de intentar registrarlas.";
+                    this.processing = false;
+                    }
+                    else if (this.errorStartEnd){
+                        this.errorMsg = "La fecha de inicio debe ser anterior a la fecha de fin.";
+                        this.processing = false;
+                    }
+                    else if (this.startRecord - dateOper <= -60000){
+                        this.errorMsg = "La fecha de la operación debe ser anterior a la fecha de inicio.";
+                        this.processing = false;
+                    }
+                    else {
+                        http.request({
+                            url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/Create",
+                            method: "POST",
+                            headers: { 
+                                "Content-Type": "application/json",
+                                "Authorization": "Bearer " + this.$store.state.session.token 
+                            },
+                            content: JSON.stringify({
+                                "startDate": this.startRecord,
+                                "endDate": this.endRecord,
+                                "operationId": this.operations[this.operationIndex].id
+                            })
+                        }).then(response => {
+                            var success = response.content.toJSON().success;
+                            if (!success) {
+                                console.log(response.content.toJSON().error);
+                                this.errorMsg = response.content.toJSON().error.details;
+                            }
+                            else {
+                                this.errorMsg = "El registro de hora se hizo correctamente.";
+                                this.$goto('userPage',{ clearHistory: true });
+                            }
+                            this.processing=false;
+                        }, error => {
+                            this.processing=false;
+                            console.error(error);
+                        });
+                    }
+
+                }
             }
 
         }

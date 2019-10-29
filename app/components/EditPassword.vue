@@ -74,10 +74,6 @@
             }
         },
 
-        computed: {
-
-        },
-
         methods: {
             checkPassword() {
                 this.input.newPass = "";

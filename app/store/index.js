@@ -22,11 +22,13 @@ const store = new Vuex.Store({
             },
             deviceToken: {
                 token: "",
-                updated: true 
+                updated: true
             }
         },
         ipAPI : "",
         loggedIn: false,
+        ActiveOperations: [],
+        finishedOperations: []
     },
 
     mutations: {
@@ -39,7 +41,7 @@ const store = new Vuex.Store({
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
             state.ipAPI = "192.168.1.2";
         },
-        
+
         login(state, data) {
             console.log("userId en el store");
             console.log(data.userId);
@@ -67,7 +69,7 @@ const store = new Vuex.Store({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization":"Bearer "+ state.session.token 
+                    "Authorization":"Bearer "+ state.session.token
                 }
             }).then(response => {
                 var result = response.content.toJSON().result;
@@ -84,11 +86,11 @@ const store = new Vuex.Store({
             firebase.registerForPushNotifications();
         },
 
-        operations(state,data) {
-            console.log("Store: Guardo las operaciones del usuario en el store");
-
-            state.operations = data.operations;
-            console.log(state.operations);
+        activeOperations(state,data) {
+            state.activeOperations = data.operations;
+        },
+        finishedOperations(state,data) {
+            state.finishedOperations = data.operations;
         },
 
         selectedComment(state,data){
@@ -128,12 +130,12 @@ const store = new Vuex.Store({
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization":"Bearer "+ state.session.token 
+                        "Authorization":"Bearer "+ state.session.token
                     }
                 }).then(response => {
                     var result = response.content.toJSON().result;
                     if (response.content.toJSON().success) {
-                        console.log("Se envió device token con éxito.");                                
+                        console.log("Se envió device token con éxito.");
                         console.log(result);
                         state.session.deviceToken.updated = false;
                     }

@@ -33,13 +33,6 @@
             }
         },
         
-        computed: {
-            user() {
-                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
-                return name;
-            }
-        },
-
         methods: {
             saveNote(){
                 this.processing = true;
