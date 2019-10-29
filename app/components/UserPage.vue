@@ -41,10 +41,6 @@
         },
 
         computed: {
-            user() {
-                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
-                return name;
-            },
             userEmail() {
                 return "Correo electrónico: " + this.$store.state.session.email;
             },

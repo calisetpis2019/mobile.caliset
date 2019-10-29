@@ -49,14 +49,6 @@
             }
         },
 
-        computed: {
-            user() {
-                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
-                return name;
-            },
-            
-        },
-
         methods: {
             refreshList(args) {
                 var pullRefresh = args.object;

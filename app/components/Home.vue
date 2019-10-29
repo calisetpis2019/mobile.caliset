@@ -127,7 +127,7 @@
                 operations: [],
                 idActive: 2, //Hardcodeado en el backend.
                 newOperations: [],
-                operationsIds: [],
+                activeOperations: [],
 
                 processing: false,
                 processingNO: false,
@@ -151,17 +151,7 @@
             });
             this.sendDeviceToken();
         },
-
-        computed: {
-            user() {
-                var name = this.$store.state.session.email.substring(0, this.$store.state.session.email.lastIndexOf("@"));
-                return name;
-            },
-            firebaseToken() {
-                return this.$store.state.session.deviceToken.token;
-            }
-        },
-
+        
         methods: {
             refreshLists(args) {
                 var pullRefresh = args.object;
@@ -228,6 +218,7 @@
                 this.processing=true;
                 this.errorA = false;
                 this.operations = [];
+                this.activeOperations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=" + this.idActive,
                 method: "GET",
@@ -247,7 +238,11 @@
 
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
-                            this.operationsIds.push(result[i].id + '-' + this.formatDate(result[i].date));
+                            this.activeOperations.push({
+                                id: result[i].id,
+                                date: result[i].date,
+                                operationId: result[i].id + '-' + this.formatDate(result[i].date)
+                            });
 
                         }
 
@@ -258,11 +253,8 @@
                             return x-y;
                         });
 
-                        console.log("loadOperations: Home: Guardo las operaciones del usuario en el store");
-                        console.log(this.operationsIds);
-                        this.$store.commit('activeOperations',{ operations: this.operationsIds });
+                        this.$store.commit('activeOperations',{ operations: this.activeOperations });
                         this.processing=false;
-                        console.log(this.$store.state.operations);
 
                     }
                 }, error => {
