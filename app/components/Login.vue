@@ -14,13 +14,13 @@
                             returnKeyType="next" v-model="input.email" >
                         </TextField>
 
-                        <StackLayout class="hr-light"></StackLayout>
+                        <StackLayout class="hr-light"/>
 
                         <TextField row="4" class="input" ref="password" returnKeyType="done"
                             hint="Contraseña" secure="true" v-model="input.password" >
                         </TextField>
 
-                        <StackLayout class="hr-light"></StackLayout>
+                        <StackLayout class="hr-light"/>
                     </StackLayout>
 
                 <Button row="5" text="Ingresar" class="btn btn-primary m-t-20" @tap="login" :isEnabled="!processing"></Button> 

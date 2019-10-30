@@ -1,47 +1,50 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" >
-        <ActionBar title="Cambio de contraseña" class="action-bar" backgroundColor="#1F1B24"  />
+    <ActionBar title="Cambio de contraseña" class="action-bar subtitle" backgroundColor="#1F1B24"  />
     <FlexboxLayout class="page" backgroundColor="#1F1B24">
         <ScrollView>
-        <GridLayout rows="auto,auto,auto,auto,*,auto" class="grid">
-            <StackLayout row="0" verticalAlignment="top">
-                <Label v-if="equalPasswords" v-model="errorLabelEqualPwds" color="red" textWrap="true" />
-            </StackLayout>
+            <GridLayout rows="auto,auto,auto,auto,*,auto" class="grid">
+                <StackLayout row="0" verticalAlignment="top">
+                    <Label v-if="equalPasswords" v-model="errorLabelEqualPwds" color="red" textWrap="true" />
+                </StackLayout>
+                <StackLayout class="hr-light"/>
+                <StackLayout class="hr-light"/>
 
-            <StackLayout row="1" style="padding: 10" class="form">
-                <Label text="Contraseña actual:" class="info" style="padding: 10"/>
-                <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red" textWrap="true" />
-                <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword" returnKeyType="next">
-                </TextField>
-            <StackLayout class="hr-light"></StackLayout>
-            </StackLayout>
+                <StackLayout row="1" class="form">
+                    <Label text="CONTRASEÑA ACTUAL" class="subtitle" />
+                    <Label v-if="incorrectPassword" v-model="errorLabelPwd" color="red" textWrap="true" />
+                    <TextField v-model="input.pass" class="input" secure="true" @textChange="checkPassword" returnKeyType="next"/>
+                    <StackLayout class="hr-light"/>
+                    <StackLayout class="hr-light"/>
+                </StackLayout>
 
-            <StackLayout row="2" style="padding: 10" class="form">
-                <Label text="Nueva contraseña:" class="info" style="padding: 10"/>
-                <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" textWrap="true" />
-                <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword" returnKeyType="next" />
-            <StackLayout class="hr-light"></StackLayout>
-            <StackLayout class="hr-light"></StackLayout>
-            </StackLayout>
 
-            <StackLayout row="3" style="padding: 10" class="form">
-                <Label text="Repita la nueva contraseña:" class="info" style="padding: 10" />
-                <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" textWrap="true" />
-                <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches" returnKeyType="done">
-                </TextField>
-            <StackLayout class="hr-light"></StackLayout>
-            </StackLayout>
+                <StackLayout row="2" class="form">
+                    <Label text="NUEVA CONTRASEÑA" class="subtitle" />
+                    <Label v-if="incorrectNewPassword" v-model="errorLabelNPwd" color="red" textWrap="true" />
+                    <TextField v-model="input.newPass" class="input" secure="true" @textChange="checkNewPassword" returnKeyType="next" />
+                    <StackLayout class="hr-light"/>
+                    <StackLayout class="hr-light"/>
+                </StackLayout>
 
-            <ActivityIndicator row= "4" :busy="processing" color="white"></ActivityIndicator>
-            
-            <Button row="5" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd&&!processing" style="padding: 10"
-                    class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
 
-        </GridLayout>
+                <StackLayout row="3" class="form">
+                    <Label text="REPITA LA NUEVA CONTRASEÑA" class="subtitle" />
+                    <Label v-if="incorrectNewPassword2" v-model="errorLabelNPwd2" color="red" textWrap="true" />
+                    <TextField v-model="input.newPass2" class="input" secure="true" @textChange="checkIfNewPasswordMatches" returnKeyType="done"/>
+                    <StackLayout class="hr-light"/>
+                    <StackLayout class="hr-light"/>
+                </StackLayout>
+
+
+                <ActivityIndicator row= "4" :busy="processing" color="white"></ActivityIndicator>
+                
+                <Button row="5" :isEnabled="ctrl.fst&&ctrl.snd&&ctrl.trd&&!processing" style="padding: 10"
+                        class="btn btn-primary" text="Confirmar" @tap="changePassword"/>
+
+            </GridLayout>
         </ScrollView>
-
     </FlexboxLayout>
-
     </Page>
 </template>
 
@@ -228,5 +231,4 @@
     // Start custom common variables
     @import '../app-variables';
     // End custom common variables
-
 </style>

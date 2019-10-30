@@ -1,23 +1,36 @@
-<template @navigatedTo="loadOperations()">
-    <!-- <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations()"> -->
+<template @navigatedTo="type== 'register' ? loadOperations() : (type== 'view' ? loadHours(): )">
     <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
 
         <StackLayout row="0">
             <Label :text="title" class="subtitle" flexWrapBefore="true"/>
-            <StackLayout class="hr-light"></StackLayout>
+            <StackLayout class="hr-light"/>
+            <StackLayout class="hr-light"/>
         </StackLayout>
 
-        <StackLayout row="1" class="input-field">
-            <Label :text="type=='record' ? 'OPERACIÓN' : 'no se'" class="subtitle"/>
-            <TextView editable="false" color="white" :text="haveIndex ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
+        <StackLayout row="1" class="input-field" :visibility="type=='register' ? 'visible' : 'collapsed'">
+            <Label text="OPERACIÓN" class="subtitle"/>
+            <TextView editable="false" color="white" :text="haveIndex && type=='register' ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
             <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
+        </StackLayout>
+
+        <StackLayout row="1" class="input-field" :visibility="type=='view' ? 'visible' : 'collapsed'">
+            <Label text="REGISTROS DE HORAS" class="subtitle"/>
+            <TextView editable="false" color="white" :text="haveIndex && type=='view' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" class="input"  @tap="showHours()" textAlignment="center" />
+            <ListPicker :items="hourRecords" textField="startDate" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=hourRecords[operationIndex].startDate;chosenOperation=true;errorMsg=''" />
         </StackLayout>
 
         <StackLayout row="2" class="input-field"> 
             <Label text="DÍA INICIO" class="subtitle" />
             <TextView editable="false" color="white" :text="formatDate(startDate)" class="input" @tap="startDateVisible = !startDateVisible;chosenStartDate = true" @blur="startDateVisible = false" textAlignment="center" /> 
-            <DatePicker :year="chosenOperation ? year : ''" :month="chosenOperation ? month : ''" :day="chosenOperation ? day : ''" v-model="startDate"
-                :minDate="chosenOperation ? operations[operationIndex].date : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
+            <DatePicker 
+                :year="chosenOperation ? year : ''" 
+                :month="chosenOperation ? month : ''" 
+                :day="chosenOperation ? day : ''" 
+                v-model="startDate"
+                :minDate="chosenOperation && type=='register' ? operations[operationIndex].date : (chosenOperation && type == 'view' ? hourRecords[operationIndex].startDate : '2019/09/1')" 
+                maxDate="2100/12/31" backgroundColor="#B0C4DE" 
+                :visibility="startDateVisible && type=='register' ? 'visible' : 'collapsed'" 
+                @tap="startDateVisible = false" />
         </StackLayout>
 
         <StackLayout row="3" class="input-field">
@@ -30,8 +43,16 @@
         <StackLayout row="4" class="input-field">
             <Label text="DÍA FIN" class="subtitle" />
             <TextView editable="false" color="white" :text="formatDate(endDate)" class="input" @tap="endDateVisible = !endDateVisible" @blur="endDateVisible = false" textAlignment="center" /> 
-            <DatePicker :year="year" :month="month" :day="day" v-model="endDate"
-                :minDate="chosenStartDate ? startDate : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
+            <DatePicker 
+                :year="year" 
+                :month="month" 
+                :day="day" 
+                v-model="endDate"
+                :minDate="chosenStartDate ? startDate : '2019/09/1'" 
+                maxDate="2100/12/31" 
+                backgroundColor="#B0C4DE" 
+                :visibility="endDateVisible && type=='register' ? 'visible' : 'collapsed'" 
+                @tap="endDateVisible = false" />
         </StackLayout>
 
         <StackLayout row="5" class="input-field">
@@ -47,11 +68,12 @@
         </StackLayout>
         
         <ActivityIndicator row="7" :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+        
         <Label row="8" :text="errorMsg" class="info" textWrap="true" :visibility="errorMsg != '' ? 'visible' : 'collapsed'" />
-        <Button row="9" :text="type=='record' ? 'Cargar registro de horas' : 'jeje'" class="btn btn-primary m-t-20" :isEnabled="!processing" @tap="createHourRecord" />
-
+        
+        <Button row="9" text="Cargar registro de horas" class="btn btn-primary m-t-20" :visibility="type=='register' ? 'visible' : 'collapsed'" :isEnabled="!processing" @tap="createHourRecord" />
+        
     </GridLayout>
-    <!-- </Page> -->
 </template>
 
 <script>
@@ -88,7 +110,9 @@
 
                 processing: false,
                 errorMsg: "",
-                errorStartEnd: false
+                errorStartEnd: false,
+
+                hourRecords: []
             };
         },
 
@@ -142,6 +166,14 @@
                 this.operations = this.operations.concat(this.$store.state.activeOperations.concat(this.$store.state.finishedOperations));
             },
 
+            showHours() {
+                this.loadHours();
+                this.haveIndex = true;
+                this.opVisible = true;
+                this.hourRecords = [];
+                this.hourRecords = this.hourRecords.concat(this.$store.state.hourRecords);
+            },
+
             loadOperations() {
                 // Obtengo las operaciones finalizadas
                 this.finishedOperations = [];
@@ -168,6 +200,33 @@
                         }
                         this.$store.commit('finishedOperations',{ operations: this.finishedOperations });
 
+                    }
+                }, error => {
+                    this.processing=false;
+                    console.error(error);
+                });
+            },
+
+            loadHours() {
+                // Obtengo las operaciones finalizadas
+                this.hourRecords = [];
+                http.request({
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/GetAllByUser?IdUser=" + this.$store.state.session.userId,
+                    method: "GET",
+                    headers: { 
+                        "Content-Type": "application/json", 
+                        "Authorization": "Bearer " + this.$store.state.session.token
+                    },
+                }).then(response => {
+                    var result = response.content.toJSON().result;
+                    if (result == null) {
+                        this.processing=false;
+                    }
+                    else {
+                        for(var i = 0; i < result.length; i++){
+                            this.hourRecords.push(result[i]);
+                        }
+                        this.$store.commit('hourRecords',{ hours: this.hourRecords });
                     }
                 }, error => {
                     this.processing=false;
@@ -246,22 +305,4 @@
         font-size : 40px;
     }
 
-    .chat {
-        margin : 20px;
-        background-color: #1F1B24;
-
-    }
-
-    .title  {
-        color: white;
-        text-align:center;
-        font-size: 25;
-        border-color : white;
-        
-    }
-
-    .subtitle {
-        font-size: 15px;
-        font-weight: bold;
-    }
 </style>

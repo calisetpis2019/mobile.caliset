@@ -8,30 +8,34 @@
                 <Label :text=lastLogin class="info" textWrap="true" horizontalAlignment="left" />
             </StackLayout>
 
-            <StackLayout row="1" verticalAlignment="center" >
-                <Button class="btn btn-primary m-t-20" style="width: 25%" @tap="$goto('timeSheet')">
+            <FlexBoxLayout row="1" verticalAlignment="center" horizontalAlignment="center" >
+                <Button class="btn btn-primary m-t-20" style="width: 40%" @tap="$goto('timeSheet')">
                     <FormattedString>
                         <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
                         <Span text.decode="&#xa;&#xa;"/>
-                        <Span text= "REGISTRO DE HORAS" />
+                        <Span text= "REGISTRAR HORAS" />
                     </FormattedString>
                 </Button>
-                <Button class="btn btn-primary m-t-20" style="width: 25%" @tap="$goto('timeRecord')">
+                <Button class="btn btn-primary m-t-20" style="width: 40%" @tap="$goto('timeRecord')">
                     <FormattedString>
                         <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
                         <Span text.decode="&#xa;&#xa;"/>
-                        <Span text= "taimrecord" /> 
+                        <Span text= "VER REGISTROS DE HORAS" /> 
                     </FormattedString>
                 </Button>
-            </StackLayout>
+            </FlexBoxLayout>
 
-            <StackLayout row="2" horizontalAlignement="center">
-                <Button text="Cambiar contraseña" @tap="changePassword" class="btn-primary m-t-20" style="width:80%" textWrap="true" />
-            </StackLayout>
+            <Label row="2" text="" class="subtitle"/>
+
 
             <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
-                <StackLayout class="hr-light"></StackLayout>
-                <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:40%" />
+                <StackLayout class="hr-light"/>
+                <StackLayout class="hr-dark"/>
+                <StackLayout class="hr-light"/>
+                <FlexboxLayout horizontalAlignment="center">
+                    <Button text="Cambiar contraseña" @tap="changePassword" class="btn btn-changePass m-t-20" style="width:40%" margin="5" />
+                    <Button text="Cerrar Sesión" @tap="logout" class="btn-reject m-t-20" style="width:40%" margin="5" />
+                </FlexboxLayout>
             </StackLayout>
         </GridLayout>
 

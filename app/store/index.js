@@ -28,7 +28,8 @@ const store = new Vuex.Store({
         ipAPI : "",
         loggedIn: false,
         ActiveOperations: [],
-        finishedOperations: []
+        finishedOperations: [],
+        hourRecords: []
     },
 
     mutations: {
@@ -91,6 +92,9 @@ const store = new Vuex.Store({
         },
         finishedOperations(state,data) {
             state.finishedOperations = data.operations;
+        },
+        hourRecords(state,data) {
+            state.hourRecords = data.hours;
         },
 
         selectedComment(state,data){
