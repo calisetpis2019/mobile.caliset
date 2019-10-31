@@ -44,19 +44,25 @@
             
                 <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')" >
                     <FormattedString>
-                        <Span text.decode="&#xf249;" class="fas" />                        
+                        <Span text.decode="&#xf249;" class="fas" />
+                        <Span text.decode="&#xa;"/>
+                        <Span text.decode="Comentario" />                       
                     </FormattedString>
                 </Button>
 
                 <Button textWrap="true" width="40%" class="btn-primary" @tap="takePicture" >
                     <FormattedString textWrap="true">
                         <Span text.decode="&#xf030;" class="fas" />
+                        <Span text.decode="&#xa;"/>
+                        <Span text.decode="Foto" />
                     </FormattedString>
                 </Button>
 
                 <Button textWrap="true" width="30%" text="Muestra" class="btn-primary " @tap="$goto('sample')" >
                     <FormattedString>
                         <Span text.decode="&#xf02a;" class="fas" />
+                        <Span text.decode="&#xa;"/>
+                        <Span text.decode="Muestra" />
                     </FormattedString>
                 </Button>
 
@@ -206,6 +212,7 @@
                             if (saved) {
                                 console.log("Saved: " + filePath);
                                 console.log("Image saved successfully!");
+                                this.takePicture();
                             }
                         }).catch((err) => {
                             console.log("Error -> " + err.message);
