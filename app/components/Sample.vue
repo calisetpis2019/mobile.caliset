@@ -43,7 +43,7 @@
                 }).then(response => {
                     this.processing = false;
                     if (response.content.toJSON().success) {
-                        alert("Se registró con éxito la muestra en el sistema.\nEl id de la muestra es: " + response.content.toJSON().result);
+                        alert("Se registró la muestra con éxito.\nEl id de la muestra es: " + response.content.toJSON().result);
                         this.$goto('operation');
                     }
                     else {
