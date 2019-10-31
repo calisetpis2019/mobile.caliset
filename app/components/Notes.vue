@@ -4,7 +4,7 @@
         
         <GridLayout rows="auto,auto,*,auto">
 
-            <Label row="0" text="Escribir comentario" class="subtitle" flexWrapBefore="true"/>
+            <Label row="0" text="ESCRIBIR COMENTARIO" class="subtitle" flexWrapBefore="true"/>
 
             <ActivityIndicator row="1" :busy="processing" color="white" />
             

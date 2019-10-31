@@ -9,7 +9,7 @@
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
                     <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
                             @tap="$goto('assignations')"/>
-                    <Button textWrap="true" text="Informacion" class=" btn-primary" width="50%" 
+                    <Button textWrap="true" text="Información" class=" btn-primary" width="50%" 
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>

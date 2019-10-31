@@ -53,8 +53,4 @@
         
     }
 
-    .subtitle {
-        font-size: 15px;
-        font-weight: bold;
-    }
 </style>

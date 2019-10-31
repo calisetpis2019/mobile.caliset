@@ -3,8 +3,8 @@
         <OurActionBar/>
         <GridLayout rows="auto,auto,*">
 
-            <Label row="0" text="Asignaciones" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <Label row="1" :text="'Operacion ' + this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="0" text="ASIGNACIONES" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="1" :text="'Operación ' + this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <PullToRefresh row="2" @refresh="refreshList" >
                 <ListView  class="list-group" for="a in assignations" backgroundColor="#1F1B24">
                     <v-template>

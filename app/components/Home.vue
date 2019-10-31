@@ -371,9 +371,9 @@
         font-size: 10px;
     }
 
-    .subtitle {
-        font-size: 15px;
+    /* .subtitle {
+        font-size: 20px;
         font-weight: bold;
-    }
+    } */
 
 </style>

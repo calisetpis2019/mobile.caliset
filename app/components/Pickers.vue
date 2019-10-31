@@ -4,24 +4,51 @@
         <StackLayout row="0">
             <Label :text="title" class="subtitle" flexWrapBefore="true"/>
             <StackLayout class="hr-light"/>
-            <StackLayout class="hr-light"/>
         </StackLayout>
 
         <StackLayout row="1" class="input-field" :visibility="type=='register' ? 'visible' : 'collapsed'">
             <Label text="OPERACIÓN" class="subtitle"/>
-            <TextView editable="false" color="white" :text="haveIndex && type=='register' ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
-            <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
+            <TextView class="input"  
+                editable="false" 
+                :text="haveIndex && type=='register' ? operations[operationIndex].operationId : 'Seleccione una operación...'" 
+                textAlignment="center" color="white" 
+                @tap="showOperations()" />
+            <ListPicker 
+                :items="operations" textField="operationId" 
+                v-model="operationIndex" 
+                backgroundColor="#B0C4DE" 
+                :visibility="opVisible ? 'visible' : 'collapsed'" 
+                @tap="
+                    opVisible=false;
+                    startDate=operations[operationIndex].date;
+                    startTime=operations[operationIndex].date;
+                    chosenOperation=true;
+                    errorMsg=''" />
         </StackLayout>
 
         <StackLayout row="1" class="input-field" :visibility="type=='view' ? 'visible' : 'collapsed'">
             <Label text="REGISTROS DE HORAS" class="subtitle"/>
-            <TextView editable="false" color="white" :text="haveIndex && type=='view' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" class="input"  @tap="showHours()" textAlignment="center" />
-            <ListPicker :items="hourRecords" textField="startDate" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=hourRecords[operationIndex].startDate;chosenOperation=true;errorMsg=''" />
+            <TextView class="input"  
+                editable="false" 
+                :text="haveIndex && type=='view' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" 
+                textAlignment="center" color="white" 
+                @tap="showHours()" />
+            <ListPicker 
+                :items="hourRecords" textField="startDate" 
+                v-model="operationIndex" 
+                backgroundColor="#B0C4DE" 
+                :visibility="opVisible ? 'visible' : 'collapsed'" 
+                @tap="opVisible=false;startDate=hourRecords[operationIndex].startDate;chosenOperation=true;errorMsg=''" />
         </StackLayout>
 
         <StackLayout row="2" class="input-field"> 
             <Label text="DÍA INICIO" class="subtitle" />
-            <TextView editable="false" color="white" :text="formatDate(startDate)" class="input" @tap="startDateVisible = !startDateVisible;chosenStartDate = true" @blur="startDateVisible = false" textAlignment="center" /> 
+            <TextView 
+                editable="false" 
+                :text="formatDate(startDate)" 
+                textAlignment="center" color="white" 
+                @tap="startDateVisible = !startDateVisible;chosenStartDate = true" 
+                @blur="startDateVisible = false" /> 
             <DatePicker 
                 :year="chosenOperation ? year : ''" 
                 :month="chosenOperation ? month : ''" 
@@ -35,43 +62,74 @@
 
         <StackLayout row="3" class="input-field">
             <Label text="HORA INICIO" class="subtitle" />
-            <TextField editable="false" color="white" :text="startTime == '' ? '' : formatDateHour(startTime)" class="input" @tap="startTimeVisible = !startTimeVisible" @blur="startTimeVisible = false" textAlignment="center" />
-            <TimePicker hour="0" minute="0" v-model="startTime"
-                backgroundColor="#B0C4DE" :visibility="startTimeVisible ? 'visible' : 'collapsed'" @tap="startTimeVisible = false" />
+            <TextField class="input"
+                editable="false" 
+                :text="startTime == '' ? '' : formatDateHour(startTime)"
+                textAlignment="center" color="white" 
+                @tap="startTimeVisible = !startTimeVisible" 
+                @blur="startTimeVisible = false" />
+            <TimePicker 
+                hour="0" minute="0" 
+                v-model="startTime" backgroundColor="#B0C4DE" 
+                :visibility="startTimeVisible && type=='register' ? 'visible' : 'collapsed'" 
+                @tap="startTimeVisible = false" />
         </StackLayout>
 
         <StackLayout row="4" class="input-field">
             <Label text="DÍA FIN" class="subtitle" />
-            <TextView editable="false" color="white" :text="formatDate(endDate)" class="input" @tap="endDateVisible = !endDateVisible" @blur="endDateVisible = false" textAlignment="center" /> 
+            <TextView  
+                editable="false" 
+                :text="formatDate(endDate)" 
+                textAlignment="center" color="white" 
+                @tap="endDateVisible = !endDateVisible" 
+                @blur="endDateVisible = false" 
+                /> 
             <DatePicker 
                 :year="year" 
                 :month="month" 
                 :day="day" 
                 v-model="endDate"
                 :minDate="chosenStartDate ? startDate : '2019/09/1'" 
-                maxDate="2100/12/31" 
-                backgroundColor="#B0C4DE" 
+                maxDate="2100/12/31" backgroundColor="#B0C4DE" 
                 :visibility="endDateVisible && type=='register' ? 'visible' : 'collapsed'" 
                 @tap="endDateVisible = false" />
         </StackLayout>
 
         <StackLayout row="5" class="input-field">
             <Label text="HORA FIN" class="subtitle" />
-            <TextField editable="false" color="white" :text="endTime == '' ? '' : formatDateHour(endTime)" class="input"  @tap="endTimeVisible = !endTimeVisible" @blur="endTimeVisible = false" textAlignment="center" />
-            <TimePicker hour="0" minute="0" v-model="endTime"
-                backgroundColor="#B0C4DE" :visibility="endTimeVisible ? 'visible' : 'collapsed'" @tap="endTimeVisible = false" />
+            <TextField class="input"
+                editable="false" 
+                :text="endTime == '' ? '' : formatDateHour(endTime)" 
+                textAlignment="center" color="white" 
+                @tap="endTimeVisible = !endTimeVisible" 
+                @blur="endTimeVisible = false" /> 
+            <TimePicker 
+                hour="0" minute="0" 
+                v-model="endTime" backgroundColor="#B0C4DE" 
+                :visibility="endTimeVisible && type=='register' ? 'visible' : 'collapsed'" 
+                @tap="endTimeVisible = false" />
         </StackLayout>
 
         <StackLayout row="6" class="input-field">
             <Label text="TOTAL DE HORAS" class="subtitle" />
-            <TextView :text="(startTime == '' || endTime == '') ? '' : countHours" color="white" editable="false" textAlignment="center" />
+            <TextView 
+                editable="false" 
+                :text="(startTime == '' || endTime == '') ? '' : countHours" 
+                textAlignment="center" color="white" />
         </StackLayout>
         
         <ActivityIndicator row="7" :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
         
-        <Label row="8" :text="errorMsg" class="info" textWrap="true" :visibility="errorMsg != '' ? 'visible' : 'collapsed'" />
+        <Label row="8" class="info" 
+            :text="errorMsg" 
+            textWrap="true" 
+            :visibility="errorMsg != '' ? 'visible' : 'collapsed'" />
         
-        <Button row="9" text="Cargar registro de horas" class="btn btn-primary m-t-20" :visibility="type=='register' ? 'visible' : 'collapsed'" :isEnabled="!processing" @tap="createHourRecord" />
+        <Button row="9" class="btn btn-primary m-t-20" 
+            :isEnabled="!processing" 
+            text="Cargar registro de horas" 
+            :visibility="type == 'register' ? 'visible' : 'collapsed'" 
+            @tap="createHourRecord" />
         
     </GridLayout>
 </template>
@@ -304,5 +362,10 @@
     .fas {
         font-size : 40px;
     }
+
+    // .subtitle {
+    //     font-size: 15px;
+    //     font-weight: bold;
+    // }
 
 </style>

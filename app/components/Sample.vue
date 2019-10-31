@@ -4,7 +4,7 @@
         <ScrollView>
             <GridLayout rows="auto,auto,auto,*,auto,auto">
 
-                <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
+                <Label row="0" text="AGREGAR MUESTRA" class="subtitle" style="margin-bottom:50;"/>
 
                 <GridLayout row="1" columns="auto,*">
                     <Label col="0"  text="Id muestra:" color="white" class="subtitle" />

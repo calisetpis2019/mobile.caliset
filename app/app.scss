@@ -46,13 +46,15 @@
 
 .subtitle {
     text-align: left;
-    font-size: 20;
+    // font-size: 20;
+    font-size: 15;
     background-color: black;
     color: white;
     padding: 5;
     border-bottom-color: white;
     border-bottom-style: outset;
-    border-with: 2px;
+    font-weight: bold;
+    // border-width: 2px;
 }
 
 .list-group-item-heading {

@@ -2,7 +2,7 @@
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
         <GridLayout rows="auto,auto,*">
-            <Label row="0" text="Información" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="0" text="INFORMACIÓN" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="1" :text="'Operación '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" style="margin-bottom:50;" textWrap="true" />
 
             <ScrollView row="2">
