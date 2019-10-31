@@ -1,31 +1,14 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
-        <ScrollView>
-            <GridLayout rows="auto,auto,auto,*,auto,auto">
-
+            <GridLayout rows="auto,auto,*,auto">
                 <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
-
-                <GridLayout row="1" columns="auto,*">
-                    <Label col="0"  text="Id muestra:" color="white" class="subtitle" />
-                    <Label col="1" :text=idSample color="white" fontSize="20" class="card"/>
-                </GridLayout>
-
+                <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>
                 <FlexboxLayout row="2" flexDirection="column">
                     <TextView class="card text" hint="Agregar comentario a la muestra..." v-model="comment"/>
                 </FlexboxLayout>
-
-                <ActivityIndicator row="3" :busy="processing" color="white"></ActivityIndicator>
-                <Label row="4" :text="successMsg" color="white" class="info" />
-
-                <GridLayout row="5" columns="auto,*">
-                    <Button col="0" :isEnabled="canAddSample" class="btn btn-primary" text="Agregar muestra" @tap="createSample()"/>
-                    <Button col="1" :isEnabled="(idSample != '') && !canAddSample" class="btn btn-primary" text="Nueva muestra" @tap="newSample()"/>
-                </GridLayout>
-
+                <Button row="3" class="btn btn-primary" text="Agregar muestra" :isEnabled="!processing" @tap="createSample()"/>
             </GridLayout>
-        </ScrollView>
-
     </Page>
 </template>
 
@@ -37,10 +20,7 @@
         data() {
             return {
                 comment: "",
-                idSample: "",
-                successMsg: "",
-                processing: false,
-                canAddSample: true
+                processing: false
             }
         },
 
@@ -48,7 +28,6 @@
 
             createSample(){
                 this.processing = true;
-                this.canAddSample = false;
                 //Guarda comentario y borra el campo de texto
                 http.request({
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Sample/Create",
@@ -63,26 +42,17 @@
                     })
                 }).then(response => {
                     this.processing = false;
-                    this.successMsg = "Se registró la muestra con éxito.";
-                    var result = response.content.toJSON().result;
                     if (response.content.toJSON().success) {
-                        console.log("Success. Se creó la muestra con éxito.");
-                        this.idSample = result;
+                        alert("Se registró con éxito la muestra en el sistema.\nEl id de la muestra es: " + response.content.toJSON().result);
+                        this.$goto('operation');
                     }
                     else {
-                        console.log("Algo falló al crear la muestra.");
+                        alert("Algo falló al crear la muestra.");
                     }
                 }, error => {
                     this.processing = false;
                     console.error(error);
-                    });
-            },
-            newSample(){
-                console.log("Nueva muestra");
-                this.idSample = "";
-                this.comment = "";
-                this.successMsg = "";
-                this.canAddSample = true;
+                });
             }
         }
     };
