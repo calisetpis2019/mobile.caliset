@@ -21,6 +21,15 @@ Vue.registerElement('PullToRefresh',() => require('@nstudio/nativescript-pulltor
 
 store.commit('load');
 
+const geolocation = require("nativescript-geolocation");
+
+geolocation.enableLocationRequest(true)
+    .then(()=> {
+
+        }).catch(e => {
+        console.log("Error al habilitar la geolocalización: " + e);
+    });
+
 var firebase = require("nativescript-plugin-firebase");
 
 firebase.init({

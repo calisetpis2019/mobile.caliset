@@ -38,6 +38,7 @@
                             this.$goto('login',{ clearHistory: true });
                         }
                     }
+                    this.$store.commit('startGPS');
                     this.$goto('home',{ clearHistory: true });
                 }
                 else if (this.$store.state.firstLogIn) {
