@@ -7,6 +7,44 @@ Vue.use(Vuex);
 
 var firebase = require("nativescript-plugin-firebase");
 
+const geolocation = require("nativescript-geolocation");
+const { Accuracy } = require("tns-core-modules/ui/enums");
+
+async function  getLocation() {
+
+    var lat = null;
+    var lon = null;
+    var speed = null;
+
+    console.log("Inicia función getLocation");
+    await geolocation
+        .getCurrentLocation({
+            desiredAccuracy: Accuracy.high,
+            maximumAge: 5000,
+            timeout: 20000
+        })
+        .then(res => {
+
+            console.log(res);
+
+            lat = res.latitude;
+            lon = res.longitude;
+            speed = res.speed;
+
+            console.log("respuesta:");
+            console.log(res.latitude);
+            console.log(res.longitude);
+
+        }).catch(e => {
+            console.log("error al obtener la localización: " + e);
+        });
+
+    //alert('coordenadas: ' + lat +''+lon);
+    console.log("respuesta fuera del async:");
+    console.log(lat);
+    console.log(lon);
+}
+
 const store = new Vuex.Store({
     state: {
         session : {
@@ -28,7 +66,8 @@ const store = new Vuex.Store({
         ipAPI : "",
         loggedIn: false,
         ActiveOperations: [],
-        finishedOperations: []
+        finishedOperations: [],
+        timerId : null,
     },
 
     mutations: {
@@ -39,7 +78,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "192.168.1.2";
+            state.ipAPI = "app.caliset.com";
         },
 
         login(state, data) {
@@ -83,7 +122,11 @@ const store = new Vuex.Store({
             }, error => {
                 console.error(error);
             });
+
             firebase.registerForPushNotifications();
+
+            //Ejecuta getLocation cada intervalo de tiempo
+            state.timerId = setInterval(function(){getLocation()},10*1000);
         },
 
         activeOperations(state,data) {
@@ -119,6 +162,7 @@ const store = new Vuex.Store({
             state.session.date.year = "";
             state.session.date.year = "";
             state.loggedIn = false;
+            clearInterval(state.timerId);
         },
 
         saveDeviceToken(state, data){
@@ -147,7 +191,13 @@ const store = new Vuex.Store({
                 });
             }
 
+        },
+
+        startGPS(state){
+            state.timerId = setInterval(function(){getLocation()},10*1000);
         }
+
+
     }
 });
 
