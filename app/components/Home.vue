@@ -2,10 +2,62 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
         <PullToRefresh @refresh="refreshLists" >
-            <GridLayout rows="auto,*">
-                <StackLayout row="0" >
+            <TabView tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
+                <TabViewItem title="Activas">
+                    <StackLayout>
+                        <Label  v-if="!processing && operations.length == 0"
+                                :text="errorA ? msgError : msgActivas" textWrap="true" class="info"
+                                style="margin-top: 20" />
 
-                        <Label text="NUEVAS" class="subtitle" flexWrapBefore="true"/>
+                        <ListView class="list-group" for="active in operations">
+                            <v-template>
+                                <CardView  margin="10" elevation="40" radius="1" class="card">
+                                    <StackLayout class="card" @tap="goToOperation(active)">
+                                        <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
+                                        <StackLayout class="container">
+                                            <Label :text="'Producto: ' + active.commodity" color="white"/>
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
+                                            <Label :text="'Lugar: ' + active.location.name" color="white"  />
+                                            <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </CardView>
+                            </v-template>
+                        </ListView>
+                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
+                    </StackLayout>
+                    
+                </TabViewItem>
+
+                <TabViewItem title="Futuras">
+                    
+                    <StackLayout>
+                        <Label  v-if="!processing && futureOperations.length == 0"
+                                :text="errorF ? msgError : msgFuturas" textWrap="true" class="info"
+                                style="margin-top: 20" />
+
+                        <ListView class="list-group" for="future in futureOperations">
+                            <v-template>
+                                <CardView  margin="10" elevation="40" radius="1" class="card">
+                                    <StackLayout class="card" @tap="goToOperation(future)">
+                                        <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
+                                        <StackLayout class="container">
+                                            <Label :text="'Producto: ' + future.commodity" color="white"/>
+                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white"  />
+                                            <Label :text="'Lugar: ' + future.location.name" color="white"  />
+                                            <Label :text="'Estado: ' + future.operationState.name"   color="white"  />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </CardView>
+                            </v-template>
+                        </ListView>
+                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
+                    </StackLayout>
+                    
+                </TabViewItem>
+
+                <TabViewItem title="Nuevas">
+                    <StackLayout >
 
                         <Label  v-if="!processingNO && newOperations.length == 0"
                                 :text="errorN ? msgError : msgNuevas" textWrap="true" class="info"
@@ -27,90 +79,10 @@
                             </v-template>
                         </ListView>
                         <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
-                </StackLayout>
+                    </StackLayout>
+                </TabViewItem>
 
-                <TabView row="1" tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
-                    <TabViewItem title="Activas">
-                        <StackLayout>
-                            <Label  v-if="!processing && operations.length == 0"
-                                    :text="errorA ? msgError : msgActivas" textWrap="true" class="info"
-                                    style="margin-top: 20" />
-
-                            <ListView class="list-group" for="active in operations">
-                                <v-template>
-                                    <CardView  margin="10" elevation="40" radius="1" class="card">
-                                        <StackLayout class="card" @tap="goToOperation(active)">
-                                            <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
-                                            <StackLayout class="container">
-                                                <Label :text="'Producto: ' + active.commodity" color="white"/>
-                                                <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
-                                                <Label :text="'Lugar: ' + active.location.name" color="white"  />
-                                                <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </CardView>
-                                </v-template>
-                            </ListView>
-                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                        </StackLayout>
-                        
-                    </TabViewItem>
-
-                    <TabViewItem title="Futuras">
-                        
-                        <StackLayout>
-                            <Label  v-if="!processing && futureOperations.length == 0"
-                                    :text="errorF ? msgError : msgFuturas" textWrap="true" class="info"
-                                    style="margin-top: 20" />
-
-                            <ListView class="list-group" for="future in futureOperations">
-                                <v-template>
-                                    <CardView  margin="10" elevation="40" radius="1" class="card">
-                                        <StackLayout class="card" @tap="goToOperation(future)">
-                                            <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
-                                            <StackLayout class="container">
-                                                <Label :text="'Producto: ' + future.commodity" color="white"/>
-                                                <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white"  />
-                                                <Label :text="'Lugar: ' + future.location.name" color="white"  />
-                                                <Label :text="'Estado: ' + future.operationState.name"   color="white"  />
-                                            </StackLayout>
-                                        </StackLayout>
-                                    </CardView>
-                                </v-template>
-                            </ListView>
-                            <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                        </StackLayout>
-                        
-                    </TabViewItem>
-                </TabView>
-
-<!--
-                <StackLayout row="1">
-                        <Label  text="Operaciones Activas" class="subtitle" />
-
-                        <Label  v-if="!processing && operations.length == 0"
-                                text="No hay operaciones activas a las que esté asignado." textWrap="true" class="info"
-                                style="margin-top: 20" />
-
-                        <ListView class="list-group" for="active in operations">
-                            <v-template>
-                                <CardView  margin="10" elevation="40" radius="1" class="card">
-                                    <StackLayout class="card" @tap="goToOperation(active)">
-                                        <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
-                                        <StackLayout class="container">
-                                            <Label :text="'Producto: ' + active.commodity" color="white"/>
-                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
-                                            <Label :text="'Lugar: ' + active.location.name" color="white"  />
-                                            <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
-                                        </StackLayout>
-                                    </StackLayout>
-                                </CardView>
-                            </v-template>
-                        </ListView>
-                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                </StackLayout>
--->
-            </GridLayout>
+            </TabView>
         </PullToRefresh>
 
     </Page>
