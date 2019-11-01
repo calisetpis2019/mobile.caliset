@@ -14,7 +14,7 @@
                 </StackLayout>
             </StackLayout>
             <PullToRefresh row="1" @refresh="refreshList" >
-                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="gray">
+                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
                             <StackLayout class="card"  >
@@ -44,7 +44,7 @@
             
                 <Button textWrap="true" width="30%" text="Notas" class="btn-primary " @tap="$goto('notes')" >
                     <FormattedString>
-                        <Span text.decode="&#xf249;" class="fas" />
+                        <Span text.decode="&#xf075;" class="fas" />
                         <Span text.decode="&#xa;"/>
                         <Span text.decode="Comentario" />                       
                     </FormattedString>

@@ -8,24 +8,30 @@
                 <Label :text=lastLogin class="subtitle" textWrap="true" />
             </StackLayout>
 
-            <FlexBoxLayout row="1" verticalAlignment="center" horizontalAlignment="center" >
-                <Button class="btn btn-primary m-t-20" style="width: 40%" @tap="$goto('timeSheet')">
+            <FlexBoxLayout row="1" verticalAlignment="center" horizontalAlignment="right" >
+                <Button class="btn btn-primary m-t-20" @tap="$goto('timeSheet')" background="black">
                     <FormattedString>
-                        <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
-                        <Span text.decode="&#xa;&#xa;"/>
-                        <Span text= "REGISTRAR HORAS" />
-                    </FormattedString>
-                </Button>
-                <Button class="btn btn-primary m-t-20" style="width: 40%" @tap="$goto('timeRecord')">
-                    <FormattedString>
-                        <Span text.decode="&#xf017;" class="fas" fontSize="30"/>
-                        <Span text.decode="&#xa;&#xa;"/>
-                        <Span text= "VER REGISTROS DE HORAS" /> 
+                        <Span text.decode="&#xf067; &#xf017;" class="fas" fontSize="30" />
+                        <Span text.decode="Agregar registro" class="fas" />
                     </FormattedString>
                 </Button>
             </FlexBoxLayout>
 
-            <Label row="2" text="" class="subtitle"/>
+            <!-- <ListView class="list-group" for="record in hoursRecords">
+                <v-template>
+                    <CardView  margin="10" elevation="40" radius="1" class="card">
+                        <StackLayout class="card" @tap=";">
+                            <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
+                            <StackLayout class="container">
+                                <Label :text="'Producto: ' + future.commodity" color="white"/>
+                                <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white"  />
+                                <Label :text="'Lugar: ' + future.location.name" color="white"  />
+                                <Label :text="'Estado: ' + future.operationState.name"   color="white"  />
+                            </StackLayout>
+                        </StackLayout>
+                    </CardView>
+                </v-template>
+            </ListView> -->
 
 
             <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
