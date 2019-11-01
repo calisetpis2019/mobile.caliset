@@ -1,14 +1,16 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
-        <PullToRefresh @refresh="refreshLists" >
+        <!-- <PullToRefresh @refresh="refreshLists" > -->
             <TabView tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
                 <TabViewItem title="Activas">
-                    <StackLayout>
+                    <GridLayout rows="auto,*">
+                    <StackLayout row="0">
                         <Label  v-if="!processing && operations.length == 0"
                                 :text="errorA ? msgError : msgActivas" textWrap="true" class="info"
                                 style="margin-top: 20" />
-
+                    </StackLayout>
+                    <PullToRefresh row="1" @refresh="refreshLists" >
                         <ListView class="list-group" for="active in operations">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
@@ -24,18 +26,20 @@
                                 </CardView>
                             </v-template>
                         </ListView>
-                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                    </StackLayout>
+                    </PullToRefresh>                    
+                    <ActivityIndicator :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+                    </GridLayout>
                     
                 </TabViewItem>
 
                 <TabViewItem title="Futuras">
-                    
-                    <StackLayout>
+                    <GridLayout rows="auto,*">
+                    <StackLayout row="0">
                         <Label  v-if="!processing && futureOperations.length == 0"
                                 :text="errorF ? msgError : msgFuturas" textWrap="true" class="info"
                                 style="margin-top: 20" />
-
+                    </StackLayout>
+                    <PullToRefresh row="1" @refresh="refreshLists" >
                         <ListView class="list-group" for="future in futureOperations">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
@@ -51,18 +55,20 @@
                                 </CardView>
                             </v-template>
                         </ListView>
-                        <ActivityIndicator rowSpan="2" :busy="processing" color="white"></ActivityIndicator>
-                    </StackLayout>
+                    </PullToRefresh>
+                    <ActivityIndicator :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+                    </GridLayout>
                     
                 </TabViewItem>
 
                 <TabViewItem title="Nuevas">
-                    <StackLayout >
-
+                    <GridLayout rows="auto,*">
+                    <StackLayout row="0">
                         <Label  v-if="!processingNO && newOperations.length == 0"
                                 :text="errorN ? msgError : msgNuevas" textWrap="true" class="info"
                                 style="margin-top: 20" />
-
+                    </StackLayout>
+                    <PullToRefresh row="1" @refresh="refreshLists" >
                         <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
@@ -78,12 +84,12 @@
                                 </CardView>
                             </v-template>
                         </ListView>
-                        <ActivityIndicator rowSpan="2" :busy="processingNO" color="white"></ActivityIndicator>
-                    </StackLayout>
+                    </PullToRefresh>                    
+                    <ActivityIndicator :busy="processingNO" :visibility="processingNO ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+                    </GridLayout>
                 </TabViewItem>
-
             </TabView>
-        </PullToRefresh>
+        <!-- </PullToRefresh> -->
 
     </Page>
 </template>
@@ -180,7 +186,7 @@
                     }
 
                 }, error => {
-                    this.processing=false;
+                    this.processingNO=false;
                     this.errorN = true;
                     console.error(error);
                     });

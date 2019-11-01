@@ -3,7 +3,7 @@
         <OurActionBar/>
         
         <GridLayout rows="auto,auto,auto,*">
-            <Label row="0" text="Alertas" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <Label row="0" text="ALERTAS" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="1" :text="'Operación ' + this.$store.state.selectedNewOperation.id + '-' + formatDate(operDate)" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
         

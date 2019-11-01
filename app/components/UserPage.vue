@@ -12,7 +12,7 @@
                 <Button class="btn btn-primary m-t-20" @tap="$goto('timeSheet')" background="black">
                     <FormattedString>
                         <Span text.decode="&#xf067; &#xf017;" class="fas" fontSize="30" />
-                        <Span text.decode="Agregar registro" class="fas" />
+                        <!-- <Span text.decode="Agregar registro" class="fas" /> -->
                     </FormattedString>
                 </Button>
             </FlexBoxLayout>

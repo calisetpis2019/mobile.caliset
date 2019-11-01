@@ -1,5 +1,7 @@
 // Add your native dependencies here:
-
+dependencies {
+  compile "com.google.android.gms:play-services-base:15.0.1" 
+}
 // Uncomment to add recyclerview-v7 dependency
 //dependencies {
 //	implementation 'com.android.support:recyclerview-v7:+'
@@ -8,6 +10,14 @@
 // If you want to add something to be applied before applying plugins' include.gradle files
 // e.g. project.ext.googlePlayServicesVersion = "15.0.1"
 // create a file named before-plugins.gradle in the current directory and place it there
+
+project.ext {
+       googlePlayServicesVersion = "15.0.1"
+}
+dependencies {
+   def googlePlayServicesVersion = project.googlePlayServicesVersion
+   compile "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
+}
 
 android {
   defaultConfig {
