@@ -33,7 +33,7 @@
 <script>
     import * as http from "http";
     import * as ApplicationSettings from "application-settings";
-    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity'
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 
     var firebase = require("nativescript-plugin-firebase");
 
