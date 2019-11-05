@@ -2,7 +2,7 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadHours">
         <OurActionBar userPage="true"/>
 
-        <GridLayout rows="auto,*,auto" >
+        <GridLayout rows="auto,,auto,*,auto" >
 
             <GridLayout row="0" rows="auto,auto" columns="*,auto" >
                 <Label rowSpan="2" colSpan="2" class="subtitle" />
@@ -14,20 +14,23 @@
                     </FormattedString>
                 </Button>
             </GridLayout>
+            <Label row="1" :visibility="hourRecords.length == 0 ? 'visible' : 'collapsed'"
+                    text="No hay registros de horas para mostrar." textWrap="true" class="info"
+                    style="margin-top: 20" />
 
-            <PullToRefresh row="1" @refresh="refreshLists" >
+            <PullToRefresh row="2" @refresh="refreshLists" >
                 <ListView class="list-group" for="record in hourRecords">
                     <v-template>
                         <CardView  margin="10" elevation="40" radius="1" class="card">
                             <StackLayout class="card" @tap=";">
                                 <Label :text="record.day" class="list-group-item-heading"/>
-                                <StackLayout class="card" v-for="r in record.list" @tap="alertita(r.startDate)">
+                                <StackLayout class="card" v-for="r in record.list" @tap=";">
                                 <GridLayout rows="auto,auto,auto" columns="*,auto,auto" >
                                     <Label row="0" col="0" :text="formatDateHour(r.startDate)" color="white" />
                                     <Label row="1" col="0" :text="formatDateHour(r.endDate)" color="white" />
                                     <label row="2" col="0" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs.'" textWrap="true"/>
-                                    <Button row="0" rowSpan="2" col="1" text.decode="&#xf044;" @tap=";" class="fas btn btn-changePass m-t-20" margin="5" />
-                                    <Button row="0" rowSpan="2" col="2" text.decode="&#xf1f8;" @tap=";" class="fas btn btn-reject m-t-20" margin="5" />
+                                    <Button row="0" rowSpan="2" col="1" text.decode="&#xf044;" @tap="editTimeRecord()" class="fas btn btn-changePass m-t-20" margin="5" />
+                                    <Button row="0" rowSpan="2" col="2" text.decode="&#xf1f8;" @tap="deleteTimeRecord()" class="fas btn btn-reject m-t-20" margin="5" />
                                 </GridLayout>
                                 <StackLayout class="hr-dark"/>
                                 </StackLayout>
@@ -37,7 +40,7 @@
                 </ListView>
             </PullToRefresh>
 
-            <StackLayout row="2" verticalAlignment="bottom" horizontalAlignment="center" >
+            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
                 <StackLayout class="hr-light"/>
                 <StackLayout class="hr-dark"/>
                 <StackLayout class="hr-light"/>
@@ -75,9 +78,6 @@
         },
 
         methods: {
-            alertita(strin){
-                alert(strin);
-            },
             refreshLists(args) {
                 var pullRefresh = args.object;
                 this.loadHours();
@@ -93,6 +93,14 @@
 
             changePassword() {
                 this.$goto('editPassword');
+            },
+
+            editTimeRecord() {
+                this.$goto('editTimeRecord');
+            },
+
+            deleteTimeRecord(){
+
             },
             
             formatDateHour(date){

@@ -1,7 +1,6 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
-        <!-- <PullToRefresh @refresh="refreshLists" > -->
             <TabView tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
                 <TabViewItem title="Activas">
                     <GridLayout rows="auto,*">
@@ -89,7 +88,6 @@
                     </GridLayout>
                 </TabViewItem>
             </TabView>
-        <!-- </PullToRefresh> -->
 
     </Page>
 </template>

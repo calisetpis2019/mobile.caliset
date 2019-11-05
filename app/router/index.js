@@ -3,7 +3,7 @@ import Login from '../components/Login'
 import Operation from '../components/Operation'
 import NewOperation from '../components/NewOperation'
 import TimeSheet from '../components/TimeSheet'
-import TimeRecord from '../components/TimeRecord'
+import EditTimeRecord from '../components/EditTimeRecord'
 import Notes from '../components/Notes'
 import Sample from '../components/Sample'
 import UserPage from '../components/UserPage'
@@ -20,7 +20,7 @@ const router = {
     operation: Operation,
     newOperation: NewOperation,
     timeSheet: TimeSheet,
-    timeRecord: TimeRecord,
+    editTimeRecord: EditTimeRecord,
     notes: Notes,
     sample: Sample,
     userPage: UserPage,

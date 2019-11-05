@@ -65,10 +65,10 @@ const store = new Vuex.Store({
         },
         ipAPI : "",
         loggedIn: false,
-        ActiveOperations: [],
+        activeOperations: [],
         finishedOperations: [],
-        timerId : null,
         hourRecords: [],
+        timerId : null,
     },
 
     mutations: {
@@ -79,7 +79,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "app.caliset.com";
+            state.ipAPI = "192.168.1.2";
         },
 
         login(state, data) {
@@ -127,7 +127,7 @@ const store = new Vuex.Store({
             firebase.registerForPushNotifications();
 
             //Ejecuta getLocation cada intervalo de tiempo
-            state.timerId = setInterval(function(){getLocation()},10*1000);
+            state.timerId = setInterval(function(){getLocation()},1000*1000);
         },
 
         activeOperations(state,data) {
@@ -198,7 +198,7 @@ const store = new Vuex.Store({
         },
 
         startGPS(state){
-            state.timerId = setInterval(function(){getLocation()},10*1000);
+            state.timerId = setInterval(function(){getLocation()},1000*1000);
         }
 
 

@@ -2,7 +2,7 @@
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
         <ScrollView>
-            <Pickers title="VER REGISTRO DE HORAS" type="view" />
+            <Pickers title="EDITAR REGISTRO DE HORAS" type="edit" />
         </ScrollView>
 
     </Page>

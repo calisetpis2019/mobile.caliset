@@ -1,4 +1,4 @@
-<template @navigatedTo="type== 'register' ? loadOperations() : (type== 'view' ? loadHours(): )">
+<template @navigatedTo="type== 'register' ? loadOperations() : (type== 'edit' ? loadHours(): )">
     <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
 
         <StackLayout row="0">
@@ -26,11 +26,11 @@
                     errorMsg=''" />
         </StackLayout>
 
-        <StackLayout row="1" class="input-field" :visibility="type=='view' ? 'visible' : 'collapsed'">
+        <StackLayout row="1" class="input-field" :visibility="type=='edit' ? 'visible' : 'collapsed'">
             <Label text="REGISTROS DE HORAS" class="subtitle"/>
             <TextView class="input"  
                 editable="false" 
-                :text="haveIndex && type=='view' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" 
+                :text="haveIndex && type=='edit' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" 
                 textAlignment="center" color="white" 
                 @tap="showHours()" />
             <ListPicker 
@@ -54,7 +54,7 @@
                 :month="chosenOperation ? month : ''" 
                 :day="chosenOperation ? day : ''" 
                 v-model="startDate"
-                :minDate="chosenOperation && type=='register' ? operations[operationIndex].date : (chosenOperation && type == 'view' ? hourRecords[operationIndex].startDate : '2019/09/1')" 
+                :minDate="chosenOperation && type=='register' ? operations[operationIndex].date : (chosenOperation && type == 'edit' ? hourRecords[operationIndex].startDate : '2019/09/1')" 
                 maxDate="2100/12/31" backgroundColor="#B0C4DE" 
                 :visibility="startDateVisible && type=='register' ? 'visible' : 'collapsed'" 
                 @tap="startDateVisible = false" />
@@ -236,7 +236,7 @@
                 // Obtengo las operaciones finalizadas
                 this.finishedOperations = [];
                 http.request({
-                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsConfirmed?operationStateId=3",
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyOperationsFinished",
                     method: "GET",
                     headers: { 
                         "Content-Type": "application/json", 
@@ -333,7 +333,7 @@
                                 this.errorMsg = response.content.toJSON().error.details;
                             }
                             else {
-                                this.errorMsg = "El registro de hora se hizo correctamente.";
+                                alert("El registro de horas se hizo correctamente.");
                                 this.$goto('userPage',{ clearHistory: true });
                             }
                             this.processing=false;
