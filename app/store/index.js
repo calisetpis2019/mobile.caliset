@@ -154,6 +154,11 @@ const store = new Vuex.Store({
             state.selectedNewOperation = data.selectedNewOperation;
         },
 
+        selectedHourRecord(state,data) {
+            console.log("Store: Guardo el registro de horas seleccionado");
+            state.selectedHourRecord = data.selectedHourRecord;
+        },
+
         logout(state) {
             firebase.unregisterForPushNotifications();
             state.session.userId = "";

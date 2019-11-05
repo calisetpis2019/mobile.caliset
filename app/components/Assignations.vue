@@ -19,11 +19,12 @@
                                     <StackLayout row="0" class="container">
                                         <!-- INFORMACION A DEFINIR -->
                                         <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
-                                        <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
-                                        <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
-                                        <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
-                                        <Label :text="'Nominador: ' + a.operation.nominator.name" color="white"  />
-                                        <Label :text="'Cargador: ' + a.operation.charger.name" color="white"  />
+                                        <Label :text="'Tipo: ' + a.operation.operationType.name" color="white" />
+                                        <Label :text="'Cliente: ' + a.operation.nominator.name" color="white" />
+                                        <Label :text="'Cargador: ' + a.operation.charger.name" color="white" />
+                                        <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
+                                        <Label :text="'Producto: ' + a.operation.commodity" color="white" />
+                                        <Label :text="'Embarcación: ' + a.operation.shipName"   color="white" />
                                     </StackLayout >
                                 </GridLayout>
                             </CardView>

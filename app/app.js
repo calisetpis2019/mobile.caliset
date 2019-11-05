@@ -1,13 +1,11 @@
 import Vue from "nativescript-vue";
 import router from './router';
 import OurActionBar from './components/OurActionBar'
-import TimeSheet from './components/TimeSheet'
 import Pickers from './components/Pickers'
 
 import store from './store';
 
 Vue.component('OurActionBar',OurActionBar);
-Vue.component('TimeSheet',TimeSheet);
 Vue.component('Pickers',Pickers);
 
 Vue.prototype.$router = router;

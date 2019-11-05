@@ -1,4 +1,4 @@
-<template @navigatedTo="type== 'register' ? loadOperations() : (type== 'edit' ? loadHours(): )">
+<template @navigatedTo="type== 'register' ? loadOperations() : ">
     <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
 
         <StackLayout row="0">
@@ -27,18 +27,10 @@
         </StackLayout>
 
         <StackLayout row="1" class="input-field" :visibility="type=='edit' ? 'visible' : 'collapsed'">
-            <Label text="REGISTROS DE HORAS" class="subtitle"/>
-            <TextView class="input"  
-                editable="false" 
-                :text="haveIndex && type=='edit' ? hourRecords[operationIndex].startDate : 'Seleccione un registro de horas...'" 
-                textAlignment="center" color="white" 
-                @tap="showHours()" />
-            <ListPicker 
-                :items="hourRecords" textField="startDate" 
-                v-model="operationIndex" 
-                backgroundColor="#B0C4DE" 
-                :visibility="opVisible ? 'visible' : 'collapsed'" 
-                @tap="opVisible=false;startDate=hourRecords[operationIndex].startDate;chosenOperation=true;errorMsg=''" />
+            <Label text="OPERACIÓN" class="subtitle"/>
+            <TextView class="input" editable="false" 
+                :text="type=='edit' ? recordOperation : ''" 
+                textAlignment="center" color="white" />
         </StackLayout>
 
         <StackLayout row="2" class="input-field"> 
@@ -54,9 +46,9 @@
                 :month="chosenOperation ? month : ''" 
                 :day="chosenOperation ? day : ''" 
                 v-model="startDate"
-                :minDate="chosenOperation && type=='register' ? operations[operationIndex].date : (chosenOperation && type == 'edit' ? hourRecords[operationIndex].startDate : '2019/09/1')" 
+                :minDate="chosenOperation && type=='register' ? operations[operationIndex].date : (chosenOperation && type == 'edit' ? recordStartDate : '2019/09/1')" 
                 maxDate="2100/12/31" backgroundColor="#B0C4DE" 
-                :visibility="startDateVisible && type=='register' ? 'visible' : 'collapsed'" 
+                :visibility="startDateVisible ? 'visible' : 'collapsed'" 
                 @tap="startDateVisible = false" />
         </StackLayout>
 
@@ -64,14 +56,14 @@
             <Label text="HORA INICIO" class="subtitle" />
             <TextField class="input"
                 editable="false" 
-                :text="startTime == '' ? '' : formatDateHour(startTime)"
+                :text="startTime == '' ? '' : formatHour(startTime)"
                 textAlignment="center" color="white" 
                 @tap="startTimeVisible = !startTimeVisible" 
                 @blur="startTimeVisible = false" />
             <TimePicker 
                 hour="0" minute="0" 
                 v-model="startTime" backgroundColor="#B0C4DE" 
-                :visibility="startTimeVisible && type=='register' ? 'visible' : 'collapsed'" 
+                :visibility="startTimeVisible ? 'visible' : 'collapsed'" 
                 @tap="startTimeVisible = false" />
         </StackLayout>
 
@@ -91,7 +83,7 @@
                 v-model="endDate"
                 :minDate="chosenStartDate ? startDate : '2019/09/1'" 
                 maxDate="2100/12/31" backgroundColor="#B0C4DE" 
-                :visibility="endDateVisible && type=='register' ? 'visible' : 'collapsed'" 
+                :visibility="endDateVisible ? 'visible' : 'collapsed'" 
                 @tap="endDateVisible = false" />
         </StackLayout>
 
@@ -99,14 +91,14 @@
             <Label text="HORA FIN" class="subtitle" />
             <TextField class="input"
                 editable="false" 
-                :text="endTime == '' ? '' : formatDateHour(endTime)" 
+                :text="endTime == '' ? '' : formatHour(endTime)" 
                 textAlignment="center" color="white" 
                 @tap="endTimeVisible = !endTimeVisible" 
                 @blur="endTimeVisible = false" /> 
             <TimePicker 
                 hour="0" minute="0" 
                 v-model="endTime" backgroundColor="#B0C4DE" 
-                :visibility="endTimeVisible && type=='register' ? 'visible' : 'collapsed'" 
+                :visibility="endTimeVisible ? 'visible' : 'collapsed'" 
                 @tap="endTimeVisible = false" />
         </StackLayout>
 
@@ -130,6 +122,11 @@
             text="Cargar registro de horas" 
             :visibility="type == 'register' ? 'visible' : 'collapsed'" 
             @tap="createHourRecord" />
+        <Button row="9" class="btn btn-primary m-t-20" 
+        :isEnabled="!processing" 
+        text="Editar registro de horas" 
+        :visibility="type == 'edit' ? 'visible' : 'collapsed'" 
+        @tap="editHourRecord" />
         
     </GridLayout>
 </template>
@@ -169,12 +166,16 @@
                 processing: false,
                 errorMsg: "",
                 errorStartEnd: false,
-
-                hourRecords: []
             };
         },
 
         computed: {
+            recordStartDate(){
+                return this.$store.state.selectedHourRecord.operation.startDate;
+            },
+            recordOperation(){
+                return this.$store.state.selectedHourRecord.operation.id + '-' + this.formatDate(this.$store.state.selectedHourRecord.operation.date);
+            },
             countHours(){
                 var sT = new Date(this.startTime);
                 var eT = new Date(this.endTime);
@@ -209,6 +210,10 @@
         methods: {
             formatDateHour(date){
                 var d = new Date(date);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            },
+            formatHour(date){
+                var d = new Date(date);
                 return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
@@ -224,13 +229,6 @@
                 this.operations = this.operations.concat(this.$store.state.activeOperations.concat(this.$store.state.finishedOperations));
             },
 
-            showHours() {
-                this.loadHours();
-                this.haveIndex = true;
-                this.opVisible = true;
-                this.hourRecords = [];
-                this.hourRecords = this.hourRecords.concat(this.$store.state.hourRecords);
-            },
 
             loadOperations() {
                 // Obtengo las operaciones finalizadas
@@ -258,33 +256,6 @@
                         }
                         this.$store.commit('finishedOperations',{ operations: this.finishedOperations });
 
-                    }
-                }, error => {
-                    this.processing=false;
-                    console.error(error);
-                });
-            },
-
-            loadHours() {
-                // Obtengo las operaciones finalizadas
-                this.hourRecords = [];
-                http.request({
-                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/GetAllByUser?IdUser=" + this.$store.state.session.userId,
-                    method: "GET",
-                    headers: { 
-                        "Content-Type": "application/json", 
-                        "Authorization": "Bearer " + this.$store.state.session.token
-                    },
-                }).then(response => {
-                    var result = response.content.toJSON().result;
-                    if (result == null) {
-                        this.processing=false;
-                    }
-                    else {
-                        for(var i = 0; i < result.length; i++){
-                            this.hourRecords.push(result[i]);
-                        }
-                        this.$store.commit('hourRecords',{ hours: this.hourRecords });
                     }
                 }, error => {
                     this.processing=false;
@@ -343,6 +314,55 @@
                         });
                     }
 
+                }
+            },
+
+            editHourRecord(){
+                this.processing = true;
+                var dateOper = new Date(this.$store.state.selectedHourRecord.operation.date);
+                dateOper.setHours(0,0,0);
+                if (this.startRecord == '' || this.endRecord == '') {
+                    this.errorMsg = "Debe completar las horas antes de intentar registrarlas.";
+                    this.processing = false;
+                }
+                else if (this.errorStartEnd){
+                    this.errorMsg = "La fecha de inicio debe ser anterior a la fecha de fin.";
+                    this.processing = false;
+                }
+                else if (this.startRecord - dateOper <= -60000){
+                    this.errorMsg = "La fecha de la operación debe ser anterior a la fecha de inicio.";
+                    this.processing = false;
+                }
+                else {
+                    http.request({
+                        url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/Update",
+                        method: "PUT",
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + this.$store.state.session.token 
+                        },
+                        content: JSON.stringify({
+                            "id": this.$store.state.selectedHourRecord.id,
+                            "startDate": this.startRecord,
+                            "endDate": this.endRecord,
+                            "inspectorId": this.$store.state.session.userId,
+                            "operationId": this.$store.state.selectedHourRecord.operation.id
+                        })
+                    }).then(response => {
+                        var success = response.content.toJSON().success;
+                        if (!success) {
+                            console.log(response.content.toJSON().error);
+                            this.errorMsg = response.content.toJSON().error.details;
+                        }
+                        else {
+                            alert("El registro de horas se editó correctamente.");
+                            this.$goto('userPage',{ clearHistory: true });
+                        }
+                        this.processing=false;
+                    }, error => {
+                        this.processing=false;
+                        console.error(error);
+                    });
                 }
             }
         }

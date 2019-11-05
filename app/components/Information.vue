@@ -14,6 +14,9 @@
 
                     <Label :row="i" column="0" text="Estado: " color="white" fontSize="20"/>
                     <Label :row="i++"  column="1" :text="operation.operationState.name" color="white" fontSize="20" horizontalAlignment = "right" />
+                    
+                    <Label :row="i" column="0" text="Tipo: " color="white" horizontalAlignment="left" fontSize="20" />
+                    <Label :row="i++" column="1" :text="operation.operationType.name" color="white" horizontalAlignment = "right" fontSize="20"/>
 
                     <Label :row="i" column="0" text="Producto: " color="white" horizontalAlignment="left" fontSize="20" />
                     <Label :row="i++" column="1" :text="operation.commodity" color="white" horizontalAlignment = "right" fontSize="20"/>
@@ -33,9 +36,6 @@
                     <Label :row="i" column="0" text="Booking: " color="white" horizontalAlignment="left" fontSize="20" />
                     <Label :row="i++" column="1" :text="operation.bookingNumber" color="white" horizontalAlignment = "right" fontSize="20"/>
 
-                    <Label :row="i" column="0" text="Tipo: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.operationType.name" color="white" horizontalAlignment = "right" fontSize="20"/>
-
                     <Label :row="i" column="0" text="Nominador: " color="white" horizontalAlignment="left" fontSize="20" />
                     <Label :row="i++" column="1" :text="operation.nominator.name" color="white" horizontalAlignment = "right" fontSize="20"/>
 
@@ -44,9 +44,7 @@
 
                     <Label :row="i" column="0" text="Responsable: " color="white" horizontalAlignment="left" fontSize="20" />
                     <Label :row="i++" column="1" :text="operation.manager.name + ' ' + operation.manager.surname" color="white" horizontalAlignment = "right" fontSize="20"/>
-
-
-
+                    
                 </GridLayout>
 
             </ScrollView>

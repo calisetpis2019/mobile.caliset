@@ -17,10 +17,12 @@
                                     <StackLayout class="card" @tap="goToOperation(active)">
                                         <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Producto: ' + active.commodity" color="white"/>
-                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white"  />
-                                            <Label :text="'Lugar: ' + active.location.name" color="white"  />
-                                            <Label :text="'Estado: ' + active.operationState.name"   color="white"  />
+                                            <Label :text="'Tipo: ' + active.operationType.name" color="white" />
+                                            <Label :text="'Cliente: ' + active.nominator.name" color="white" />
+                                            <Label :text="'Producto: ' + active.commodity" color="white" />
+                                            <Label :text="'Lugar: ' + active.location.name" color="white" />
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white" />
+                                            <Label :text="'Estado: ' + active.operationState.name"   color="white" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -46,17 +48,19 @@
                                     <StackLayout class="card" @tap="goToOperation(future)">
                                         <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Producto: ' + future.commodity" color="white"/>
-                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white"  />
-                                            <Label :text="'Lugar: ' + future.location.name" color="white"  />
-                                            <Label :text="'Estado: ' + future.operationState.name"   color="white"  />
+                                            <Label :text="'Tipo: ' + future.operationType.name" color="white" />
+                                            <Label :text="'Cliente: ' + future.nominator.name" color="white" />
+                                            <Label :text="'Producto: ' + future.commodity" color="white" />
+                                            <Label :text="'Lugar: ' + future.location.name" color="white" />
+                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white" />
+                                            <Label :text="'Estado: ' + future.operationState.name"   color="white" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
                             </v-template>
                         </ListView>
                     </PullToRefresh>
-                    <ActivityIndicator :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+                    <ActivityIndicator :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
                     </GridLayout>
                     
                 </TabViewItem>
@@ -75,9 +79,11 @@
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
                                         <Label :text="'Operación '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
                                         <StackLayout class="container">
+                                            <Label :text="'Tipo: ' + n.operationType.name" color="white" />
+                                            <Label :text="'Cliente: ' + n.nominator.name" color="white" />
                                             <Label :text="'Producto: ' + n.commodity" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" color="white" />
                                             <Label :text="'Lugar: ' + n.location.name" color="white" />
+                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" color="white" />
                                             <Label :text="'Estado: ' + n.operationState.name"   color="white" />
                                         </StackLayout>
                                     </StackLayout>

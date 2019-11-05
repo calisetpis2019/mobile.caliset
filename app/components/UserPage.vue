@@ -2,35 +2,44 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadHours">
         <OurActionBar userPage="true"/>
 
-        <GridLayout rows="auto,,auto,*,auto" >
+        <GridLayout rows="auto,auto,auto,*,auto" >
 
-            <GridLayout row="0" rows="auto,auto" columns="*,auto" >
+            <GridLayout row="0" rows="auto,auto,auto" columns="*,auto" >
                 <Label rowSpan="2" colSpan="2" class="subtitle" />
                 <Label row="0" colSpan="0" :text=userEmail class="subtitle" textWrap="true" />
                 <Label row="1" col="0" :text=lastLogin class="subtitle" textWrap="true" />
-                <Button col="1" rowSpan="2" class="btn btn-primary m-t-20" @tap="$goto('timeSheet')" background="black">
+                <Button col="1" rowSpan="2" class="btn btn-primary m-t-20" @tap="$goto('createTimeRecord')" background="black">
                     <FormattedString>
                         <Span text.decode="&#xf067; &#xf017;" class="fas subtitle" fontSize="30" />
                     </FormattedString>
                 </Button>
+                <StackLayout row="2" colSpan="2" class="hr-light"/>
             </GridLayout>
-            <Label row="1" :visibility="hourRecords.length == 0 ? 'visible' : 'collapsed'"
+
+            <Label row="1" text="Registros de horas" textWrap="true" class="subtitle left" />
+
+            <Label row="2" :visibility="hourRecords.length == 0 ? 'visible' : 'collapsed'"
                     text="No hay registros de horas para mostrar." textWrap="true" class="info"
                     style="margin-top: 20" />
 
-            <PullToRefresh row="2" @refresh="refreshLists" >
+            <PullToRefresh row="3" @refresh="refreshLists" >
                 <ListView class="list-group" for="record in hourRecords">
                     <v-template>
-                        <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <StackLayout class="card" @tap=";">
-                                <Label :text="record.day" class="list-group-item-heading"/>
-                                <StackLayout class="card" v-for="r in record.list" @tap=";">
-                                <GridLayout rows="auto,auto,auto" columns="*,auto,auto" >
-                                    <Label row="0" col="0" :text="formatDateHour(r.startDate)" color="white" />
-                                    <Label row="1" col="0" :text="formatDateHour(r.endDate)" color="white" />
-                                    <label row="2" col="0" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs.'" textWrap="true"/>
-                                    <Button row="0" rowSpan="2" col="1" text.decode="&#xf044;" @tap="editTimeRecord()" class="fas btn btn-changePass m-t-20" margin="5" />
-                                    <Button row="0" rowSpan="2" col="2" text.decode="&#xf1f8;" @tap="deleteTimeRecord()" class="fas btn btn-reject m-t-20" margin="5" />
+                        <CardView margin="10" elevation="40" radius="1" class="card" >
+                            <StackLayout class="card" @tap=";" >
+                                <Label :text="record.day" class="subtitle" />
+                                <StackLayout class="card" v-for="r in record.list" >
+                                <GridLayout rows="auto,auto" columns="*,auto" >
+                                    <StackLayout row="0" col="0" >
+                                        <Label :text="'Operación ' + r.operation.id + '-' + formatDate(r.operation.date)" class="bold" />
+                                        <Label :text="formatDateHour(r.startDate)" color="white" />
+                                        <Label :text="formatDateHour(r.endDate)" color="white" />
+                                    </StackLayout>
+                                    <StackLayout row="1" col="0" colSpan="2" orientation="horizontal" horizontalAlignment="center">
+                                        <Button text.decode="&#xf044;" @tap="editTimeRecord(r)" class="fas btn btn-changePass m-t-20" />
+                                        <Button text.decode="&#xf1f8;" @tap="deleteTimeRecord(r.id)" class="fas btn btn-reject m-t-20" />
+                                    </StackLayout>
+                                    <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="bold" textWrap="true" />
                                 </GridLayout>
                                 <StackLayout class="hr-dark"/>
                                 </StackLayout>
@@ -40,7 +49,7 @@
                 </ListView>
             </PullToRefresh>
 
-            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
+            <StackLayout row="4" verticalAlignment="bottom" horizontalAlignment="center" >
                 <StackLayout class="hr-light"/>
                 <StackLayout class="hr-dark"/>
                 <StackLayout class="hr-light"/>
@@ -95,17 +104,36 @@
                 this.$goto('editPassword');
             },
 
-            editTimeRecord() {
+            editTimeRecord(record) {
+                this.$store.commit('selectedHourRecord',{selectedHourRecord: record});
                 this.$goto('editTimeRecord');
             },
 
-            deleteTimeRecord(){
-
+            deleteTimeRecord(id){
+                // Ver si abrir un modal para pedir confirmación, o algo...
+                http.request({
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/Delete?idHoursRecord=" + id,
+                    method: "DELETE",
+                    headers: { 
+                        "Content-Type": "application/json", 
+                        "Authorization": "Bearer " + this.$store.state.session.token
+                    },
+                }).then(response => {
+                    if (response.content.toJSON().success) {
+                        alert("Se eliminó el registro de horas con éxito.");
+                    }
+                    else {
+                        alert("No se pudo eliminar el registro de horas.");
+                    }
+                    this.loadHours();
+                }, error => {
+                    console.error(error);
+                });
             },
-            
+
             formatDateHour(date){
                 var d = new Date(date);
-                return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
                 var d = new Date(date);
@@ -123,7 +151,7 @@
                 this.hourRecords = [];
                 var dic = {};
                 http.request({
-                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/GetAllByUser?IdUser=" + this.$store.state.session.userId,
+                    url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/HoursRecord/GetMyHoursRecordFiltered",
                     method: "GET",
                     headers: { 
                         "Content-Type": "application/json", 
@@ -186,6 +214,15 @@
 
     .subtitle {
         text-align: center;
+    }
+
+    .left {
+        text-align: left;
+    }
+
+    .bold{
+        font-weight: bold;
+        color: white;
     }
 
 

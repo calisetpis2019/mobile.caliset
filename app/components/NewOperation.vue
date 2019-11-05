@@ -18,11 +18,13 @@
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container" @tap="showButtons">
-                                        <Label :text="'Operación ' + a.operation.id + '-' + formatDate(operDate)" class="list-group-item-heading"/>
-                                        <Label :text="'Fecha: ' + formatDateHour(a.date)"   color="white"  />
-                                        <Label :text="'Tipo: '  + a.operation.operationType.name" color="white"/>
-                                        <Label :text="'Nominador: '  + a.operation.nominator.name"   color="white"  />
-                                        <Label :text="'Cargador: '  + a.operation.charger.name" color="white"  />
+                                        <Label :text="'Fecha: ' + formatDateHour(a.date)" class="list-group-item-heading" />
+                                        <Label :text="'Tipo: '  + a.operation.operationType.name" color="white" />
+                                        <Label :text="'Cliente: '  + a.operation.nominator.name"   color="white" />
+                                        <Label :text="'Cargador: '  + a.operation.charger.name" color="white" />
+                                        <Label :text="'Producto: ' + a.operation.commodity" color="white" />
+                                        <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
+                                        <Label :text="'Estado: ' + a.operation.operationState.name"   color="white" />
                                     </StackLayout >
                                     <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
                                         <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
