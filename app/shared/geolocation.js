@@ -29,12 +29,7 @@ export async function  getLocation() {
 
             lat = res.latitude;
             lon = res.longitude;
-            time = res.timestamp;
-
-            console.log("respuesta:");
-            console.log(res.latitude);
-            console.log(res.longitude);
-            console.log(res.time);
+            time = new Date();
 
         }).catch(e => {
             console.log("error al obtener la localización: " + e);

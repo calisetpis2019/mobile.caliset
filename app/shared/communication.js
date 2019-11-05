@@ -4,7 +4,7 @@ import * as ApplicationSettings from "application-settings";
 import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 import store from '~/store';
 
-export function sendLocationRecord(lat,lon,timeStamp){
+export async function sendLocationRecord(lat,lon,timeStamp){
 
     
     if (getConnectionType() === connectionType.none) {
@@ -15,6 +15,7 @@ export function sendLocationRecord(lat,lon,timeStamp){
             longitude: lon,
             time: timeStamp,
         });
+        console.log(timeStamp);
     }
     else {
 
@@ -38,7 +39,7 @@ export function sendLocationRecord(lat,lon,timeStamp){
                 console.log("Se envió posición actual.");
             }
             else {
-                console.log("Hubo un problema al enviar posición actual.");
+                console.log(response.content.toJSON().error.details);
                 store.state.pendingCoordinates.push({
                     latitude: lat,
                     longitude: lon,
@@ -57,13 +58,13 @@ export function sendLocationRecord(lat,lon,timeStamp){
     }
 }
 
-export function sendPendings(){
+export async function sendPendings(){
 	sendPendingCoordinates();
 	sendPendingNotes();
 }
 
-function sendPendingCoordinates(){
-
+export async function sendPendingCoordinates(){
+    console.log("Enviando posiciones pendientes...");
     for(var i = 0; i < store.state.pendingCoordinates.length; i++){
 
         sendLocationRecord(store.state.pendingCoordinates[i].latitude,
@@ -74,8 +75,8 @@ function sendPendingCoordinates(){
     }
 }
 
-async function sendPendingNotes(){
-
+export async function sendPendingNotes(){
+    console.log("Enviando comentarios pendientes...");
 	for(var i = 0; i < store.state.pendingNotes.length; i++){
 
 		await http.request({

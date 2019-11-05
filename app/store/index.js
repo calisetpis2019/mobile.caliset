@@ -2,8 +2,7 @@ import Vue from 'nativescript-vue';
 import Vuex from 'vuex';
 import * as http from "http";
 import * as ApplicationSettings from "application-settings";
-import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
-import {getLocation, sendLocationRecord, sendPendingCoordinates} from "~/shared/geolocation";
+import {getLocation} from "~/shared/geolocation";
 import {sendPendings} from "~/shared/communication";
 
 Vue.use(Vuex);
@@ -12,8 +11,8 @@ var firebase = require("nativescript-plugin-firebase");
 
 const store = new Vuex.Store({
     state: {
-        gpsInterval : 900*1000, //segundos * 1000
-        pendingInterval : 1800*1000,
+        gpsInterval : 10*1000, //segundos * 1000
+        pendingInterval : 10*1000,
         session : {
             userId: "",
             email: "",
@@ -56,7 +55,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "192.168.1.2";
+            state.ipAPI = "172.20.10.6";
         },
 
         login(state, data) {
@@ -207,7 +206,11 @@ const store = new Vuex.Store({
 
         startSendingPendings(state){
             state.timerPendings = setInterval(function(){sendPendings()},state.pendingInterval);
-        }
+        },
+
+        // startSendingPendings(state){
+        //     state.timerPendings = setInterval(function(){sendPendingNotes()},state.pendingInterval);
+        // }
 
 
     }
