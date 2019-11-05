@@ -6,12 +6,13 @@
                 <TabViewItem title="Activas">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
-                        <Label  v-if="!processing && operations.length == 0"
+                        <Label  v-if="!processing && this.$store.state.operations.length == 0"
                                 :text="errorA ? msgError : msgActivas" textWrap="true" class="info"
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <ListView class="list-group" for="active in operations">
+                        <!--<ListView class="list-group" for="active in operations">-->
+                        <ListView class="list-group" for="active in this.$store.state.operations">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(active)">
@@ -35,12 +36,12 @@
                 <TabViewItem title="Futuras">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
-                        <Label  v-if="!processing && futureOperations.length == 0"
+                        <Label  v-if="!processing && this.$store.state.futureOperations.length == 0"
                                 :text="errorF ? msgError : msgFuturas" textWrap="true" class="info"
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <ListView class="list-group" for="future in futureOperations">
+                        <ListView class="list-group" for="future in this.$store.state.futureOperations">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(future)">
@@ -64,12 +65,12 @@
                 <TabViewItem title="Nuevas">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
-                        <Label  v-if="!processingNO && newOperations.length == 0"
+                        <Label  v-if="!processingNO && this.$store.state.newOperations.length == 0"
                                 :text="errorN ? msgError : msgNuevas" textWrap="true" class="info"
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <ListView class="list-group" for="n in newOperations" backgroundColor="#1F1B24">
+                        <ListView class="list-group" for="n in this.$store.state.newOperations" backgroundColor="#1F1B24">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
@@ -97,6 +98,7 @@
 <script>
     import * as http from "http";
     import * as ApplicationSettings from "application-settings";
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 
     export default {
 
@@ -119,7 +121,10 @@
                 msgError: "No se pudo conectar al servidor.",
                 errorN : false,
                 errorA : false,
-                errorF : false
+                errorF : false,
+
+                comments: [],
+                assignations: [],
             };
         },
 
@@ -132,6 +137,10 @@
         
         methods: {
             refreshLists(args) {
+                if (getConnectionType() === connectionType.none) {
+                    alert("No tiene conexión a Internet!");
+                    return;
+                }
                 var pullRefresh = args.object;
                 this.loadNewOperations();
                 this.loadOperations();
@@ -151,6 +160,9 @@
             },
 
             loadNewOperations(){
+                if (getConnectionType() === connectionType.none) {
+                    return;
+                }
                 this.processingNO=true;
                 this.errorN = false;
                 this.newOperations = [];
@@ -181,6 +193,8 @@
                             let y = new Date(b.date);
                             return x-y;
                         });
+                        
+                        this.$store.commit('newOps',{ newOperations: this.newOperations });
                         this.processingNO=false;
 
                     }
@@ -190,9 +204,13 @@
                     this.errorN = true;
                     console.error(error);
                     });
+
             },
 
             loadOperations(){
+                if (getConnectionType() === connectionType.none) {
+                    return;
+                }
                 this.processing=true;
                 this.errorA = false;
                 this.operations = [];
@@ -231,6 +249,7 @@
                             return x-y;
                         });
 
+                        this.$store.commit('activeOps',{ operations: this.operations });
                         this.$store.commit('activeOperations',{ operations: this.activeOperations });
                         this.processing=false;
 
@@ -274,6 +293,7 @@
                             return x-y;
                         });
 
+                        this.$store.commit('futureOps',{ futureOperations: this.futureOperations });
                         this.processing=false;
                     }
                 }, error => {
@@ -295,6 +315,11 @@
             goToOperation(operation) {
                 console.log("Selecciono operacion ");
                 console.log(operation.id);
+                operation.comments.sort(function(a,b){
+                    let x = new Date(a.creationTime);
+                    let y = new Date(b.creationTime);
+                    return y-x;
+                });
                 this.$store.commit('selectedOperation',{ selectedOperation: operation});
                 console.log("operacion guardada:");
                 console.log(this.$store.state.selectedOperation.id);

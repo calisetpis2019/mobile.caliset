@@ -27,6 +27,12 @@
         methods: {
 
             createSample(){
+
+                if (getConnectionType() === connectionType.none) {
+                    alert("No hay conexión a Internet...");
+                    return;
+                }
+                
                 this.processing = true;
                 //Guarda comentario y borra el campo de texto
                 http.request({

@@ -5,25 +5,33 @@
 
             <Label row="0" text="ASIGNACIONES" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="1" :text="'Operación ' + this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <PullToRefresh row="2" @refresh="refreshList" >
-                <ListView  class="list-group" for="a in assignations" backgroundColor="#1F1B24">
-                    <v-template>
-                        <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <GridLayout rows="*,auto" class="card">
-                                <StackLayout row="0" class="container">
-                                    <!-- INFORMACION A DEFINIR -->
-                                    <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
-                                    <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
-                                    <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
-                                    <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
-                                    <Label :text="'Nominador: ' + a.operation.nominator.name" color="white"  />
-                                    <Label :text="'Cargador: ' + a.operation.charger.name" color="white"  />
-                                </StackLayout >
-                            </GridLayout>
-                        </CardView>
-                    </v-template>
-                </ListView>
-            </PullToRefresh>
+            <GridLayout row="2" rows="auto,*">
+                <StackLayout row="0">
+                    <Label  v-if="!processing && assignations.length == 0"
+                            :text="msgEmpty" textWrap="true" class="info"
+                            style="margin-top: 20" />
+                </StackLayout>
+                <PullToRefresh row="1" @refresh="refreshList" >
+                    <ListView  class="list-group" for="a in assignations" backgroundColor="#1F1B24">
+                        <v-template>
+                            <CardView  margin="10" elevation="40" radius="1" class="card">
+                                <GridLayout rows="*,auto" class="card">
+                                    <StackLayout row="0" class="container">
+                                        <!-- INFORMACION A DEFINIR -->
+                                        <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
+                                        <Label :text="'Tipo: ' + a.operation.operationType.id" color="white"  />
+                                        <Label :text="'Commodity: ' + a.operation.commodity" color="white"/>
+                                        <Label :text="'Embarcación: ' + a.operation.shipName"   color="white"  />
+                                        <Label :text="'Nominador: ' + a.operation.nominator.name" color="white"  />
+                                        <Label :text="'Cargador: ' + a.operation.charger.name" color="white"  />
+                                    </StackLayout >
+                                </GridLayout>
+                            </CardView>
+                        </v-template>
+                    </ListView>
+                </PullToRefresh>
+                <ActivityIndicator :busy="processing" :visibility="processing ? 'visible' : 'collapsed'" color="white"></ActivityIndicator>
+            </GridLayout>
         </GridLayout>
     </Page>
 </template>
@@ -36,6 +44,7 @@
             return {
                 assignations: [], 
                 processing: false,
+                msgEmpty: "No se pudieron cargar las asignaciones...",
             }
         },
 

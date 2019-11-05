@@ -39,6 +39,7 @@
                         }
                     }
                     this.$store.commit('startGPS');
+                    this.$store.commit('startSendingPendings');
                     this.$goto('home',{ clearHistory: true });
                 }
                 else if (this.$store.state.firstLogIn) {

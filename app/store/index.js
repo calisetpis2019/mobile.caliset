@@ -2,51 +2,18 @@ import Vue from 'nativescript-vue';
 import Vuex from 'vuex';
 import * as http from "http";
 import * as ApplicationSettings from "application-settings";
+import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
+import {getLocation, sendLocationRecord, sendPendingCoordinates} from "~/shared/geolocation";
+import {sendPendings} from "~/shared/communication";
 
 Vue.use(Vuex);
 
 var firebase = require("nativescript-plugin-firebase");
 
-const geolocation = require("nativescript-geolocation");
-const { Accuracy } = require("tns-core-modules/ui/enums");
-
-async function  getLocation() {
-
-    var lat = null;
-    var lon = null;
-    var speed = null;
-
-    console.log("Inicia función getLocation");
-    await geolocation
-        .getCurrentLocation({
-            desiredAccuracy: Accuracy.high,
-            maximumAge: 5000,
-            timeout: 20000
-        })
-        .then(res => {
-
-            console.log(res);
-
-            lat = res.latitude;
-            lon = res.longitude;
-            speed = res.speed;
-
-            console.log("respuesta:");
-            console.log(res.latitude);
-            console.log(res.longitude);
-
-        }).catch(e => {
-            console.log("error al obtener la localización: " + e);
-        });
-
-    //alert('coordenadas: ' + lat +''+lon);
-    console.log("respuesta fuera del async:");
-    console.log(lat);
-    console.log(lon);
-}
-
 const store = new Vuex.Store({
     state: {
+        gpsInterval : 900*1000, //segundos * 1000
+        pendingInterval : 1800*1000,
         session : {
             userId: "",
             email: "",
@@ -66,12 +33,22 @@ const store = new Vuex.Store({
         ipAPI : "",
         loggedIn: false,
         ActiveOperations: [],
+        operations: [],
+        newOperations: [],
+        futureOperations: [],
         finishedOperations: [],
         timerId : null,
         hourRecords: [],
+        coordinatesId: 0,
+        assignations: [],
+        pendingCoordinates : [],
+        pendingNotes: [],
+        timerPendings: null,
+
     },
 
     mutations: {
+
         load(state) {
             if(ApplicationSettings.getString("store")) {
                 this.replaceState(
@@ -79,7 +56,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "app.caliset.com";
+            state.ipAPI = "10.0.2.2";
         },
 
         login(state, data) {
@@ -127,15 +104,37 @@ const store = new Vuex.Store({
             firebase.registerForPushNotifications();
 
             //Ejecuta getLocation cada intervalo de tiempo
-            state.timerId = setInterval(function(){getLocation()},10*1000);
+            state.timerId = setInterval(function(){getLocation()},state.gpsInterval);
+        },
+
+        refreshOperationNotes(state,data){
+            state.selectedOperation.comments = data.comments;
+        },
+
+        saveNote(state,data){
+            state.pendingNotes.push(data);
+        },
+
+        activeOps(state,data) {
+            state.operations = data.operations;
+        },
+
+        newOps(state,data) {
+            state.newOperations = data.newOperations;
+        },
+
+        futureOps(state,data) {
+            state.futureOperations = data.futureOperations;
         },
 
         activeOperations(state,data) {
             state.activeOperations = data.operations;
         },
+
         finishedOperations(state,data) {
             state.finishedOperations = data.operations;
         },
+
         hourRecords(state,data) {
             state.hourRecords = data.hours;
         },
@@ -198,7 +197,11 @@ const store = new Vuex.Store({
         },
 
         startGPS(state){
-            state.timerId = setInterval(function(){getLocation()},10*1000);
+            state.timerId = setInterval(function(){getLocation()},state.gpsInterval);
+        },
+
+        startSendingPendings(state){
+            state.timerPendings = setInterval(function(){sendPendings()},state.pendingInterval);
         }
 
 
