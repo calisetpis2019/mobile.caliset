@@ -14,7 +14,8 @@
                 </StackLayout>
             </StackLayout>
             <PullToRefresh row="1" @refresh="refreshList" >
-                <ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
+                <!--<ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">-->
+                <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
                             <StackLayout class="card"  >
@@ -167,7 +168,10 @@
                             let y = new Date(b.creationTime);
                             return y-x;
                         });
+                        
+                        this.$store.commit('refreshOperationNotes', { comments : this.comments});
                         this.processing=false;
+
                     }
                 }, error => {
                     this.processing=false;

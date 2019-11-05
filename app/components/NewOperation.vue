@@ -6,30 +6,36 @@
             <Label row="0" text="ALERTAS" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="1" :text="'Operación ' + this.$store.state.selectedNewOperation.id + '-' + formatDate(operDate)" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
-        
-            <PullToRefresh row="3" @refresh="refreshList" >
-                <ListView class="list-group" for="a in assignations" backgroundColor="#1F1B24">
-                    <v-template>
-                        <CardView  margin="10" elevation="40" radius="1" class="card">
-                            <GridLayout rows="*,auto" class="card">
-                                <StackLayout row="0" class="container" @tap="showButtons">
-                                    <Label :text="'Operación ' + a.operation.id + '-' + formatDate(operDate)" class="list-group-item-heading"/>
-                                    <Label :text="'Fecha: ' + formatDateHour(a.date)"   color="white"  />
-                                    <Label :text="'Tipo: '  + a.operation.operationType.name" color="white"/>
-                                    <Label :text="'Nominador: '  + a.operation.nominator.name"   color="white"  />
-                                    <Label :text="'Cargador: '  + a.operation.charger.name" color="white"  />
-                                </StackLayout >
-                                <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
-                                    <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
-                                            @tap="confirmAssignation(a)" />
-                                    <Button textWrap="true" text.decode="&#xf00d;" class=" btn-reject fas" width="50%" 
-                                            @tap="rejectAssignation(a)"/>
-                                </StackLayout>
-                            </GridLayout>
-                        </CardView>
-                    </v-template>
-                </ListView>
-            </PullToRefresh>
+            <GridLayout row="3" rows="auto,*">
+                <StackLayout row="0">
+                    <Label  v-if="!processing && assignations.length == 0"
+                            :text="msgEmpty" textWrap="true" class="info"
+                            style="margin-top: 20" />
+                </StackLayout>
+                <PullToRefresh row="1" @refresh="refreshList" >
+                    <ListView class="list-group" for="a in assignations" backgroundColor="#1F1B24">
+                        <v-template>
+                            <CardView  margin="10" elevation="40" radius="1" class="card">
+                                <GridLayout rows="*,auto" class="card">
+                                    <StackLayout row="0" class="container" @tap="showButtons">
+                                        <Label :text="'Operación ' + a.operation.id + '-' + formatDate(operDate)" class="list-group-item-heading"/>
+                                        <Label :text="'Fecha: ' + formatDateHour(a.date)"   color="white"  />
+                                        <Label :text="'Tipo: '  + a.operation.operationType.name" color="white"/>
+                                        <Label :text="'Nominador: '  + a.operation.nominator.name"   color="white"  />
+                                        <Label :text="'Cargador: '  + a.operation.charger.name" color="white"  />
+                                    </StackLayout >
+                                    <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
+                                        <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
+                                                @tap="confirmAssignation(a)" />
+                                        <Button textWrap="true" text.decode="&#xf00d;" class=" btn-reject fas" width="50%" 
+                                                @tap="rejectAssignation(a)"/>
+                                    </StackLayout>
+                                </GridLayout>
+                            </CardView>
+                        </v-template>
+                    </ListView>
+                </PullToRefresh>
+            </GridLayout>
 
         </GridLayout>
     </Page>
@@ -37,6 +43,7 @@
 
 <script>
     import * as http from "http";
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 
     export default {
 
@@ -45,7 +52,8 @@
                 isIt: true,
                 assignations: [],
                 msg: "",
-                operDate: this.$store.state.selectedNewOperation.date
+                operDate: this.$store.state.selectedNewOperation.date,
+                msgEmpty: "No hay conexión a Internet, no se muestran las alertas...",
             }
         },
 
@@ -68,6 +76,7 @@
             },
 
             loadAssignations() {
+                this.processing = true;
                 this.assignations = [];
                 http.request({
                 url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Assignation/GetMyAssignmentsByOperation?operationId="+this.$store.state.selectedNewOperation.id,
@@ -109,6 +118,12 @@
             },
 
             confirmAssignation(assignation){
+
+                if (getConnectionType() === connectionType.none) {
+                    alert("No hay conexión a Internet...");
+                    return;
+                }
+
                 const index = this.assignations.indexOf(assignation);
                 this.assignations.splice(index,1);
                 this.processing=true;
@@ -143,6 +158,12 @@
             },
 
             rejectAssignation(assignation){
+
+                if (getConnectionType() === connectionType.none) {
+                    alert("No hay conexión a Internet...");
+                    return;
+                }
+
                 const index = this.assignations.indexOf(assignation);
                 this.assignations.splice(index,1);
                 this.processing=true;

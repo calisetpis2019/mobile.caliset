@@ -23,6 +23,7 @@
 
 <script>
     import * as http from "http";
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 
     export default {
 
@@ -36,13 +37,20 @@
         methods: {
             saveNote(){
                 this.processing = true;
+
+                if (getConnectionType() === connectionType.none) {
+                    alert("No hay conexión a Internet, se guarda el mensaje para enviarse luego");
+                    this.$store.commit('saveNote', {    operationId : this.$store.state.selectedOperation.id,
+                                                        comment: this.comment });
+                    return;
+                }
                 //Envía el comentario al servidor y borra el texto.
                 http.request({
                     url: "http://" + this.$store.state.ipAPI + ":21021/api/services/app/Comments/Create",
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
-                        "Authorization":"Bearer "+ this.$store.state.session.token                       
+                        "Authorization":"Bearer "+ this.$store.state.session.token
                     },
                     content: JSON.stringify({
                         "commentary": this.comment,
