@@ -171,12 +171,6 @@
                         });
                         for(var i = 0; i < result.length; i++){
                             var d = new Date(result[i].startDate);
-                            // if (dic[this.formatDate(d)] != null){
-                            //     dic[this.formatDate(d)] = dic[this.formatDate(d)];
-                            // }
-                            // else {
-                            //     dic[this.formatDate(d)] = [];
-                            // }
 
                             // Esto es lo mismo que en el if, pero en una sola línea
                             // Si ya tengo algo en esa fecha lo concateno, sino, creo la lista...

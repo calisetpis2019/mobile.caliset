@@ -174,7 +174,11 @@
                 return this.$store.state.selectedHourRecord.operation.startDate;
             },
             recordOperation(){
-                return this.$store.state.selectedHourRecord.operation.id + '-' + this.formatDate(this.$store.state.selectedHourRecord.operation.date);
+                return  this.$store.state.selectedHourRecord.operation.id + '-' + 
+                        this.formatDate(this.$store.state.selectedHourRecord.operation.date) + ' - ' + 
+                        this.$store.state.selectedHourRecord.operation.operationType.name + ' - ' +
+                        this.$store.state.selectedHourRecord.operation.nominator.name + ' - ' +
+                        this.$store.state.selectedHourRecord.operation.location.name;
             },
             countHours(){
                 var sT = new Date(this.startTime);

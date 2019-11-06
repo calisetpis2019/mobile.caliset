@@ -240,7 +240,10 @@
                             this.activeOperations.push({
                                 id: result[i].id,
                                 date: result[i].date,
-                                operationId: result[i].id + '-' + this.formatDate(result[i].date)
+                                operationId: result[i].id + '-' + this.formatDate(result[i].date) 
+                                                + ' - ' + result[i].operationType.name 
+                                                + ' - ' + result[i].nominator.name
+                                                + ' - ' + result[i].location.name
                             });
 
                         }

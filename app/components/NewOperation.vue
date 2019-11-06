@@ -8,8 +8,8 @@
             <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
             <GridLayout row="3" rows="auto,*">
                 <StackLayout row="0">
-                    <Label  v-if="!processing && assignations.length == 0"
-                            :text="msgEmpty" textWrap="true" class="info"
+                    <Label v-if="(getConnectionType() === connectionType.none)"
+                            :text="msgNoConnection" textWrap="true" class="info"
                             style="margin-top: 20" />
                 </StackLayout>
                 <PullToRefresh row="1" @refresh="refreshList" >
@@ -55,7 +55,7 @@
                 assignations: [],
                 msg: "",
                 operDate: this.$store.state.selectedNewOperation.date,
-                msgEmpty: "No hay conexión a Internet, no se muestran las alertas...",
+                msgNoConnection: "No hay conexión a Internet, no se muestran las alertas...",
             }
         },
 
