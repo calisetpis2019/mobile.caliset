@@ -15,7 +15,6 @@ export async function  getLocation() {
     var time = null;
 
     console.log("Inicia función getLocation");
-    console.log(store.state.ipAPI);
     
     await geolocation
         .getCurrentLocation({
@@ -29,7 +28,9 @@ export async function  getLocation() {
 
             lat = res.latitude;
             lon = res.longitude;
-            time = new Date();
+            var uyt = new Date();
+            time = new Date (Date.UTC(uyt.getFullYear(), uyt.getMonth(), uyt.getDate(),uyt.getHours(), 
+                                uyt.getMinutes(), uyt.getSeconds()));
 
         }).catch(e => {
             console.log("error al obtener la localización: " + e);

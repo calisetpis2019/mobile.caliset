@@ -14,7 +14,6 @@
                 </StackLayout>
             </StackLayout>
             <PullToRefresh row="1" @refresh="refreshList" >
-                <!--<ListView class="list-group" for="c in comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">-->
                 <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
@@ -75,6 +74,7 @@
 
 <script>
     import * as http from "http";
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
 
     //Para utilizar la cámara:
     import * as camera from "nativescript-camera";
@@ -234,11 +234,15 @@
                 console.log("Comentario seleccionado para edición: ");
                 console.log(comment.id + ' - ' + comment.commentary);
 
-                if (comment.creatorUser.id == this.$store.state.session.userId){
-                    this.$store.commit('selectedComment',{ selectedComment: comment});
-                    this.$showModal(EditNote, { fullscreen: false }).then(data => this.loadComments());
+                if (getConnectionType() === connectionType.none) {
+                    alert("No hay conexión, no está habilitada la edición");
                 }
-                
+                else {
+                    if (comment.creatorUser.id == this.$store.state.session.userId){
+                        this.$store.commit('selectedComment',{ selectedComment: comment});
+                        this.$showModal(EditNote, { fullscreen: false }).then(data => this.loadComments());
+                    }
+                }
             },
 
         },//termina methods

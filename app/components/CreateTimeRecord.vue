@@ -65,8 +65,6 @@
         data() {
 
             return {
-                currentHour: new Date().getUTCHours(),
-                currentMinute : new Date().getUTCMinutes(),
 
                 startDateVisible : false,
                 endDateVisible : false,
@@ -100,9 +98,18 @@
                 var eT = new Date(this.endTime);
                 var sD = new Date(this.startDate);
                 var eD = new Date(this.endDate);
-                this.startRecord = new Date(sD.getFullYear() + '/' + (sD.getMonth()+1) + '/' + sD.getDate() + ' ' +  sT.getHours() + ':' + sT.getMinutes() + ':00');
-                this.endRecord = new Date(eD.getFullYear() + '/' + (eD.getMonth()+1) + '/' + eD.getDate() + ' ' + eT.getHours() + ':' + eT.getMinutes() + ':00');
+
+                this.startRecord = new Date(Date.UTC(sD.getFullYear(),sD.getMonth(), sD.getDate() ,sT.getHours(), sT.getMinutes() , '0'));
+
+
+                this.endRecord = new Date(Date.UTC(eD.getFullYear(),eD.getMonth(), eD.getDate() ,eT.getHours(), eT.getMinutes() , '0'));
+
+                console.log("horas picker");
+                console.log(this.startRecord);
+                console.log(this.endRecord);
+
                 var dif = this.endRecord-this.startRecord;
+
                 if (dif <= 0){
                     this.errorStartEnd = true;
                     return "";
