@@ -182,7 +182,7 @@
                         console.log("loadNewOperations: Largo del resultado:");
                         console.log(result.length);
                         console.log("loadNewOperations: Resultado json:");
-                        console.log(result);
+                        //console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.newOperations.push(result[i]);
@@ -229,7 +229,7 @@
                         console.log("loadOperations: Largo del resultado:");
                         console.log(result.length);
                         console.log("loadOperations: Resultado json:");
-                        console.log(result);
+                        //console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
