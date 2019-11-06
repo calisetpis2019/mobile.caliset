@@ -10,7 +10,6 @@
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <!--<ListView class="list-group" for="active in operations">-->
                         <ListView class="list-group" for="active in this.$store.state.operations">
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">

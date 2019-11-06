@@ -17,7 +17,6 @@
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container">
-                                        <!-- INFORMACION A DEFINIR -->
                                         <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
                                         <Label :text="'Tipo: ' + a.operation.operationType.name" color="white" />
                                         <Label :text="'Cliente: ' + a.operation.nominator.name" color="white" />
