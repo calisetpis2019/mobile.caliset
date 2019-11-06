@@ -8,7 +8,7 @@
             <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
             <GridLayout row="3" rows="auto,*">
                 <StackLayout row="0">
-                    <Label v-if="(getConnectionType() === connectionType.none)"
+                    <Label  v-if="noConnection"
                             :text="msgNoConnection" textWrap="true" class="info"
                             style="margin-top: 20" />
                 </StackLayout>
@@ -17,7 +17,7 @@
                         <v-template>
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
-                                    <StackLayout row="0" class="container" @tap="showButtons">
+                                    <StackLayout row="0" class="container">
                                         <Label :text="'Fecha: ' + formatDateHour(a.date)" class="list-group-item-heading" />
                                         <Label :text="'Tipo: '  + a.operation.operationType.name" color="white" />
                                         <Label :text="'Cliente: '  + a.operation.nominator.name"   color="white" />
@@ -26,7 +26,7 @@
                                         <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
                                         <Label :text="'Estado: ' + a.operation.operationState.name"   color="white" />
                                     </StackLayout >
-                                    <StackLayout row="1" :visibility="isIt ? 'visible' : 'collapsed'" horizontalAlign="center" orientation="horizontal" margin="10">
+                                    <StackLayout row="1" horizontalAlign="center" orientation="horizontal" margin="10">
                                         <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
                                                 @tap="confirmAssignation(a)" />
                                         <Button textWrap="true" text.decode="&#xf00d;" class=" btn-reject fas" width="50%" 
@@ -38,7 +38,6 @@
                     </ListView>
                 </PullToRefresh>
             </GridLayout>
-
         </GridLayout>
     </Page>
 </template>
@@ -51,11 +50,17 @@
 
         data() {
             return {
-                isIt: true,
                 assignations: [],
                 msg: "",
                 operDate: this.$store.state.selectedNewOperation.date,
-                msgNoConnection: "No hay conexión a Internet, no se muestran las alertas...",
+                msgNoConnection: "No hay conexión a Internet...",
+            }
+        },
+
+        computed: {
+            noConnection() {
+                var nocon = (getConnectionType() === connectionType.none);
+                return nocon;
             }
         },
 
@@ -96,7 +101,7 @@
                         console.log("NewOperation: Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
-                        console.log(result);
+                        //console.log(result);
                         for(var i = 0; i < result.length; i++){
 
                             if (result[i].aware == null){
@@ -120,12 +125,10 @@
             },
 
             confirmAssignation(assignation){
-
                 if (getConnectionType() === connectionType.none) {
                     alert("No hay conexión a Internet...");
                     return;
                 }
-
                 const index = this.assignations.indexOf(assignation);
                 this.assignations.splice(index,1);
                 this.processing=true;
@@ -160,7 +163,6 @@
             },
 
             rejectAssignation(assignation){
-
                 if (getConnectionType() === connectionType.none) {
                     alert("No hay conexión a Internet...");
                     return;
@@ -200,17 +202,7 @@
             },
 
             showButtons() {
-                //Esto no anda, no se porque...
-                console.log("btonbotontotnot");
-
-                if (this.isIt) {
-                    this.isIt = false;
-                }
-                else {
-                    console.log("muestra los botones!");
-                    this.isIt = true;
-                }
-
+                //A implementar...
             },
         }
     };
