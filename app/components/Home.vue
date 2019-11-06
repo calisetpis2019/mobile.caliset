@@ -140,10 +140,6 @@
         
         methods: {
             refreshLists(args) {
-                if (getConnectionType() === connectionType.none) {
-                    alert("No tiene conexión a Internet!");
-                    return;
-                }
                 var pullRefresh = args.object;
                 this.loadNewOperations();
                 this.loadOperations();

@@ -201,7 +201,7 @@
                     return;
                 }
                 else {
-                    $goto('createTimeRecord')
+                    this.$goto('createTimeRecord')
                 }
             }
         }

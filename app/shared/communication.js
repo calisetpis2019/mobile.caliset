@@ -10,7 +10,7 @@ export async function sendLocationRecord(lat,lon,timeStamp){
     if (getConnectionType() === connectionType.none) {
     
         console.log("No hay conexión a Internet, se guarda la posición para posterior procesamiento...");
-        store.state.pendingCoordinates.push({
+        store.commit('savePositions',{
             latitude: lat,
             longitude: lon,
             time: timeStamp,
@@ -21,7 +21,7 @@ export async function sendLocationRecord(lat,lon,timeStamp){
 
         console.log("Se envía posición al servidor...");
 
-        http.request({
+        await http.request({
             url: "http://" + store.state.ipAPI + ":21021/api/services/app/LocationRecords/Create",
             method: "POST",
             headers: {
@@ -40,7 +40,7 @@ export async function sendLocationRecord(lat,lon,timeStamp){
             }
             else {
                 console.log(response.content.toJSON().error.details);
-                store.state.pendingCoordinates.push({
+                store.commit('savePositions',{
                     latitude: lat,
                     longitude: lon,
                     time: timeStamp,
@@ -49,7 +49,7 @@ export async function sendLocationRecord(lat,lon,timeStamp){
             }
         }, error => {
             console.error(error);
-            store.state.pendingCoordinates.push({
+            store.commit('savePositions',{
                 latitude: lat,
                 longitude: lon,
                 time: timeStamp,
@@ -66,12 +66,34 @@ export async function sendPendings(){
 export async function sendPendingCoordinates(){
     console.log("Enviando posiciones pendientes...");
     for(var i = 0; i < store.state.pendingCoordinates.length; i++){
-
-        sendLocationRecord(store.state.pendingCoordinates[i].latitude,
-                            store.state.pendingCoordinates[i].longitude,
-                            store.state.pendingCoordinates[i].time);
-
-        store.state.pendingCoordinates.splice(i,1);
+        
+        if (getConnectionType() === connectionType.none) {
+        }
+        else {
+            console.log("Se envía posición al servidor (sendPending...)...");
+    
+            await http.request({
+                url: "http://" + store.state.ipAPI + ":21021/api/services/app/LocationRecords/Create",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization":"Bearer "+ store.state.session.token
+                },
+                content: JSON.stringify({
+                            "latitude": store.state.pendingCoordinates[i].latitude,
+                            "longitude": store.state.pendingCoordinates[i].longitude,
+                            "when" : store.state.pendingCoordinates[i].time,
+                })
+            }).then(response => {
+                var result = response.content.toJSON().result;
+                if (response.content.toJSON().success) {
+                    console.log("Se envió posición actual.");
+                    store.state.pendingCoordinates.splice(i,1);
+                }
+            }, error => {
+                console.error(error);
+            });
+        }
     }
 }
 

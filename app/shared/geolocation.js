@@ -31,11 +31,10 @@ export async function  getLocation() {
             var uyt = new Date();
             time = new Date (Date.UTC(uyt.getFullYear(), uyt.getMonth(), uyt.getDate(),uyt.getHours(), 
                                 uyt.getMinutes(), uyt.getSeconds()));
-
+            sendLocationRecord(lat,lon,time);
         }).catch(e => {
             console.log("error al obtener la localización: " + e);
         });
 
-    sendLocationRecord(lat,lon,time);
 
 }

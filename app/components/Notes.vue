@@ -42,6 +42,7 @@
                     alert("No hay conexión a Internet, se guarda el mensaje para enviarse luego");
                     this.$store.commit('saveNote', {    operationId : this.$store.state.selectedOperation.id,
                                                         comment: this.comment });
+                    this.$goto('operation');
                     return;
                 }
                 //Envía el comentario al servidor y borra el texto.

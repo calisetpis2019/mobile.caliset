@@ -11,8 +11,8 @@ var firebase = require("nativescript-plugin-firebase");
 
 const store = new Vuex.Store({
     state: {
-        gpsInterval : 10*1000, //segundos * 1000
-        pendingInterval : 10*1000,
+        gpsInterval : 30*1000, //segundos * 1000
+        pendingInterval : 30*1000,
         session : {
             userId: "",
             email: "",
@@ -114,6 +114,10 @@ const store = new Vuex.Store({
             state.pendingNotes.push(data);
         },
 
+        savePositions(state,data){
+            state.pendingCoordinates.push(data);
+        },
+
         activeOps(state,data) {
             state.operations = data.operations;
         },
@@ -207,11 +211,7 @@ const store = new Vuex.Store({
         startSendingPendings(state){
             state.timerPendings = setInterval(function(){sendPendings()},state.pendingInterval);
         },
-
-        // startSendingPendings(state){
-        //     state.timerPendings = setInterval(function(){sendPendingNotes()},state.pendingInterval);
-        // }
-
+        
 
     }
 });
