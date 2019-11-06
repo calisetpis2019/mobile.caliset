@@ -8,7 +8,7 @@
                 <Label rowSpan="2" colSpan="2" class="subtitle" />
                 <Label row="0" colSpan="0" :text=userEmail class="subtitle" textWrap="true" />
                 <Label row="1" col="0" :text=lastLogin class="subtitle" textWrap="true" />
-                <Button col="1" rowSpan="2" class="btn btn-primary m-t-20" @tap="$goto('createTimeRecord')" background="black">
+                <Button col="1" rowSpan="2" class="btn btn-primary m-t-20" @tap="createRecord()" background="black">
                     <FormattedString>
                         <Span text.decode="&#xf067; &#xf017;" class="fas subtitle" fontSize="30" />
                     </FormattedString>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
     import * as http from "http";
 
     export default {
@@ -193,6 +194,16 @@
                     console.error(error);
                 });
             },
+
+            createRecord(){
+                if (getConnectionType() === connectionType.none) {
+                    alert("No puede agregar registros de horas sin conexión a Internet...");
+                    return;
+                }
+                else {
+                    $goto('createTimeRecord')
+                }
+            }
         }
     };
 

@@ -1,18 +1,19 @@
 <template>
     <Page class="page" backgroundColor="#1F1B24">
         <OurActionBar/>
-            <GridLayout rows="auto,auto,*,auto">
-                <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
-                <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>
-                <FlexboxLayout row="2" flexDirection="column">
-                    <TextView class="card text" hint="Agregar comentario a la muestra..." v-model="comment"/>
-                </FlexboxLayout>
-                <Button row="3" class="btn btn-primary" text="Agregar muestra" :isEnabled="!processing" @tap="createSample()"/>
-            </GridLayout>
+        <GridLayout rows="auto,auto,*,auto">
+            <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
+            <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>
+            <FlexboxLayout row="2" flexDirection="column">
+                <TextView class="card text" hint="Agregar comentario a la muestra..." v-model="comment"/>
+            </FlexboxLayout>
+            <Button row="3" class="btn btn-primary" text="Agregar muestra" :isEnabled="!processing" @tap="createSample()"/>
+        </GridLayout>
     </Page>
 </template>
 
 <script>
+    import { connectionType, getConnectionType } from 'tns-core-modules/connectivity';
     import * as http from "http";
     
     export default {
@@ -29,7 +30,8 @@
             createSample(){
 
                 if (getConnectionType() === connectionType.none) {
-                    alert("No hay conexión a Internet...");
+                    alert("No puede agregar una muestra sin conexión a Internet...");
+                    this.$goto('operation');
                     return;
                 }
                 
