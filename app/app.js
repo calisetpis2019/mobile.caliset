@@ -1,12 +1,10 @@
 import Vue from "nativescript-vue";
 import router from './router';
 import OurActionBar from './components/OurActionBar'
-import Pickers from './components/Pickers'
 
 import store from './store';
 
 Vue.component('OurActionBar',OurActionBar);
-Vue.component('Pickers',Pickers);
 
 Vue.prototype.$router = router;
 

@@ -2,27 +2,24 @@
     <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadHours">
         <OurActionBar userPage="true"/>
 
-        <GridLayout rows="auto,auto,auto,*,auto" >
+        <GridLayout rows="auto,auto,*,auto" >
 
-            <GridLayout row="0" rows="auto,auto,auto" columns="*,auto" >
-                <Label rowSpan="2" colSpan="2" class="subtitle" />
-                <Label row="0" colSpan="0" :text=userEmail class="subtitle" textWrap="true" />
-                <Label row="1" col="0" :text=lastLogin class="subtitle" textWrap="true" />
-                <Button col="1" rowSpan="2" class="btn btn-primary m-t-20" @tap="createRecord()" background="black">
+            <GridLayout row="0" rows="auto,auto" columns="*,auto" >
+                <Label colSpan="2" class="subtitle" />
+                <Label row="0" col="0" text="Registros de horas" textWrap="true" class="subtitle left info"  />
+                <Button row="0" col="1" class="btn btn-primary m-t-20" @tap="createRecord()" background="black">
                     <FormattedString>
-                        <Span text.decode="&#xf067; &#xf017;" class="fas subtitle" fontSize="30" />
+                        <Span text.decode="&#xf067; &#xf017;" class="fas" fontSize="30" />
                     </FormattedString>
                 </Button>
-                <StackLayout row="2" colSpan="2" class="hr-light"/>
+                <StackLayout row="1" colSpan="2" class="hr-light"/>
             </GridLayout>
 
-            <Label row="1" text="Registros de horas" textWrap="true" class="subtitle left" />
-
-            <Label row="2" :visibility="hourRecords.length == 0 ? 'visible' : 'collapsed'"
-                    text="No hay registros de horas para mostrar." textWrap="true" class="info"
+            <Label row="1" :visibility="hourRecords.length == 0 ? 'visible' : 'collapsed'"
+                    :text="msgError == '' ? 'No hay registros de horas para mostrar.' : msgError" textWrap="true" class="info"
                     style="margin-top: 20" />
 
-            <PullToRefresh row="3" @refresh="refreshLists" >
+            <PullToRefresh row="2" @refresh="refreshLists" >
                 <ListView class="list-group" for="record in hourRecords">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" >
@@ -36,8 +33,8 @@
                                         <Label :text="formatDateHour(r.endDate)" color="white" />
                                     </StackLayout>
                                     <StackLayout row="1" col="0" colSpan="2" orientation="horizontal" horizontalAlignment="center">
-                                        <Button text.decode="&#xf044;" @tap="editTimeRecord(r)" class="fas btn btn-changePass m-t-20" />
-                                        <Button text.decode="&#xf1f8;" @tap="deleteTimeRecord(r.id)" class="fas btn btn-reject m-t-20" />
+                                        <Button text.decode="&#xf044; Editar" @tap="editTimeRecord(r)" width="50%" class="fas btn btn-changePass m-t-20" />
+                                        <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-reject m-t-20" />
                                     </StackLayout>
                                     <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="bold" textWrap="true" />
                                 </GridLayout>
@@ -49,9 +46,7 @@
                 </ListView>
             </PullToRefresh>
 
-            <StackLayout row="4" verticalAlignment="bottom" horizontalAlignment="center" >
-                <StackLayout class="hr-light"/>
-                <StackLayout class="hr-dark"/>
+            <StackLayout row="3" verticalAlignment="bottom" horizontalAlignment="center" >
                 <StackLayout class="hr-light"/>
                 <FlexboxLayout horizontalAlignment="center">
                     <Button text="Cambiar contraseña" @tap="changePassword" class="btn btn-changePass m-t-20" style="width:40%" margin="5" />
@@ -71,20 +66,12 @@
 
         data() {
             return {
-                hourRecords: []
+                hourRecords: [],
+                msgError: ""
             }
         },
 
         computed: {
-            userEmail() {
-                return "Correo electrónico: " + this.$store.state.session.email;
-            },
-            lastLogin() {
-                return "Último inicio de sesión: " +
-                this.$store.state.session.date.day + "/" +
-                this.$store.state.session.date.month + "/" +
-                this.$store.state.session.date.year;
-            }
         },
 
         methods: {
@@ -168,12 +155,10 @@
                         result.sort(function(a,b){
                             let x = new Date(a.startDate);
                             let y = new Date(b.startDate);
-                            return x-y;
+                            return y-x;
                         });
                         for(var i = 0; i < result.length; i++){
                             var d = new Date(result[i].startDate);
-
-                            // Esto es lo mismo que en el if, pero en una sola línea
                             // Si ya tengo algo en esa fecha lo concateno, sino, creo la lista...
                             (dic[this.formatDate(d)] != null) ? (dic[this.formatDate(d)] = dic[this.formatDate(d)]) : (dic[this.formatDate(d)] = []);
                             dic[this.formatDate(d)].push(result[i]);
@@ -185,6 +170,7 @@
                     }
                 }, error => {
                     this.processing=false;
+                    this.msgError = "No se pudo conectar al servidor.";
                     console.error(error);
                 });
             },

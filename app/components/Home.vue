@@ -202,7 +202,7 @@
                     this.processingNO=false;
                     this.errorN = true;
                     console.error(error);
-                    });
+                });
 
             },
 
@@ -260,7 +260,7 @@
                     this.processing=false;
                     this.errorA = true;
                     console.error(error);
-                    });
+                });
             },
 
             loadFutureOperations(){
@@ -302,7 +302,7 @@
                     this.processing=false;
                     this.errorF = true;
                     console.error(error);
-                    });
+                });
             },
 
             goToNewOperation(newOperation) {

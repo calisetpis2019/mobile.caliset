@@ -100,13 +100,7 @@
                 var eD = new Date(this.endDate);
 
                 this.startRecord = new Date(Date.UTC(sD.getFullYear(),sD.getMonth(), sD.getDate() ,sT.getHours(), sT.getMinutes() , '0'));
-
-
                 this.endRecord = new Date(Date.UTC(eD.getFullYear(),eD.getMonth(), eD.getDate() ,eT.getHours(), eT.getMinutes() , '0'));
-
-                console.log("horas picker");
-                console.log(this.startRecord);
-                console.log(this.endRecord);
 
                 var dif = this.endRecord-this.startRecord;
 
@@ -206,7 +200,11 @@
                 }
                 else {
                     var dateOper = new Date(this.operations[this.operationIndex].date);
-                    dateOper.setHours(0,0,0);
+                    var dateOperUTC = new Date(Date.UTC(dateOper.getFullYear(),dateOper.getMonth(),dateOper.getDate(),'0','0','0'));
+
+                    console.log("dateoper:");
+                    console.log(dateOperUTC);
+                    console.log(this.startRecord - dateOperUTC);
                     if (this.startRecord == '' || this.endRecord == '') {
                     this.errorMsg = "Debe completar las horas antes de intentar registrarlas.";
                     this.processing = false;
@@ -215,7 +213,7 @@
                         this.errorMsg = "La fecha de inicio debe ser anterior a la fecha de fin.";
                         this.processing = false;
                     }
-                    else if (this.startRecord - dateOper <= -60000){
+                    else if (this.startRecord - dateOperUTC < 0){
                         this.errorMsg = "La fecha de la operación debe ser anterior a la fecha de inicio.";
                         this.processing = false;
                     }

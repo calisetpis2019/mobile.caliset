@@ -11,8 +11,8 @@ var firebase = require("nativescript-plugin-firebase");
 
 const store = new Vuex.Store({
     state: {
-        gpsInterval : 30*1000, //segundos * 1000
-        pendingInterval : 30*1000,
+        gpsInterval : 60*1000, //segundos * 1000
+        pendingInterval : 60*1000,
         session : {
             userId: "",
             email: "",
@@ -55,7 +55,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "172.20.10.6";
+            state.ipAPI = "192.168.1.2";
         },
 
         login(state, data) {
