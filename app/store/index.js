@@ -55,7 +55,7 @@ const store = new Vuex.Store({
                 );
             }
             // Acá se modifica la ip para que al cargar el store anterior no se pise la ip que queremos usar actualmente
-            state.ipAPI = "192.168.1.2";
+            state.ipAPI = "app.caliset.com";
         },
 
         login(state, data) {
@@ -104,6 +104,9 @@ const store = new Vuex.Store({
 
             //Ejecuta getLocation cada intervalo de tiempo
             state.timerId = setInterval(function(){getLocation()},state.gpsInterval);
+
+            //Ejecuta sendPendings cada intervalo de tiempo
+            state.timerPendings = setInterval(function(){sendPendings()},state.pendingInterval);
         },
 
         refreshOperationNotes(state,data){
@@ -174,6 +177,7 @@ const store = new Vuex.Store({
             state.session.date.year = "";
             state.loggedIn = false;
             clearInterval(state.timerId);
+            clearInterval(state.timerPendings);
         },
 
         saveDeviceToken(state, data){
