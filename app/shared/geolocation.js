@@ -16,25 +16,27 @@ export async function  getLocation() {
 
     console.log("Inicia función getLocation");
     
-    await geolocation
-        .getCurrentLocation({
-            desiredAccuracy: Accuracy.high,
-            maximumAge: 5000,
-            timeout: 20000
-        })
-        .then(res => {
+    if (store.state.operations.length != 0) {
 
-            //console.log(res);
+        await geolocation
+            .getCurrentLocation({
+                desiredAccuracy: Accuracy.high,
+                maximumAge: 5000,
+                timeout: 20000
+            })
+            .then(res => {
 
-            lat = res.latitude;
-            lon = res.longitude;
-            var uyt = new Date();
-            time = new Date (Date.UTC(uyt.getFullYear(), uyt.getMonth(), uyt.getDate(),uyt.getHours(), 
-                                uyt.getMinutes(), uyt.getSeconds()));
-            sendLocationRecord(lat,lon,time);
-        }).catch(e => {
-            console.log("error al obtener la localización: " + e);
-        });
+                //console.log(res);
 
+                lat = res.latitude;
+                lon = res.longitude;
+                var uyt = new Date();
+                time = new Date (Date.UTC(uyt.getFullYear(), uyt.getMonth(), uyt.getDate(),uyt.getHours(), 
+                                    uyt.getMinutes(), uyt.getSeconds()));
+                sendLocationRecord(lat,lon,time);
+            }).catch(e => {
+                console.log("error al obtener la localización: " + e);
+            });
+        }
 
 }

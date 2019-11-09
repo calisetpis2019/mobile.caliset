@@ -64,7 +64,7 @@
                     
                 </TabViewItem>
 
-                <TabViewItem title="Nuevas">
+                <TabViewItem :title="'Nuevas ' + '( ' + newOperations.length + ' )' ">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
                         <Label  v-if="!processingNO && this.$store.state.newOperations.length == 0"
