@@ -3,47 +3,71 @@
         <OurActionBar/>
         <GridLayout rows="auto,auto,*">
             <Label row="0" text="INFORMACIÓN" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <Label row="1" :text="'Operación '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" style="margin-bottom:50;" textWrap="true" />
+            <Label row="1" :text="'Operación '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" textWrap="true" />
 
             <ScrollView row="2">
 
-                <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*" columns="">
+                <GridLayout rows="*,*,*,*,*,*,*,*,*,*,*,*">
 
-                    <Label :row="i" column="0" text="Fecha: " color="white" horizontalAlignment="left" fontSize="20"/>
-                    <Label :row="i++" column="1" :text="formatDateHour(operation.date)" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="0">
+                        <Label  text="Fecha:" color="white" fontSize="20" class="subtitle" />
+                        <Label :text="formatDateHour(operation.date)" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Estado: " color="white" fontSize="20"/>
-                    <Label :row="i++"  column="1" :text="operation.operationState.name" color="white" fontSize="20" horizontalAlignment = "right" />
+                    <StackLayout row="1">
+                        <Label text="Estado:" color="white" fontSize="20" class="subtitle" />
+                        <Label :text="operation.operationState.name" color="white" fontSize="20" class="info" />
+                    </StackLayout>
                     
-                    <Label :row="i" column="0" text="Tipo: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.operationType.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="2">
+                        <Label text="Tipo: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.operationType.name" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Producto: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.commodity" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="3">
+                        <Label text="Producto: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.commodity" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Paquete: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++"  column="1" :text="operation.package" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="4">
+                        <Label text="Paquete: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.package" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Embarcación: " color="white" horizontalAlignment="left" fontSize="20"/>
-                    <Label :row="i++" column="1" :text="operation.shipName" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="5">
+                        <Label text="Embarcación: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.shipName" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Destino: " color="white" fontSize="20"/>
-                    <Label :row="i++" column="1" :text="operation.destiny" color="white" fontSize="20" horizontalAlignment = "right" />
+                    <StackLayout row="6">
+                        <Label text="Destino: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.destiny" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Línea: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.line" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="7">
+                        <Label text="Línea: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.line" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Booking: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.bookingNumber" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="8">
+                        <Label text="Booking: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.bookingNumber" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Nominador: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.nominator.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="9">
+                        <Label text="Nominador: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.nominator.name" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Cargador: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.charger.name" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="10">
+                        <Label text="Cargador: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.charger.name" color="white" fontSize="20" class="info" />
+                    </StackLayout>
 
-                    <Label :row="i" column="0" text="Responsable: " color="white" horizontalAlignment="left" fontSize="20" />
-                    <Label :row="i++" column="1" :text="operation.manager.name + ' ' + operation.manager.surname" color="white" horizontalAlignment = "right" fontSize="20"/>
+                    <StackLayout row="11">
+                        <Label text="Responsable: " color="white" fontSize="20" class="subtitle"/>
+                        <Label :text="operation.manager.name + ' ' + operation.manager.surname" color="white" fontSize="20" class="info" />
+                    </StackLayout>
                     
                 </GridLayout>
 
@@ -90,6 +114,7 @@
 
     .info {
         font-size: 20;
+        margin-top: 10px;
     }
 
 
