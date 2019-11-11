@@ -26,8 +26,6 @@ export async function  getLocation() {
             })
             .then(res => {
 
-                //console.log(res);
-
                 lat = res.latitude;
                 lon = res.longitude;
                 var uyt = new Date();
@@ -35,7 +33,7 @@ export async function  getLocation() {
                                     uyt.getMinutes(), uyt.getSeconds()));
                 sendLocationRecord(lat,lon,time);
             }).catch(e => {
-                console.log("error al obtener la localización: " + e);
+                console.log("Error al obtener la localización: " + e);
             });
         }
 

@@ -150,7 +150,6 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        //console.log(result);
                     }
                     else {
                         

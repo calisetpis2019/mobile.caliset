@@ -97,7 +97,6 @@
                 this.equalPasswords = false;
                 var patt = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
                 if (!(patt.test(this.input.newPass))) {
-                    console.log("verdadero");
                     this.incorrectNewPassword = true;
                     this.ctrl.snd=false;
                 }
@@ -142,7 +141,6 @@
                         this.errorMsg = "No se realizó el cambio: La respuesta vino vacía";
                         alert(this.errorMsg);
                         console.log("changePassword: respuesta vacía");
-                        console.log(result);
                         // Si hubo error debo borrar los datos del login...
                         this.$store.commit('logout');
                         // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña
@@ -191,7 +189,6 @@
                         this.errorMsg = "No se pudo actualizar firstLogIn";
                         alert(this.errorMsg);
                         console.log("setFirstLogin: respuesta vacía");
-                        console.log(result);
                         // Si hubo error debo borrar los datos del login...
                         this.$store.commit('logout');
                         // Acá hay que ver si mandar al login de nuevo o si quedamos acá esperando que cambie la contraseña

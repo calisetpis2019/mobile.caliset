@@ -93,7 +93,6 @@
                     if (result == null) {
                         this.processing = false;
                         this.errorMsg = "Usuario y/o contraseña incorrectos.";
-                        console.log(result);
                     }
                     else {
                         console.log("Token:" + result.accessToken);

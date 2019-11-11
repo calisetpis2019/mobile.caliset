@@ -20,7 +20,7 @@
                                     <StackLayout row="0" class="container">
                                         <Label :text="'Fecha: ' + formatDateHour(a.date)" class="list-group-item-heading" />
                                         <Label :text="'Tipo: '  + a.operation.operationType.name" color="white" />
-                                        <Label :text="'Cliente: '  + a.operation.nominator.name"   color="white" />
+                                        <Label :text="'Cliente: '  + a.operation.charger.name"   color="white" />
                                         <Label :text="'Cargador: '  + a.operation.charger.name" color="white" />
                                         <Label :text="'Producto: ' + a.operation.commodity" color="white" />
                                         <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
@@ -95,13 +95,12 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        console.log(result);
                     }
                     else {
                         console.log("NewOperation: Largo del resultado:");
                         console.log(result.length);
                         console.log("Resultado json:");
-                        //console.log(result);
+                        console.log(result);
                         for(var i = 0; i < result.length; i++){
 
                             if (result[i].aware == null){
@@ -199,10 +198,6 @@
                     alert(this.errorMsg);
                     console.error(error);
                 });
-            },
-
-            showButtons() {
-                //A implementar...
             },
         }
     };

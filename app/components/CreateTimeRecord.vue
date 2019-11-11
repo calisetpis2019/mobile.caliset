@@ -170,7 +170,6 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        console.log(result);
                     }
                     else {
                         for(var i = 0; i < result.length; i++){
@@ -179,7 +178,7 @@
                                 date: result[i].date,
                                 operationId: result[i].id + '-' + this.formatDate(result[i].date) 
                                                 + ' - ' + result[i].operationType.name 
-                                                + ' - ' + result[i].nominator.name
+                                                + ' - ' + result[i].charger.name
                                                 + ' - ' + result[i].location.name
                             });
                         }
@@ -202,9 +201,6 @@
                     var dateOper = new Date(this.operations[this.operationIndex].date);
                     var dateOperUTC = new Date(Date.UTC(dateOper.getFullYear(),dateOper.getMonth(),dateOper.getDate(),'0','0','0'));
 
-                    console.log("dateoper:");
-                    console.log(dateOperUTC);
-                    console.log(this.startRecord - dateOperUTC);
                     if (this.startRecord == '' || this.endRecord == '') {
                     this.errorMsg = "Debe completar las horas antes de intentar registrarlas.";
                     this.processing = false;

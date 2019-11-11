@@ -19,7 +19,7 @@
                                     <StackLayout row="0" class="container">
                                         <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
                                         <Label :text="'Tipo: ' + a.operation.operationType.name" color="white" />
-                                        <Label :text="'Cliente: ' + a.operation.nominator.name" color="white" />
+                                        <Label :text="'Cliente: ' + a.operation.charger.name" color="white" />
                                         <Label :text="'Cargador: ' + a.operation.charger.name" color="white" />
                                         <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
                                         <Label :text="'Producto: ' + a.operation.commodity" color="white" />
@@ -79,7 +79,6 @@
                     var result = response.content.toJSON().result;
                     if (result == null) {
                         this.processing=false;
-                        console.log(result);
                     }
                     else {
                         

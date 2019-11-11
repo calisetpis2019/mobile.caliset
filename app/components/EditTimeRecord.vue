@@ -146,7 +146,7 @@
                 recordOperation: this.$store.state.selectedHourRecord.operation.id + '-' + 
                         this.formatDate(this.$store.state.selectedHourRecord.operation.date) + ' - ' + 
                         this.$store.state.selectedHourRecord.operation.operationType.name + ' - ' +
-                        this.$store.state.selectedHourRecord.operation.nominator.name + ' - ' +
+                        this.$store.state.selectedHourRecord.operation.charger.name + ' - ' +
                         this.$store.state.selectedHourRecord.operation.location.name
             };
         },
@@ -199,9 +199,7 @@
                 this.processing = true;
                 var dateOper = new Date(this.$store.state.selectedHourRecord.operation.date);
                 var dateOperUTC = new Date(Date.UTC(dateOper.getFullYear(),dateOper.getMonth(),dateOper.getDate(),'0','0','0'));
-                console.log("dateoper:");
-                    console.log(dateOperUTC);
-                    console.log(this.startRecord - dateOperUTC);
+                
                 if (this.startRecord == '' || this.endRecord == '') {
                     this.errorMsg = "Debe completar las horas antes de intentar registrarlas.";
                     this.processing = false;
