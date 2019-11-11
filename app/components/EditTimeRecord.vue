@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24">
+    <Page class="page" >
         <OurActionBar/>
         <ScrollView>
             <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >

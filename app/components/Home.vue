@@ -1,7 +1,7 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
+    <Page class="page" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
-            <TabView tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
+            <TabView tabBackgroundColor="#010812" tabTextColor="white" selectedTabTextColor="white">
                 <TabViewItem title="Activas">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
@@ -16,12 +16,12 @@
                                     <StackLayout class="card" @tap="goToOperation(active)">
                                         <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + active.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + active.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + active.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + active.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white" />
-                                            <Label :text="'Estado: ' + active.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + active.operationType.name" color="black" />
+                                            <Label :text="'Cliente: ' + active.charger.name" color="black" />
+                                            <Label :text="'Producto: ' + active.commodity" color="black" />
+                                            <Label :text="'Lugar: ' + active.location.name" color="black" />
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="black" />
+                                            <Label :text="'Estado: ' + active.operationState.name"   color="black" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -72,7 +72,7 @@
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <ListView class="list-group" for="n in this.$store.state.newOperations" backgroundColor="#1F1B24">
+                        <ListView class="list-group" for="n in this.$store.state.newOperations" >
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
@@ -180,8 +180,6 @@
 
                         console.log("loadNewOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadNewOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.newOperations.push(result[i]);
@@ -226,8 +224,6 @@
 
                         console.log("loadOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
@@ -278,8 +274,6 @@
 
                         console.log("loadFutureOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadFutureOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.futureOperations.push(result[i]);

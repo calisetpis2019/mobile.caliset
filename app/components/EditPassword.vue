@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" >
+    <Page class="page" >
     <ActionBar title="Cambio de contraseña" class="action-bar subtitle" backgroundColor="#1F1B24"  />
     <FlexboxLayout class="page" backgroundColor="#1F1B24">
         <ScrollView>

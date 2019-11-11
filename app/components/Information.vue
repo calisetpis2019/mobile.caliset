@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24">
+    <Page class="page" >
         <OurActionBar/>
         <GridLayout rows="auto,auto,*">
             <Label row="0" text="INFORMACIÓN" class="subtitle" flexWrapBefore="true" textWrap="true" />

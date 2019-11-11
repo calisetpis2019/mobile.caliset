@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadAssignations">
+    <Page class="page" @navigatedTo="loadAssignations">
         <OurActionBar/>
         
         <GridLayout rows="auto,auto,auto,*">

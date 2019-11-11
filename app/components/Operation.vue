@@ -1,8 +1,8 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadComments">
+    <Page class="page" @navigatedTo="loadComments">
         <OurActionBar/>
         
-        <GridLayout rows="auto,*,auto" >
+        <GridLayout rows="auto,*,auto" class="page">
 
             <StackLayout row="0" >
                 <Label :text="'Operación '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
@@ -25,13 +25,13 @@
                                     fontSize="20"
                                     color="white"
                                 ></Label>
-                                <TextView  editable="false" backgroundColor="#565656" @tap="editNote(c)" >
+                                <TextView  editable="false"  @tap="editNote(c)" >
                                     <FormattedString>
-                                        <Span :text="c.commentary" color="white" />
+                                        <Span :text="c.commentary" color="black" />
                                     </FormattedString>
                                 </TextView>
 
-                                <Label :text="formatDateHour(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
+                                <Label :text="formatDateHour(c.creationTime)" fontSize="15" color="black" horizontalAlignment="right" @tap="editNote(c)"/>
                             </StackLayout>
                         </CardView>
                     </v-template>
