@@ -63,6 +63,7 @@
                     if (response.content.toJSON().success) {
                         console.log("Comentario agregado con éxito.");
                         this.comment = "";
+                        alert("El comentario se agregó con éxito.");
                         this.$goto('operation');
                     }
                     else {

@@ -11,7 +11,7 @@
 
                 <StackLayout row="1" class="input-field">
                     <Label text= "OPERACIÓN" class="subtitle"/>
-                    <TextView editable="false" color="white" :text="haveIndex ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
+                    <TextView editable="false" color="white" :text="(haveIndex && operations.length > 0) ? operations[operationIndex].operationId : (haveIndex && operations.length == 0) ? 'No hay operaciones disponibles para agregar registros' : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
                     <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
                 </StackLayout>
 
@@ -138,22 +138,24 @@
 
             showOperations() {
                 this.loadOperations();
-                this.haveIndex = true;
-                this.opVisible = true;
                 this.operations = [];
                 this.operations = this.operations.concat(this.$store.state.activeOperations.concat(this.$store.state.finishedOperations));
                 //Ordeno por fecha
-                this.operations.sort(function(a,b){
-                    let x = new Date(a.date);
-                    let y = new Date(b.date);
-                    return x-y;
-                });
-                //Ordeno por id de operación
-                this.operations.sort(function(a,b){
-                    let x = a.id;
-                    let y = b.id;
-                    return x-y;
-                });
+                if (this.operations.length > 0){
+                    this.operations.sort(function(a,b){
+                        let x = new Date(a.date);
+                        let y = new Date(b.date);
+                        return x-y;
+                    });
+                    //Ordeno por id de operación
+                    this.operations.sort(function(a,b){
+                        let x = a.id;
+                        let y = b.id;
+                        return x-y;
+                    });
+                    this.haveIndex = true;
+                    this.opVisible = true;
+                }
             },
 
             loadOperations() {
