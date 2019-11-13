@@ -4,9 +4,9 @@
         
         <GridLayout rows="auto,*,auto" class="list-group">
 
-            <StackLayout row="0" >
+            <StackLayout row="0" class="page" >
                 <Label :text="'OPERACIÓN '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
-                <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
+                <StackLayout horizontalAlign="center" orientation="horizontal" margin="10" class="page">
                     <Button textWrap="true" text="ASIGNACIONES" class="btn-primary" width="50%" 
                             @tap="$goto('assignations')"/>
                     <Button textWrap="true" text="INFORMACIÓN" class=" btn-primary" width="50%" 
@@ -14,7 +14,7 @@
                 </StackLayout>
             </StackLayout>
             <PullToRefresh row="1" @refresh="refreshList" >
-                <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
+                <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
                             <StackLayout class="card"  >
