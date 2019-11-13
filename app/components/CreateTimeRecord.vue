@@ -153,9 +153,9 @@
                         let y = b.id;
                         return x-y;
                     });
-                    this.haveIndex = true;
                     this.opVisible = true;
                 }
+                this.haveIndex = true;
             },
 
             loadOperations() {

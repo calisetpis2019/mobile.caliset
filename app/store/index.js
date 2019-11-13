@@ -174,6 +174,11 @@ const store = new Vuex.Store({
             state.session.date.year = "";
             state.session.date.year = "";
             state.session.date.year = "";
+            state.activeOperations = [];
+            state.operations = [];
+            state.newOperations = [];
+            state.futureOperations = [];
+            state.finishedOperations = [];
             state.loggedIn = false;
             clearInterval(state.timerId);
             clearInterval(state.timerPendings);

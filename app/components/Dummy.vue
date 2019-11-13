@@ -1,6 +1,6 @@
 <template>
     <Page class="list-group" actionBarHidden="true" @navigatedTo="checks">
-        <ActivityIndicator width="100" height="100" busy="" />
+        <ActivityIndicator width="100" height="100" busy="" color="#274684"/>
     </Page>
 </template>
 
