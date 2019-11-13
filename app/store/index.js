@@ -11,8 +11,9 @@ var firebase = require("nativescript-plugin-firebase");
 
 const store = new Vuex.Store({
     state: {
-        gpsInterval : 60*1000, //segundos * 1000
-        pendingInterval : 60*1000,
+        //La posición se envía cada 15 minutos y lo pendiente cada 20 minutos
+        gpsInterval : 900*1000, //segundos * 1000
+        pendingInterval : 1200*1000,
         session : {
             userId: "",
             email: "",

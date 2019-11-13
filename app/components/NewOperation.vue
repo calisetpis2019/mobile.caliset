@@ -13,7 +13,7 @@
                             style="margin-top: 20" />
                 </StackLayout>
                 <PullToRefresh row="1" @refresh="refreshList" >
-                    <ListView class="list-group" for="a in assignations" backgroundColor="#1F1B24">
+                    <ListView class="list-group" for="a in assignations">
                         <v-template>
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
