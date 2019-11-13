@@ -2,7 +2,7 @@
     <Page class="page" >
         <OurActionBar/>
         <ScrollView>
-            <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
+            <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" class="list-group" >
 
                 <StackLayout row="0">
                     <Label text="EDITAR REGISTRO DE HORAS" class="subtitle" flexWrapBefore="true"/>
@@ -27,7 +27,7 @@
                     <DatePicker 
                         v-model="startDate"
                         :minDate="chosenOperation ? this.$store.state.selectedHourRecord.operation.date : '2019/09/1'" 
-                        maxDate="2100/12/31" backgroundColor="#B0C4DE" 
+                        maxDate="2100/12/31" backgroundColor="#cdd4db" 
                         :visibility="startDateVisible ? 'visible' : 'collapsed'" 
                         @tap="startDateVisible = false" />
                 </StackLayout>
@@ -42,7 +42,7 @@
                         @blur="startTimeVisible = false" />
                     <TimePicker 
                         hour="0" minute="0" 
-                        v-model="startTime" backgroundColor="#B0C4DE" 
+                        v-model="startTime" backgroundColor="#cdd4db" 
                         :visibility="startTimeVisible ? 'visible' : 'collapsed'" 
                         @tap="startTimeVisible = false" />
                 </StackLayout>
@@ -62,7 +62,7 @@
                         :day="day" 
                         v-model="endDate"
                         :minDate="chosenStartDate ? startDate : this.$store.state.selectedHourRecord.operation.date" 
-                        maxDate="2100/12/31" backgroundColor="#B0C4DE" 
+                        maxDate="2100/12/31" backgroundColor="#cdd4db" 
                         :visibility="endDateVisible ? 'visible' : 'collapsed'" 
                         @tap="endDateVisible = false" />
                 </StackLayout>
@@ -77,7 +77,7 @@
                         @blur="endTimeVisible = false" /> 
                     <TimePicker 
                         hour="0" minute="0" 
-                        v-model="endTime" backgroundColor="#B0C4DE" 
+                        v-model="endTime" backgroundColor="#cdd4db" 
                         :visibility="endTimeVisible ? 'visible' : 'collapsed'" 
                         @tap="endTimeVisible = false" />
                 </StackLayout>

@@ -1,9 +1,9 @@
 <template>
     <Page class="page" >
         <OurActionBar/>
-        <GridLayout rows="auto,auto,*">
+        <GridLayout rows="auto,auto,*" class="list-group">
             <Label row="0" text="INFORMACIÓN" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <Label row="1" :text="'Operación '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" textWrap="true" />
+            <Label row="1" :text="'OPERACIÓN '+ operation.id + '-' + formatDate(operation.date)" class="subtitle" textWrap="true" />
 
             <ScrollView row="2">
 

@@ -2,7 +2,7 @@
     <Page class="page" @navigatedTo="loadOperations()">
         <OurActionBar/>
         <ScrollView>
-            <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" >
+            <GridLayout rows="auto,auto,auto,auto,auto,auto,*,auto,auto,auto" class="list-group">
 
                 <StackLayout row="0">
                     <Label text="REGISTRO DE HORAS" class="subtitle" flexWrapBefore="true"/>
@@ -12,35 +12,35 @@
                 <StackLayout row="1" class="input-field">
                     <Label text= "OPERACIÓN" class="subtitle"/>
                     <TextView editable="false" color="white" :text="haveIndex ? operations[operationIndex].operationId : 'Seleccione una operación...'" class="input"  @tap="showOperations()" textAlignment="center" />
-                    <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#B0C4DE" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
+                    <ListPicker :items="operations" textField="operationId" v-model="operationIndex" backgroundColor="#cdd4db" :visibility="opVisible ? 'visible' : 'collapsed'" @tap="opVisible=false;startDate=operations[operationIndex].date;chosenOperation=true;errorMsg=''" />
                 </StackLayout>
 
                 <StackLayout row="2" class="input-field"> 
                     <Label text="DÍA INICIO" class="subtitle" />
                     <TextView editable="false" color="white" :text="formatDate(startDate)" class="input" @tap="startDateVisible = !startDateVisible;chosenStartDate = true" @blur="startDateVisible = false" textAlignment="center" /> 
                     <DatePicker :year="chosenOperation ? year : ''" :month="chosenOperation ? month : ''" :day="chosenOperation ? day : ''" v-model="startDate"
-                        :minDate="chosenOperation ? operations[operationIndex].date : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
+                        :minDate="chosenOperation ? operations[operationIndex].date : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#cdd4db" :visibility="startDateVisible ? 'visible' : 'collapsed'" @tap="startDateVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="3" class="input-field">
                     <Label text="HORA INICIO" class="subtitle" />
                     <TextField editable="false" color="white" :text="startTime == '' ? '' : formatDateHour(startTime)" class="input" @tap="startTimeVisible = !startTimeVisible" @blur="startTimeVisible = false" textAlignment="center" />
                     <TimePicker hour="0" minute="0" v-model="startTime"
-                        backgroundColor="#B0C4DE" :visibility="startTimeVisible ? 'visible' : 'collapsed'" @tap="startTimeVisible = false" />
+                        backgroundColor="#cdd4db" :visibility="startTimeVisible ? 'visible' : 'collapsed'" @tap="startTimeVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="4" class="input-field">
                     <Label text="DÍA FIN" class="subtitle" />
                     <TextView editable="false" color="white" :text="formatDate(endDate)" class="input" @tap="endDateVisible = !endDateVisible" @blur="endDateVisible = false" textAlignment="center" /> 
                     <DatePicker :year="year" :month="month" :day="day" v-model="endDate"
-                        :minDate="chosenStartDate ? startDate : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#B0C4DE" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
+                        :minDate="chosenStartDate ? startDate : '2019/09/1'" maxDate="2100/12/31" backgroundColor="#cdd4db" :visibility="endDateVisible ? 'visible' : 'collapsed'" @tap="endDateVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="5" class="input-field">
                     <Label text="HORA FIN" class="subtitle" />
                     <TextField editable="false" color="white" :text="endTime == '' ? '' : formatDateHour(endTime)" class="input"  @tap="endTimeVisible = !endTimeVisible" @blur="endTimeVisible = false" textAlignment="center" />
                     <TimePicker hour="0" minute="0" v-model="endTime"
-                        backgroundColor="#B0C4DE" :visibility="endTimeVisible ? 'visible' : 'collapsed'" @tap="endTimeVisible = false" />
+                        backgroundColor="#cdd4db" :visibility="endTimeVisible ? 'visible' : 'collapsed'" @tap="endTimeVisible = false" />
                 </StackLayout>
 
                 <StackLayout row="6" class="input-field">

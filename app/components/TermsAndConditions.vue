@@ -1,10 +1,10 @@
 <template>
     <Page class="page" actionBarHidden="true">
-        <FlexboxLayout class="page" backgroundColor="#1F1B24">
-            <GridLayout rows="*,auto" columns="*,*">
+        <FlexboxLayout class="list-group" backgroundColor="#010812">
+            <GridLayout rows="*,auto" columns="*,*" class="list-group">
                 <Label row="0" colSpan="2" :text=termsAndConditions color="white" textWrap=true padding=40 />
-                <Button row="1" col="0" text="Aceptar" class="btn btn-primary btn-confirm m-t-20" @tap="accept"></Button>
-                <Button row="1" col="1" text="Rechazar" class="btn btn-primary btn-reject m-t-20" @tap="dismiss"></Button>
+                <Button row="1" col="0" text="Aceptar" class="btn btn-confirm m-t-20" @tap="accept"></Button>
+                <Button row="1" col="1" text="Rechazar" class="btn btn-reject m-t-20" @tap="dismiss"></Button>
             </GridLayout>
         </FlexboxLayout>
     </Page>

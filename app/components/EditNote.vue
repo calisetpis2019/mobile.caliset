@@ -1,6 +1,6 @@
 <template >
     
-    <GridLayout rows="*,auto" columns="*,*" class="page">
+    <GridLayout rows="*,auto" columns="*,*" class="list-group">
         
         <FlexboxLayout row="0" colSpan="2" flexDirection="column">
             

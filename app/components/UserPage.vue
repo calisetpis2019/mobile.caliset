@@ -6,10 +6,10 @@
 
             <GridLayout row="0" rows="auto,auto" columns="*,auto" >
                 <Label colSpan="2" class="subtitle" />
-                <Label row="0" col="0" text="Registros de horas" textWrap="true" class="subtitle left info"  />
-                <Button row="0" col="1" class="btn btn-primary m-t-20" @tap="createRecord()" background="black">
+                <Label row="0" col="0" text="REGISTROS DE HORAS" textWrap="true" class="subtitle left info"  />
+                <Button row="0" col="1" class="btn btn-primary m-t-20" @tap="createRecord()" background="black" androidElevation="4">
                     <FormattedString>
-                        <Span text.decode="&#xf067; &#xf017;" class="fas" fontSize="30" />
+                        <Span text.decode="+ &#xf017;" class="fas" color="white" fontSize="30" />
                     </FormattedString>
                 </Button>
                 <StackLayout row="1" colSpan="2" class="hr-light"/>
@@ -28,15 +28,15 @@
                                 <StackLayout class="card" v-for="r in record.list" >
                                 <GridLayout rows="auto,auto" columns="*,auto" >
                                     <StackLayout row="0" col="0" >
-                                        <Label :text="'Operación ' + r.operation.id + '-' + formatDate(r.operation.date)" class="bold" />
-                                        <Label :text="formatDateHour(r.startDate)" color="white" />
-                                        <Label :text="formatDateHour(r.endDate)" color="white" />
+                                        <Label :text="'Operación ' + r.operation.id + '-' + formatDate(r.operation.date)" class="card-text" />
+                                        <Label :text="formatDateHour(r.startDate)" class="card-text" />
+                                        <Label :text="formatDateHour(r.endDate)" class="card-text" />
                                     </StackLayout>
                                     <StackLayout row="1" col="0" colSpan="2" orientation="horizontal" horizontalAlignment="center">
-                                        <Button text.decode="&#xf044; Editar" @tap="editTimeRecord(r)" width="50%" class="fas btn btn-changePass m-t-20" />
+                                        <Button text.decode="&#xf044; Editar" @tap="editTimeRecord(r)" width="50%" class="fas btn btn-primary m-t-20" />
                                         <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-reject m-t-20" />
                                     </StackLayout>
-                                    <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="bold" textWrap="true" />
+                                    <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="card-text" textWrap="true" />
                                 </GridLayout>
                                 <StackLayout class="hr-dark"/>
                                 </StackLayout>

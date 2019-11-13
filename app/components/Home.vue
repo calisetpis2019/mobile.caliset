@@ -14,14 +14,14 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(active)">
-                                        <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
+                                        <Label :text="'OPERACIÓN '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + active.operationType.name" color="black" />
-                                            <Label :text="'Cliente: ' + active.charger.name" color="black" />
-                                            <Label :text="'Producto: ' + active.commodity" color="black" />
-                                            <Label :text="'Lugar: ' + active.location.name" color="black" />
-                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="black" />
-                                            <Label :text="'Estado: ' + active.operationState.name"   color="black" />
+                                            <Label :text="'Tipo: ' + active.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + active.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + active.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + active.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + active.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -45,14 +45,14 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(future)">
-                                        <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
+                                        <Label :text="'OPERACIÓN '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + future.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + future.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + future.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + future.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white" />
-                                            <Label :text="'Estado: ' + future.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + future.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + future.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + future.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + future.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + future.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -76,14 +76,14 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
-                                        <Label :text="'Operación '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
+                                        <Label :text="'OPERACIÓN '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + n.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + n.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + n.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + n.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" color="white" />
-                                            <Label :text="'Estado: ' + n.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + n.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + n.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + n.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + n.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + n.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -362,9 +362,8 @@
         font-size: 10px;
     }
 
-    /* .subtitle {
-        font-size: 20px;
-        font-weight: bold;
-    } */
+    .list-group-item-heading {
+        font-size: 18;
+    }
 
 </style>

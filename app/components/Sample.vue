@@ -1,8 +1,8 @@
 <template>
     <Page class="page" >
         <OurActionBar/>
-        <GridLayout rows="auto,auto,*,auto">
-            <Label row="0" text="Agregar Muestra" class="subtitle" style="margin-bottom:50;"/>
+        <GridLayout rows="auto,auto,*,auto" class="list-group">
+            <Label row="0" text="AGREGAR MUESTRA" class="subtitle" style="margin-bottom:50;"/>
             <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>
             <FlexboxLayout row="2" flexDirection="column">
                 <TextView class="card text" hint="Agregar comentario a la muestra..." v-model="comment"/>

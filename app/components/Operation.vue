@@ -2,14 +2,14 @@
     <Page class="page" @navigatedTo="loadComments">
         <OurActionBar/>
         
-        <GridLayout rows="auto,*,auto" class="page">
+        <GridLayout rows="auto,*,auto" class="list-group">
 
             <StackLayout row="0" >
-                <Label :text="'Operación '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
+                <Label :text="'OPERACIÓN '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
                 <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
-                    <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
+                    <Button textWrap="true" text="ASIGNACIONES" class="btn-primary" width="50%" 
                             @tap="$goto('assignations')"/>
-                    <Button textWrap="true" text="Información" class=" btn-primary" width="50%" 
+                    <Button textWrap="true" text="INFORMACIÓN" class=" btn-primary" width="50%" 
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
@@ -20,10 +20,7 @@
                             <StackLayout class="card"  >
                                 <Label @tap="editNote(c)"
                                     :text="c.creatorUser.name+' '+c.creatorUser.surname"
-                                    backgroundColor="black"
-                                    width="100%"
-                                    fontSize="20"
-                                    color="white"
+                                    class="subtitle"
                                 ></Label>
                                 <TextView  editable="false"  @tap="editNote(c)" >
                                     <FormattedString>
@@ -278,4 +275,5 @@
         border-color : white;
         
     }
+
 </style>
