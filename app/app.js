@@ -55,7 +55,7 @@ firebase.init({
     });
 
 
-Vue.config.silent = false;
+Vue.config.silent = true;
 
 new Vue({
     store: store,

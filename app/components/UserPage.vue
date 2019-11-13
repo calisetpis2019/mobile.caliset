@@ -6,8 +6,8 @@
 
             <GridLayout row="0" rows="auto,auto" columns="*,auto" >
                 <Label colSpan="2" class="subtitle" />
-                <Label row="0" col="0" text="REGISTROS DE HORAS" textWrap="true" class="subtitle left info"  />
-                <Button row="0" col="1" class="btn btn-primary border m-t-20" @tap="createRecord()" background="#010812" androidElevation="4">
+                <Label row="0" col="0" text="REGISTROS DE HORAS" textWrap="true" class="subtitle left"  />
+                <Button row="0" col="1" class="btn btn-primary border m-t-20" @tap="createRecord()" background="#010812">
                     <FormattedString>
                         <Span text.decode="+ &#xf017;" class="fas" color="white" fontSize="30" />
                     </FormattedString>
@@ -34,7 +34,7 @@
                                     </StackLayout>
                                     <StackLayout row="1" col="0" colSpan="2" orientation="horizontal" horizontalAlignment="center">
                                         <Button text.decode="&#xf044; Editar" @tap="editTimeRecord(r)" width="50%" class="fas btn btn-primary m-t-20" />
-                                        <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-primary m-t-20" backgroundColor="#cb132d" />
+                                        <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-eliminate m-t-20" />
                                     </StackLayout>
                                     <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="card-text" textWrap="true" />
                                 </GridLayout>
@@ -197,14 +197,6 @@
     // Custom styles
     .fa {
         color: $accent-dark;
-    }
-
-    .info {
-        font-size: 20;
-    }
-
-    .subtitle {
-        text-align: center;
     }
 
     .left {
