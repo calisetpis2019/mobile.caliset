@@ -17,7 +17,8 @@
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container">
-                                        <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
+                                        <Label :text="'Desde: ' + formatDateHour(a.date)" class="list-group-item-heading" />
+                                        <Label v-if="a.dateFin != null" :text="'Hasta: ' + formatDateHour(a.dateFin)" class="list-group-item-heading" />
                                         <Label :text="'Tipo: ' + a.operation.operationType.name" class="card-text" />
                                         <Label :text="'Cliente: ' + a.operation.charger.name" class="card-text" />
                                         <Label :text="'Cargador: ' + a.operation.charger.name" class="card-text" />
@@ -58,10 +59,16 @@
             },
 
             formatDateHour(date){
+                if (date == null ) {
+                    return " ";
+                }
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
+                if (date == null ) {
+                    return " ";
+                }
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
