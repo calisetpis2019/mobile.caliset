@@ -7,7 +7,7 @@
             <GridLayout row="0" rows="auto,auto" columns="*,auto" >
                 <Label colSpan="2" class="subtitle" />
                 <Label row="0" col="0" text="REGISTROS DE HORAS" textWrap="true" class="subtitle left info"  />
-                <Button row="0" col="1" class="btn btn-primary m-t-20" @tap="createRecord()" background="black" androidElevation="4">
+                <Button row="0" col="1" class="btn btn-primary border m-t-20" @tap="createRecord()" background="#010812" androidElevation="4">
                     <FormattedString>
                         <Span text.decode="+ &#xf017;" class="fas" color="white" fontSize="30" />
                     </FormattedString>
@@ -216,5 +216,10 @@
         color: white;
     }
 
+   .border {
+    border-width: 1;
+    border-color: white;
+    border-radius: 5;
+}
 
 </style>
