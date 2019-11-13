@@ -1,9 +1,9 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" >
-    <ActionBar title="Cambio de contraseña" class="action-bar subtitle" backgroundColor="#1F1B24"  />
-    <FlexboxLayout class="page" backgroundColor="#1F1B24">
+    <Page class="page" >
+    <ActionBar title="Cambio de contraseña" class="action-bar subtitle page" />
+    <FlexboxLayout class="page" >
         <ScrollView>
-            <GridLayout rows="auto,auto,auto,auto,*,auto" class="grid">
+            <GridLayout rows="auto,auto,auto,auto,*,auto" class="list-group">
                 <StackLayout row="0" verticalAlignment="top">
                     <Label v-if="equalPasswords" v-model="errorLabelEqualPwds" color="red" textWrap="true" />
                 </StackLayout>

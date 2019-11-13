@@ -1,5 +1,5 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" actionBarHidden="true" @navigatedTo="checks">
+    <Page class="list-group" actionBarHidden="true" @navigatedTo="checks">
         <ActivityIndicator width="100" height="100" busy="" />
     </Page>
 </template>

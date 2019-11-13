@@ -1,7 +1,7 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
+    <Page class="page" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
-            <TabView tabBackgroundColor="black" tabTextColor="white" selectedTabTextColor="white">
+            <TabView tabBackgroundColor="#010812" tabTextColor="white" selectedTabTextColor="white">
                 <TabViewItem title="Activas">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
@@ -16,12 +16,12 @@
                                     <StackLayout class="card" @tap="goToOperation(active)">
                                         <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + active.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + active.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + active.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + active.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" color="white" />
-                                            <Label :text="'Estado: ' + active.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + active.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + active.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + active.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + active.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(active.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + active.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -47,12 +47,12 @@
                                     <StackLayout class="card" @tap="goToOperation(future)">
                                         <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + future.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + future.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + future.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + future.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" color="white" />
-                                            <Label :text="'Estado: ' + future.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + future.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + future.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + future.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + future.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(future.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + future.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -72,18 +72,18 @@
                                 style="margin-top: 20" />
                     </StackLayout>
                     <PullToRefresh row="1" @refresh="refreshLists" >
-                        <ListView class="list-group" for="n in this.$store.state.newOperations" backgroundColor="#1F1B24">
+                        <ListView class="list-group" for="n in this.$store.state.newOperations" >
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
                                         <Label :text="'Operación '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
                                         <StackLayout class="container">
-                                            <Label :text="'Tipo: ' + n.operationType.name" color="white" />
-                                            <Label :text="'Cliente: ' + n.charger.name" color="white" />
-                                            <Label :text="'Producto: ' + n.commodity" color="white" />
-                                            <Label :text="'Lugar: ' + n.location.name" color="white" />
-                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" color="white" />
-                                            <Label :text="'Estado: ' + n.operationState.name"   color="white" />
+                                            <Label :text="'Tipo: ' + n.operationType.name" class="card-text" />
+                                            <Label :text="'Cliente: ' + n.charger.name" class="card-text" />
+                                            <Label :text="'Producto: ' + n.commodity" class="card-text" />
+                                            <Label :text="'Lugar: ' + n.location.name" class="card-text" />
+                                            <Label :text="'Fecha: ' + formatDateHour(n.date)" class="card-text" />
+                                            <Label :text="'Estado: ' + n.operationState.name"   class="card-text" />
                                         </StackLayout>
                                     </StackLayout>
                                 </CardView>
@@ -180,8 +180,6 @@
 
                         console.log("loadNewOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadNewOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.newOperations.push(result[i]);
@@ -226,8 +224,6 @@
 
                         console.log("loadOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.operations.push(result[i]);
@@ -278,8 +274,6 @@
 
                         console.log("loadFutureOperations: Largo del resultado:");
                         console.log(result.length);
-                        console.log("loadFutureOperations: Resultado json:");
-                        console.log(result);
 
                         for(var i = 0; i < result.length; i++){
                             this.futureOperations.push(result[i]);
@@ -368,9 +362,9 @@
         font-size: 10px;
     }
 
-    /* .subtitle {
-        font-size: 20px;
-        font-weight: bold;
-    } */
+    .list-group-item-heading {
+        font-size: 18;
+        text-align: center;
+    }
 
 </style>

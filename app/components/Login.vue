@@ -1,6 +1,6 @@
 <template>
     <Page class="page" actionBarHidden="true" >
-        <FlexboxLayout class="page" backgroundColor="#1F1B24">
+        <FlexboxLayout class="list-group" backgroundColor="#0b212f">
                 <GridLayout rows="*,auto,auto,auto,auto" class="grid">
                     <Image row="0" class="logo" src="~/images/logo.png" stretch="aspectFit"></Image>
                     <ActivityIndicator row="1" :busy="processing" color="white"></ActivityIndicator>

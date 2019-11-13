@@ -1,8 +1,8 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24">
+    <Page class="page" >
         <OurActionBar/>
         
-        <GridLayout rows="auto,auto,*,auto">
+        <GridLayout rows="auto,auto,*,auto" class="list-group">
 
             <Label row="0" text="ESCRIBIR COMENTARIO" class="subtitle" flexWrapBefore="true"/>
 

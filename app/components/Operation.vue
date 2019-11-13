@@ -1,37 +1,34 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadComments">
+    <Page class="page" @navigatedTo="loadComments">
         <OurActionBar/>
         
-        <GridLayout rows="auto,*,auto" >
+        <GridLayout rows="auto,*,auto" class="list-group">
 
-            <StackLayout row="0" >
-                <Label :text="'Operación '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
-                <StackLayout horizontalAlign="center" orientation="horizontal" margin="10">
-                    <Button textWrap="true" text="Asignaciones" class="btn-primary" width="50%" 
+            <StackLayout row="0" class="page" >
+                <Label :text="'OPERACIÓN '+ this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle"/>
+                <StackLayout horizontalAlign="center" orientation="horizontal" margin="10" class="page">
+                    <Button textWrap="true" text="ASIGNACIONES" class="btn-primary" width="50%" 
                             @tap="$goto('assignations')"/>
-                    <Button textWrap="true" text="Información" class=" btn-primary" width="50%" 
+                    <Button textWrap="true" text="INFORMACIÓN" class=" btn-primary" width="50%" 
                             @tap="$goto('information')"/>
                 </StackLayout>
             </StackLayout>
             <PullToRefresh row="1" @refresh="refreshList" >
-                <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24" backgroundColor="#1F1B24">
+                <ListView class="list-group" for="c in this.$store.state.selectedOperation.comments" separatorColor="#1F1B24">
                     <v-template>
                         <CardView margin="10" elevation="40" radius="1" class="card" :key="componentKey" >
                             <StackLayout class="card"  >
                                 <Label @tap="editNote(c)"
                                     :text="c.creatorUser.name+' '+c.creatorUser.surname"
-                                    backgroundColor="black"
-                                    width="100%"
-                                    fontSize="20"
-                                    color="white"
+                                    class="subtitle"
                                 ></Label>
-                                <TextView  editable="false" backgroundColor="#565656" @tap="editNote(c)" >
+                                <TextView  editable="false"  @tap="editNote(c)" >
                                     <FormattedString>
-                                        <Span :text="c.commentary" color="white" />
+                                        <Span :text="c.commentary" color="black" />
                                     </FormattedString>
                                 </TextView>
 
-                                <Label :text="formatDateHour(c.creationTime)" fontSize="15" color="white" horizontalAlignment="right" @tap="editNote(c)"/>
+                                <Label :text="formatDateHour(c.creationTime)" fontSize="15" color="black" horizontalAlignment="right" @tap="editNote(c)"/>
                             </StackLayout>
                         </CardView>
                     </v-template>
@@ -278,4 +275,5 @@
         border-color : white;
         
     }
+
 </style>

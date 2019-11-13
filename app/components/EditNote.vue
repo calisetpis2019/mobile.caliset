@@ -1,15 +1,17 @@
-<template >
+<template>
     
-    <GridLayout rows="*,auto" columns="*,*" backgroundColor="#1F1B24">
+    <GridLayout rows="*,auto" class="page">
         
-        <FlexboxLayout row="0" colSpan="2" flexDirection="column">
+        <FlexboxLayout row="0" flexDirection="column" class="page">
             
             <TextView class="card text" hint="Escribir comentario..." v-model="comment" />
             
         </FlexboxLayout>
         
-        <Button row="1" col="0" class="btn btn-confirm" text="Guardar" @tap="saveNote()" :isEnabled="this.comment != '' "/>
-        <Button row="1" col="1" class="btn-reject" text="Cancelar" @tap="$modal.close()" />
+        <GridLayout row="1" rows="auto" columns="*,*" class="page">
+            <Button row="0" col="0" class="btn btn-confirm" text="Guardar" @tap="saveNote()" :isEnabled="this.comment != '' "/>
+            <Button row="0" col="1" class="btn-reject" text="Cancelar" @tap="$modal.close()" />
+        </GridLayout>
 
     </GridLayout>
 

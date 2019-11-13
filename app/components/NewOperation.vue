@@ -1,8 +1,8 @@
 <template>
-    <Page class="page" backgroundColor="#1F1B24" @navigatedTo="loadAssignations">
+    <Page class="page" @navigatedTo="loadAssignations">
         <OurActionBar/>
         
-        <GridLayout rows="auto,auto,auto,*">
+        <GridLayout rows="auto,auto,auto,*" class="list-group">
             <Label row="0" text="ALERTAS" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="1" :text="'Operación ' + this.$store.state.selectedNewOperation.id + '-' + formatDate(operDate)" class="subtitle" flexWrapBefore="true" textWrap="true" />
             <Label row="2" :text="msg" :visibility="msg != '' ? 'visible' : 'collapsed'" class="info" textWrap="true"/>
@@ -18,13 +18,14 @@
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container">
-                                        <Label :text="'Fecha: ' + formatDateHour(a.date)" class="list-group-item-heading" />
-                                        <Label :text="'Tipo: '  + a.operation.operationType.name" color="white" />
-                                        <Label :text="'Cliente: '  + a.operation.charger.name"   color="white" />
-                                        <Label :text="'Cargador: '  + a.operation.charger.name" color="white" />
-                                        <Label :text="'Producto: ' + a.operation.commodity" color="white" />
-                                        <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
-                                        <Label :text="'Estado: ' + a.operation.operationState.name"   color="white" />
+                                        <Label :text="'Desde: ' + formatDateHour(a.date)" class="list-group-item-heading" />
+                                        <Label v-if="a.dateFin != null" :text="'Hasta: ' + formatDateHour(a.dateFin)" class="list-group-item-heading" />
+                                        <Label :text="'Tipo: '  + a.operation.operationType.name" class="card-text" />
+                                        <Label :text="'Cliente: '  + a.operation.charger.name"   class="card-text" />
+                                        <Label :text="'Cargador: '  + a.operation.charger.name" class="card-text" />
+                                        <Label :text="'Producto: ' + a.operation.commodity" class="card-text" />
+                                        <Label :text="'Lugar: ' + a.operation.location.name" class="card-text" />
+                                        <Label :text="'Estado: ' + a.operation.operationState.name"   class="card-text" />
                                     </StackLayout >
                                     <StackLayout row="1" horizontalAlign="center" orientation="horizontal" margin="10">
                                         <Button textWrap="true" text.decode="&#xf00c;" class="btn-confirm fas" width="50%" 
@@ -74,10 +75,16 @@
             },
 
             formatDateHour(date){
+                if (date == null ) {
+                    return " ";
+                }
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " - " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
             },
             formatDate(date){
+                if (date == null ) {
+                    return " ";
+                }
                 var d = new Date(date);
                 return d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear();
             },
@@ -217,5 +224,9 @@
         font-size: 20;
     }
 
+    .list-group-item-heading {
+        font-size: 18;
+        text-align: center;
+    }
 
 </style>
