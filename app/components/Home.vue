@@ -14,7 +14,7 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(active)">
-                                        <Label :text="'OPERACIÓN '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
+                                        <Label :text="'Operación '+ active.id + '-' + formatDate(active.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
                                             <Label :text="'Tipo: ' + active.operationType.name" class="card-text" />
                                             <Label :text="'Cliente: ' + active.charger.name" class="card-text" />
@@ -45,7 +45,7 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToOperation(future)">
-                                        <Label :text="'OPERACIÓN '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
+                                        <Label :text="'Operación '+ future.id + '-' + formatDate(future.date)" class="list-group-item-heading"/>
                                         <StackLayout class="container">
                                             <Label :text="'Tipo: ' + future.operationType.name" class="card-text" />
                                             <Label :text="'Cliente: ' + future.charger.name" class="card-text" />
@@ -76,7 +76,7 @@
                             <v-template>
                                 <CardView  margin="10" elevation="40" radius="1" class="card">
                                     <StackLayout class="card" @tap="goToNewOperation(n)">
-                                        <Label :text="'OPERACIÓN '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
+                                        <Label :text="'Operación '+ n.id + '-' + formatDate(n.date)" class="list-group-item-heading" />
                                         <StackLayout class="container">
                                             <Label :text="'Tipo: ' + n.operationType.name" class="card-text" />
                                             <Label :text="'Cliente: ' + n.charger.name" class="card-text" />
@@ -364,6 +364,7 @@
 
     .list-group-item-heading {
         font-size: 18;
+        text-align: center;
     }
 
 </style>
