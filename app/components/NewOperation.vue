@@ -217,5 +217,9 @@
         font-size: 20;
     }
 
+    .list-group-item-heading {
+        font-size: 18;
+        text-align: center;
+    }
 
 </style>

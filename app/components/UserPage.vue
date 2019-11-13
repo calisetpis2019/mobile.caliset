@@ -34,7 +34,7 @@
                                     </StackLayout>
                                     <StackLayout row="1" col="0" colSpan="2" orientation="horizontal" horizontalAlignment="center">
                                         <Button text.decode="&#xf044; Editar" @tap="editTimeRecord(r)" width="50%" class="fas btn btn-primary m-t-20" />
-                                        <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-reject m-t-20" />
+                                        <Button text.decode="&#xf1f8; Eliminar" @tap="deleteTimeRecord(r.id)" width="50%" class="fas btn btn-primary m-t-20" backgroundColor="#cb132d" />
                                     </StackLayout>
                                     <Label row="0" col="1" :text="'Total: ' + countHours(r.startDate,r.endDate) + ' hs'" class="card-text" textWrap="true" />
                                 </GridLayout>

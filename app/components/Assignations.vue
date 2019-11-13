@@ -18,12 +18,12 @@
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container">
                                         <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
-                                        <Label :text="'Tipo: ' + a.operation.operationType.name" color="white" />
-                                        <Label :text="'Cliente: ' + a.operation.charger.name" color="white" />
-                                        <Label :text="'Cargador: ' + a.operation.charger.name" color="white" />
-                                        <Label :text="'Lugar: ' + a.operation.location.name" color="white" />
-                                        <Label :text="'Producto: ' + a.operation.commodity" color="white" />
-                                        <Label :text="'Embarcación: ' + a.operation.shipName"   color="white" />
+                                        <Label :text="'Tipo: ' + a.operation.operationType.name" class="card-text" />
+                                        <Label :text="'Cliente: ' + a.operation.charger.name" class="card-text"/>
+                                        <Label :text="'Cargador: ' + a.operation.charger.name" class="card-text" />
+                                        <Label :text="'Lugar: ' + a.operation.location.name" class="card-text" />
+                                        <Label :text="'Producto: ' + a.operation.commodity" class="card-text" />
+                                        <Label :text="'Embarcación: ' + a.operation.shipName" class="card-text"  />
                                     </StackLayout >
                                 </GridLayout>
                             </CardView>
@@ -123,6 +123,11 @@
 
     .info {
         font-size: 20;
+    }
+
+    .list-group-item-heading {
+        font-size: 18;
+        text-align: center;
     }
 
 
