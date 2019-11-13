@@ -23,7 +23,7 @@
                                         <Label :text="'Cargador: ' + a.operation.charger.name" class="card-text" />
                                         <Label :text="'Lugar: ' + a.operation.location.name" class="card-text" />
                                         <Label :text="'Producto: ' + a.operation.commodity" class="card-text" />
-                                        <Label :text="'Embarcación: ' + a.operation.shipName"   class="card-text" />
+                                        <Label :text="'Embarcación: ' + a.operation.shipName" class="card-text" />
                                     </StackLayout >
                                 </GridLayout>
                             </CardView>
@@ -123,6 +123,11 @@
 
     .info {
         font-size: 20;
+    }
+
+    .list-group-item-heading {
+        font-size: 18;
+        text-align: center;
     }
 
 
