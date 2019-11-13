@@ -1,29 +1,29 @@
 <template>
     <Page class="page" @navigatedTo="loadAssignations">
         <OurActionBar/>
-        <GridLayout rows="auto,auto,*">
+        <GridLayout rows="auto,auto,*" class="list-group">
 
             <Label row="0" text="ASIGNACIONES" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <Label row="1" :text="'Operación ' + this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle" flexWrapBefore="true" textWrap="true" />
-            <GridLayout row="2" rows="auto,*">
+            <Label row="1" :text="'OPERACIÓN ' + this.$store.state.selectedOperation.id + '-' + formatDate(this.$store.state.selectedOperation.date)" class="subtitle" flexWrapBefore="true" textWrap="true" />
+            <GridLayout row="2" rows="auto,*" class="list-group">
                 <StackLayout row="0">
                     <Label  v-if="!processing && assignations.length == 0"
                             :text="msgEmpty" textWrap="true" class="info"
                             style="margin-top: 20" />
                 </StackLayout>
                 <PullToRefresh row="1" @refresh="refreshList" >
-                    <ListView  class="list-group" for="a in assignations" backgroundColor="#1F1B24">
+                    <ListView  class="list-group" for="a in assignations">
                         <v-template>
                             <CardView  margin="10" elevation="40" radius="1" class="card">
                                 <GridLayout rows="*,auto" class="card">
                                     <StackLayout row="0" class="container">
                                         <Label :text="formatDateHour(a.date) " class="list-group-item-heading"/>
                                         <Label :text="'Tipo: ' + a.operation.operationType.name" class="card-text" />
-                                        <Label :text="'Cliente: ' + a.operation.charger.name" class="card-text"/>
+                                        <Label :text="'Cliente: ' + a.operation.charger.name" class="card-text" />
                                         <Label :text="'Cargador: ' + a.operation.charger.name" class="card-text" />
                                         <Label :text="'Lugar: ' + a.operation.location.name" class="card-text" />
                                         <Label :text="'Producto: ' + a.operation.commodity" class="card-text" />
-                                        <Label :text="'Embarcación: ' + a.operation.shipName" class="card-text"  />
+                                        <Label :text="'Embarcación: ' + a.operation.shipName" class="card-text" />
                                     </StackLayout >
                                 </GridLayout>
                             </CardView>
