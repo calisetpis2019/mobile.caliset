@@ -30,7 +30,7 @@
                     </StackLayout>
 
                     <StackLayout row="4">
-                        <Label text="Paquete: " color="white" fontSize="20" class="subtitle"/>
+                        <Label text="Empaque: " color="white" fontSize="20" class="subtitle"/>
                         <Label :text="operation.package" color="white" fontSize="20" class="info" />
                     </StackLayout>
 

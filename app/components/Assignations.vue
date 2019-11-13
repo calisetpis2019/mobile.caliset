@@ -24,7 +24,7 @@
                                         <Label :text="'Cargador: ' + a.operation.charger.name" class="card-text" />
                                         <Label :text="'Lugar: ' + a.operation.location.name" class="card-text" />
                                         <Label :text="'Producto: ' + a.operation.commodity" class="card-text" />
-                                        <Label :text="'Embarcación: ' + a.operation.shipName" class="card-text" />
+                                        <Label :text="'Empaque: ' + a.operation.package" class="card-text" />
                                     </StackLayout >
                                 </GridLayout>
                             </CardView>
