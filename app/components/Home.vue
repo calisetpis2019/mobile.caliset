@@ -2,7 +2,7 @@
     <Page class="page" @navigatedTo="loadOperations();loadNewOperations();loadFutureOperations()">
         <OurActionBar/>
             <TabView tabBackgroundColor="#010812" tabTextColor="white" selectedTabTextColor="white">
-                <TabViewItem title="Activas">
+                <TabViewItem :title="'Activas ' + '( ' + activeOperations.length + ' )'">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
                         <Label  v-if="!processing && this.$store.state.operations.length == 0"
@@ -33,7 +33,7 @@
                     
                 </TabViewItem>
 
-                <TabViewItem title="Futuras">
+                <TabViewItem :title="'Futuras ' + '( ' + futureOperations.length + ' )'">
                     <GridLayout rows="auto,*">
                     <StackLayout row="0">
                         <Label  v-if="!processing && this.$store.state.futureOperations.length == 0"
