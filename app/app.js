@@ -27,6 +27,7 @@ geolocation.enableLocationRequest(true)
     });
 
 var firebase = require("nativescript-plugin-firebase");
+var dialogs = require("tns-core-modules/ui/dialogs");
 
 firebase.init({
     showNotifications: true,
@@ -44,6 +45,24 @@ firebase.init({
         if (message.data.msg == "Usuario eliminado") {
             store.commit('logout');
             Vue.prototype.$goto('login',{ clearHistory: true });
+            dialogs.confirm({
+                title: "Su usuario fue borrado",
+                message: "",
+                okButtonText: "Ok",
+            }).then(function () {
+                console.log("Dialogo cerrado");
+            });
+        }
+        else {
+            if (message.foreground){
+                dialogs.confirm({
+                    title: message.title,
+                    message: message.body,
+                    okButtonText: "Ok",
+                }).then(function () {
+                    console.log("Dialogo cerrado");
+                });
+            }
         }
     }
 })
