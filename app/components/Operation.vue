@@ -88,7 +88,7 @@
                 componentKey: 0,
                 comments: [],
                 processing: false,
-                nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id + "_",
+                nameOfPicture: "Operacion" + this.$store.state.selectedOperation.id,
                 folder: "Camera", // Acá va el directorio dentrio de DCIM en el que se quiere guardar las fotos
                 idFuture: 1, //Hardcodeado
                 isFuture: false,
@@ -177,46 +177,18 @@
             },
 
             takePicture() {
-                var timeStamp = this.createDateTimeStamp();
-
-                //Creo el directorio donde se guardará la foto:
-                var tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM).getAbsolutePath();
-
-                const fileSystemModule = require("tns-core-modules/file-system");
-
                 //Defino las opciones con las que se guardará la imagen:
-                var options = {keepAspectRatio: true, saveToGallery: false, nameOfPicture: this.nameOfPicture};
-                // var options = { width: 300, height: 300, keepAspectRatio: true, nameOfPicture: this.nameOfPicture};
+                var options = {keepAspectRatio: true, saveToGallery: true, nameOfPicture: this.nameOfPicture};
 
-                //Modulo necesario para guardar la imagen:
-                const imageSourceModule = require("tns-core-modules/image-source");
                 //Utilizo la cámara para obtener la imagen:
                 camera.requestPermissions()
                 .then(() => {
                     camera.takePicture(options).
                     then((imageAsset) => {
-                        const folderPath = fileSystemModule.path.join(tempPicturePath, this.folder);
-                        const folder = fileSystemModule.Folder.fromPath(folderPath);
-
-                        console.log(folderPath);
+                        // Si se tomó y guardó la foto
                         console.log("Result is an image asset instance");
-                        console.log("Size: " + imageAsset.options.width + "x" + imageAsset.options.height);
-                        console.log("keepAspectRatio: " + imageAsset.options.keepAspectRatio);
-
-
-                        const source = new imageSourceModule.ImageSource();
-                        source.fromAsset(imageAsset)
-                        .then((imageSource) => {
-                            const filePath = fileSystemModule.path.join(folderPath, this.nameOfPicture + timeStamp + ".jpg");
-                            const saved = imageSource.saveToFile(filePath, "jpg");
-                            if (saved) {
-                                console.log("Saved: " + filePath);
-                                console.log("Image saved successfully!");
-                                this.takePicture();
-                            }
-                        }).catch((err) => {
-                            console.log("Error -> " + err.message);
-                        });
+                        // Se abre la cámara de nuevo, para mejorar la experiencia de usuario
+                        this.takePicture();
                     }).catch((err) => {
                         console.log("Error -> " + err.message);
                     });
